@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { ReactiveBase } from '@appbaseio/reactivesearch';
 
-function BookList() {
-  const [books, setBooks] = useState([]);
+function FlightList() {
+  const [flights, setFlights] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch data directly from the Elasticsearch endpoint
-    fetch('https://appbase-demo-ansible-abxiydt-arc.searchbase.io/good-books-ds/_search', {
+    // Fetch data from OpenSearch via localhost (browser access)
+    fetch('http://localhost:9200/opensearch_dashboards_sample_data_flights/_search', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa('a03a1cb71321:75b6603d-9456-4a5a-af6b-a487b309eb61')
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         size: 10,
@@ -20,31 +19,33 @@ function BookList() {
     })
     .then(res => res.json())
     .then(data => {
-      setBooks(data.hits.hits);
+      setFlights(data.hits.hits);
       setLoading(false);
     })
     .catch(err => {
-      console.error('Error fetching books:', err);
+      console.error('Error fetching flights:', err);
       setLoading(false);
     });
   }, []);
 
-  if (loading) return <p>Loading books...</p>;
+  if (loading) return <p>Loading flights...</p>;
 
   return (
     <div>
-      <h2>Books from Database:</h2>
-      {books.map((book) => (
-        <div key={book._id} style={{ 
+      <h2>Flights from OpenSearch:</h2>
+      {flights.map((flight) => (
+        <div key={flight._id} style={{ 
           marginBottom: '15px', 
           padding: '15px', 
           border: '1px solid #ddd',
           borderRadius: '5px'
         }}>
-          <h3>{book._source.original_title}</h3>
-          <p><strong>Author:</strong> {book._source.authors}</p>
-          <p><strong>Rating:</strong> {book._source.average_rating} ⭐</p>
-          <p><strong>Published:</strong> {book._source.original_publication_year}</p>
+          <h3>{flight._source.FlightNum} - {flight._source.Carrier}</h3>
+          <p><strong>From:</strong> {flight._source.OriginCityName} ({flight._source.OriginCountry})</p>
+          <p><strong>To:</strong> {flight._source.DestCityName} ({flight._source.DestCountry})</p>
+          <p><strong>Price:</strong> ${flight._source.AvgTicketPrice.toFixed(2)}</p>
+          <p><strong>Distance:</strong> {flight._source.DistanceKilometers.toFixed(0)} km</p>
+          <p><strong>Status:</strong> {flight._source.Cancelled ? '❌ Cancelled' : '✅ On Time'}</p>
         </div>
       ))}
     </div>
@@ -54,13 +55,14 @@ function BookList() {
 function App() {
     return (
       <div style={{ padding: '20px' }}>
-        <h1>Book Search Demo 📚</h1>
+        <h1>Flight Search Demo ✈️</h1>
         <ReactiveBase
-          app="good-books-ds"
-          url="https://appbase-demo-ansible-abxiydt-arc.searchbase.io"
+          app="opensearch_dashboards_sample_data_flights"
+          url="http://localhost:9200"
+          enableAppbase={false}
           credentials="a03a1cb71321:75b6603d-9456-4a5a-af6b-a487b309eb61"
         >
-          <BookList />
+          <FlightList />
         </ReactiveBase>
       </div>
     );
