@@ -1,0 +1,7 @@
+{
+  "name": "React + Vite Development",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  // ... rest of configuration stays the same
+}

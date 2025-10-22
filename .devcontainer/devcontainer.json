@@ -1,0 +1,22 @@
+{
+  "name": "React + Vite Development",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+
+  "forwardPorts": [5173],
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite Dev Server",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "postCreateCommand": "npm install",
+
+  "remoteUser": "node",
+  
+  "mounts": [
+    "source=${localWorkspaceFolder}/.idea,target=${containerWorkspaceFolder}/.idea,type=bind,consistency=cached"
+  ]
+}
