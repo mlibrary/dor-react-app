@@ -6,7 +6,10 @@ services:
     volumes:
       - ..:/workspaces/${localWorkspaceFolderBasename}:cached
     command: sleep infinity
-    network_mode: service:opensearch
+    depends_on:
+      - opensearch
+    networks:
+      - opensearch-net
 
   dejavu:
     image: appbaseio/dejavu:latest
@@ -37,6 +40,10 @@ services:
     environment:
       - discovery.type=single-node
       - DISABLE_SECURITY_PLUGIN=true
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=true
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - "9200:9200"
