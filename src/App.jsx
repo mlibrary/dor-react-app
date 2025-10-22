@@ -4,29 +4,54 @@ function App() {
   const [flights, setFlights] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all"); // all, cancelled, ontime
 
-  const fetchFlights = (query) => {
+  const fetchFlights = (query, status) => {
     setLoading(true);
     
-    // Build the OpenSearch query
-    const searchBody = query.trim() === "" 
-      ? { size: 10, query: { match_all: {} } }
-      : {
-          size: 10,
-          query: {
-            multi_match: {
-              query: query,
-              fields: [
-                "OriginCityName",
-                "DestCityName",
-                "Carrier",
-                "FlightNum",
-                "OriginCountry",
-                "DestCountry"
-              ]
+    // Build the base query
+    let queryObj;
+    if (query.trim() === "") {
+      queryObj = { match_all: {} };
+    } else {
+      queryObj = {
+        multi_match: {
+          query: query,
+          fields: [
+            "OriginCityName",
+            "DestCityName",
+            "Carrier",
+            "FlightNum",
+            "OriginCountry",
+            "DestCountry"
+          ]
+        }
+      };
+    }
+
+    // Build the filter for status
+    let searchBody;
+    if (status === "all") {
+      searchBody = {
+        size: 50,
+        query: queryObj
+      };
+    } else {
+      // Use bool query with filter for status
+      searchBody = {
+        size: 50,
+        query: {
+          bool: {
+            must: queryObj,
+            filter: {
+              term: {
+                Cancelled: status === "cancelled"
+              }
             }
           }
-        };
+        }
+      };
+    }
 
     fetch('http://localhost:9200/opensearch_dashboards_sample_data_flights/_search', {
       method: 'POST',
@@ -48,12 +73,17 @@ function App() {
 
   useEffect(() => {
     // Initial load
-    fetchFlights("");
+    fetchFlights("", "all");
   }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchFlights(searchQuery);
+    fetchFlights(searchQuery, statusFilter);
+  };
+
+  const handleStatusChange = (newStatus) => {
+    setStatusFilter(newStatus);
+    fetchFlights(searchQuery, newStatus);
   };
 
   return (
@@ -61,7 +91,7 @@ function App() {
       <h1>Flight Search Demo ✈️</h1>
       
       {/* Search Box */}
-      <form onSubmit={handleSearch} style={{ marginBottom: '30px' }}>
+      <form onSubmit={handleSearch} style={{ marginBottom: '20px' }}>
         <div style={{ display: 'flex', gap: '10px' }}>
           <input
             type="text"
@@ -101,7 +131,7 @@ function App() {
               type="button"
               onClick={() => {
                 setSearchQuery("");
-                fetchFlights("");
+                fetchFlights("", statusFilter);
               }}
               style={{
                 padding: '12px 20px',
@@ -121,6 +151,58 @@ function App() {
         </div>
       </form>
 
+      {/* Status Filter */}
+      <div style={{ marginBottom: '30px' }}>
+        <label style={{ marginRight: '15px', fontWeight: 'bold' }}>Filter by Status:</label>
+        <div style={{ display: 'inline-flex', gap: '10px' }}>
+          <button
+            onClick={() => handleStatusChange("all")}
+            style={{
+              padding: '10px 20px',
+              fontSize: '14px',
+              backgroundColor: statusFilter === "all" ? '#2196F3' : '#e0e0e0',
+              color: statusFilter === "all" ? 'white' : '#333',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              fontWeight: statusFilter === "all" ? 'bold' : 'normal'
+            }}
+          >
+            All Flights
+          </button>
+          <button
+            onClick={() => handleStatusChange("ontime")}
+            style={{
+              padding: '10px 20px',
+              fontSize: '14px',
+              backgroundColor: statusFilter === "ontime" ? '#4CAF50' : '#e0e0e0',
+              color: statusFilter === "ontime" ? 'white' : '#333',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              fontWeight: statusFilter === "ontime" ? 'bold' : 'normal'
+            }}
+          >
+            ✅ On Time
+          </button>
+          <button
+            onClick={() => handleStatusChange("cancelled")}
+            style={{
+              padding: '10px 20px',
+              fontSize: '14px',
+              backgroundColor: statusFilter === "cancelled" ? '#f44336' : '#e0e0e0',
+              color: statusFilter === "cancelled" ? 'white' : '#333',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              fontWeight: statusFilter === "cancelled" ? 'bold' : 'normal'
+            }}
+          >
+            ❌ Cancelled
+          </button>
+        </div>
+      </div>
+
       {/* Results */}
       {loading ? (
         <p>Loading flights...</p>
@@ -130,9 +212,10 @@ function App() {
             {searchQuery 
               ? `Search Results for "${searchQuery}" (${flights.length} flights)` 
               : `All Flights (${flights.length} flights)`}
+            {statusFilter !== "all" && ` - ${statusFilter === "cancelled" ? "Cancelled" : "On Time"}`}
           </h2>
           {flights.length === 0 ? (
-            <p>No flights found. Try a different search term.</p>
+            <p>No flights found. Try a different search term or filter.</p>
           ) : (
             <div>
               {flights.map((flight) => (
