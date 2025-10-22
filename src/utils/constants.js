@@ -17,3 +17,9 @@ export const STATUS_OPTIONS = {
     ON_TIME: 'ontime',
     CANCELLED: 'cancelled'
 };
+
+export const PRICE_RANGE = {
+  MIN: 0,
+  MAX: 1200,
+  STEP: 50
+};
