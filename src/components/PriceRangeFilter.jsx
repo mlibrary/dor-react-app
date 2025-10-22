@@ -1,7 +1,10 @@
 import React from 'react';
 import { PRICE_RANGE } from '../utils/constants';
 
-function PriceRangeFilter({ minPrice, maxPrice, onPriceChange }) {
+function PriceRangeFilter({ minPrice, maxPrice, actualMinPrice, actualMaxPrice, onPriceChange }) {
+    const rangeMin = actualMinPrice || PRICE_RANGE.MIN;
+    const rangeMax = actualMaxPrice || PRICE_RANGE.MAX;
+
     return (
         <div style={{ marginBottom: '30px' }}>
             <label style={{ marginRight: '15px', fontWeight: 'bold' }}>
@@ -23,8 +26,8 @@ function PriceRangeFilter({ minPrice, maxPrice, onPriceChange }) {
                     </label>
                     <input
                         type="range"
-                        min={PRICE_RANGE.MIN}
-                        max={PRICE_RANGE.MAX}
+                        min={rangeMin}
+                        max={rangeMax}
                         step={PRICE_RANGE.STEP}
                         value={minPrice}
                         onChange={(e) => onPriceChange(Number(e.target.value), maxPrice)}
@@ -41,8 +44,8 @@ function PriceRangeFilter({ minPrice, maxPrice, onPriceChange }) {
                     </label>
                     <input
                         type="range"
-                        min={PRICE_RANGE.MIN}
-                        max={PRICE_RANGE.MAX}
+                        min={rangeMin}
+                        max={rangeMax}
                         step={PRICE_RANGE.STEP}
                         value={maxPrice}
                         onChange={(e) => onPriceChange(minPrice, Number(e.target.value))}
@@ -50,7 +53,7 @@ function PriceRangeFilter({ minPrice, maxPrice, onPriceChange }) {
                     />
                 </div>
                 <button
-                    onClick={() => onPriceChange(PRICE_RANGE.MIN, PRICE_RANGE.MAX)}
+                    onClick={() => onPriceChange(rangeMin, rangeMax)}
                     style={{
                         padding: '8px 15px',
                         fontSize: '14px',

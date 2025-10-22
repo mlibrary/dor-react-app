@@ -19,7 +19,7 @@ export const STATUS_OPTIONS = {
 };
 
 export const PRICE_RANGE = {
-  MIN: 0,
-  MAX: 1200,
-  STEP: 50
+    STEP: 10,
+    DEFAULT_MIN: 0,      // Fallback if query fails
+    DEFAULT_MAX: 1200    // Fallback if query fails
 };
