@@ -3,13 +3,11 @@ import '@appbaseio/reactivesearch/lib/styles.css';
 
 function App() {
     return (
-        <ReactiveBase
-            app="dor-react-app"
-            url="https://your-cluster-url"
-            // or use credentials if needed
-            credentials="username:password"
-        >
-            {/* Your search components go here */}
-        </ReactiveBase>
+   <ReactiveBase
+     app="your-index-name"
+     url="http://localhost:9200"
+   >
+     {/* Your components */}
+   </ReactiveBase>
     );
 }

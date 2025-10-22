@@ -1,13 +1,17 @@
 {
   "name": "React + Vite Development",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "dockerComposeFile": "compose.yaml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
-  "forwardPorts": [5173],
+  "forwardPorts": [5173, 9200],
   "portsAttributes": {
     "5173": {
       "label": "Vite Dev Server",
+      "onAutoForward": "notify"
+    },
+    "9200": {
+      "label": "OpenSearch",
       "onAutoForward": "notify"
     }
   },
