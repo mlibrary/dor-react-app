@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -10,16 +8,46 @@ services:
     command: sleep infinity
     network_mode: service:opensearch
 
+  dejavu:
+    image: appbaseio/dejavu:latest
+    container_name: dejavu
+    ports:
+      - '1358:1358'
+    depends_on:
+      - opensearch
+    networks:
+      - opensearch-net
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: opensearch-dashboards
+    ports:
+      - "5601:5601"
+    environment:
+      OPENSEARCH_HOSTS: '["http://opensearch:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
+    depends_on:
+      - opensearch
+    networks:
+      - opensearch-net
+
   opensearch:
     image: opensearchproject/opensearch:latest
+    container_name: opensearch
     environment:
       - discovery.type=single-node
-      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
       - DISABLE_SECURITY_PLUGIN=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - "9200:9200"
       - "9600:9600"
+    networks:
+      - opensearch-net
 
 volumes:
   opensearch-data:
     driver: local
+
+networks:
+  opensearch-net:
+    driver: bridge
