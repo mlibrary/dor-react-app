@@ -81,74 +81,78 @@ function renderItem(res, triggerClickAnalytics) {
 
 function RsFlightSearchApp() {
     return (
-    <ReactiveBase
-        app="opensearch_dashboards_sample_data_flights"
-        credentials="rs-admin-user:rs-password"
-        url="http://localhost:8000"
-        analytics={false}
-        searchStateHeader
-    >
-        <Row gutter={16} style={{ padding: 20 }}>
-            <Col span={12}>
-                <Card>
-                    <MultiList
-                        componentId="list-1"
-                        dataField="Origin"
-                        size={100}
+    <div style={{ padding: '20px', maxWidth: '100%', margin: '0 auto' }}>
+        <ReactiveBase
+            app="opensearch_dashboards_sample_data_flights"
+            credentials="rs-admin-user:rs-password"
+            url="http://localhost:8000"
+            analytics={false}
+            searchStateHeader
+        >
+            <Row gutter={16} style={{ padding: 20 }}>
+                <Col span={6}>
+                    <Card>
+                        <MultiList
+                            componentId="list-1"
+                            dataField="Origin"
+                            size={100}
+                            style={{
+                                marginBottom: 20
+                            }}
+                            title="Origin"
+                        />
+                    </Card>
+                </Col>
+                <Col span={18}>
+                    <SearchBox
+                        componentId="search"
+                        dataField={[
+                            'Carrier',
+                            'Dest'
+                        ]}
+                        fieldWeights={[
+                            1,
+                            1
+                        ]}
+                        fuzziness={0}
+                        highlight={true}
+                        highlightField={[
+                            'Carrier',
+                            'Dest'
+                        ]}
+                        placeholder="Search Carrier or Destination"
+                        title="Search"
                         style={{
                             marginBottom: 20
                         }}
-                        title="Origin"
                     />
-                </Card>
-            </Col>
-            <Col span={12}>
-                <SearchBox
-                    componentId="search"
-                    dataField={[
-                        'Carrier',
-                        'Dest'
-                    ]}
-                    fieldWeights={[
-                        1,
-                        1
-                    ]}
-                    fuzziness={0}
-                    highlight={true}
-                    highlightField={[
-                        'Carrier',
-                        'Dest'
-                    ]}
-                    placeholder="Search Carrier or Destination"
-                    title="Search"
-                    style={{
-                        marginBottom: 20
-                    }}
-                />
 
-                <SelectedFilters />
-                <div id="result">
-                    <ReactiveList
-                        componentId="result"
-                        dataField="_score"
-                        pagination={true}
-                        react={{
-                            and: [
-                                'search',
-                                'list-1'
-                            ]
-                        }}
-                        renderItem={renderItem}
-                        size={5}
-                        style={{
-                            marginTop: 20
-                        }}
-                    />
-                </div>
-            </Col>
+                    <SelectedFilters />
+                    <div id="result">
+                        <ReactiveList
+                            componentId="result"
+                            dataField="_score"
+                            pagination={true}
+                            // react={{
+                            //     and: [
+                            //         'search',
+                            renderItem={renderItem}
+                            size={5}
+                            style={{
+                                marginTop: 20
+                            }}
+                            renderNoResults={() => (
+                                <div style={{ padding: '20px', textAlign: 'center' }}>
+                                    No flights found. Try adjusting your filters.
+                                </div>
+                            )}
+                        />
+                    </div>
+                </Col>
 
-        </Row>
-    </ReactiveBase>
+            </Row>
+        </ReactiveBase>
+    </div>
     );
 }
 
