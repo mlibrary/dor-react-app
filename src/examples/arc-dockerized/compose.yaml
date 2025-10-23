@@ -1,57 +1,25 @@
+version: "3.4"
 services:
-  app:
-    build:
-      context: ..
-      dockerfile: .devcontainer/Dockerfile
-    volumes:
-      - ..:/workspaces/${localWorkspaceFolderBasename}:cached
-    command: sleep infinity
-    depends_on:
-      - opensearch
-    networks:
-      - opensearch-net
-
-  dejavu:
-    image: appbaseio/dejavu:latest
-    container_name: dejavu
-    ports:
-      - '1358:1358'
-    depends_on:
-      - opensearch
-    networks:
-      - opensearch-net
-
-  opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:latest
-    container_name: opensearch-dashboards
-    ports:
-      - "5601:5601"
-    environment:
-      OPENSEARCH_HOSTS: '["http://opensearch:9200"]'
-      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
-    depends_on:
-      - opensearch
-    networks:
-      - opensearch-net
-
   opensearch:
-    image: opensearchproject/opensearch:latest
+    image: 'opensearchproject/opensearch:3.2.0'
     container_name: opensearch
     environment:
+      - 'DISABLE_SECURITY_PLUGIN=true'
       - discovery.type=single-node
-      - DISABLE_SECURITY_PLUGIN=true
-      - http.cors.enabled=true
-      - http.cors.allow-origin=*
-      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
-      - http.cors.allow-credentials=true
-      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - http.port=9200
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
-      - "9200:9200"
-      - "9600:9600"
+      - '9200:9200'
+      - '9600:9600'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     volumes:
-      - 'opensearch-data:/usr/share/opensearch/data'
+      - './data:/usr/share/opensearch/data'
     networks:
-      - opensearch-net
+      - reactivesearch_network
 
   zinc:
     image: public.ecr.aws/zinclabs/zinc:latest
@@ -67,7 +35,7 @@ services:
     volumes:
       - "zinc-data:/data"
     networks:
-      - opensearch-net
+      - reactivesearch_network
 
   reactivesearch-api:
     container_name: rs-api
@@ -86,7 +54,7 @@ services:
     ports:
       - '8000:8000'
     networks:
-      - opensearch-net
+      - reactivesearch_network
 
   fluentbit:
     image: fluent/fluent-bit:4.0.8
@@ -102,12 +70,9 @@ services:
       - "reactivesearch-data:/reactivesearch-data"
       - "fluent-bit-state:/fluent-bit/state"
     networks:
-      - opensearch-net
-
+      - reactivesearch_network
 
 volumes:
-  opensearch-data:
-    driver: local
   reactivesearch-data:
     external: false
     name: reactivesearch-data
@@ -119,5 +84,5 @@ volumes:
     name: fluent-bit-state
 
 networks:
-  opensearch-net:
+  reactivesearch_network:
     driver: bridge

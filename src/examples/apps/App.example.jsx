@@ -8,7 +8,7 @@ import {
     ResultCard
 } from "@appbaseio/reactivesearch";
 
-import "../styles.css";
+import "../../styles.css";
 
 function App() {
     return (
