@@ -1,4 +1,4 @@
-import { OPENSEARCH_CONFIG, SEARCH_FIELDS } from '../utils/constants';
+import { OPENSEARCH_CONFIG, SEARCH_FIELDS } from '../utils/constants.js';
 
 export const getPriceStats = async () => {
   const searchBody = {

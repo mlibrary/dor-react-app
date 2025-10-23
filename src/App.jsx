@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import FlightSearchApp from './FlightSearchApp';
+import FlightSearchApp from './apps/FlightSearchApp/index.jsx';
 // Import other apps as needed
 // import AnotherApp from './AnotherApp';
 // import YetAnotherApp from './YetAnotherApp';

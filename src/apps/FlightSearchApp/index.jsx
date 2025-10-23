@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import SearchBar from './components/SearchBar';
-import StatusFilter from './components/StatusFilter';
-import PriceRangeFilter from './components/PriceRangeFilter';
-import FlightCard from './components/FlightCard';
-import { searchFlights, getPriceStats } from './services/openSearchService';
-import { STATUS_OPTIONS, PRICE_RANGE } from './utils/constants';
+import SearchBar from './components/SearchBar.jsx';
+import StatusFilter from './components/StatusFilter.jsx';
+import PriceRangeFilter from './components/PriceRangeFilter.jsx';
+import FlightCard from './components/FlightCard.jsx';
+import { searchFlights, getPriceStats } from './services/openSearchService.js';
+import { STATUS_OPTIONS, PRICE_RANGE } from './utils/constants.js';
 
 function FlightSearchApp() {
     const [flights, setFlights] = useState([]);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PRICE_RANGE } from '../utils/constants';
+import { PRICE_RANGE } from '../utils/constants.js';
 
 function PriceRangeFilter({ minPrice, maxPrice, actualMinPrice, actualMaxPrice, onPriceChange }) {
     const rangeMin = actualMinPrice || PRICE_RANGE.MIN;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { STATUS_OPTIONS } from '../utils/constants';
+import { STATUS_OPTIONS } from '../utils/constants.js';
 
 function StatusFilter({ statusFilter, onStatusChange }) {
     const getButtonStyle = (filterValue) => ({
