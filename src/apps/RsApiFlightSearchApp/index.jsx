@@ -54,46 +54,40 @@ function RsApiFlightSearchApp() {
         }
     };
 
-    // Main search function using ReactiveSearch API
     const fetchFlights = async (search = searchValue, origin = selectedOrigin, page = currentPage) => {
         setLoading(true);
+        console.log('Searching for:', search);
 
         try {
-            // Build the queries array
             const queries = [];
 
             // Main search query
             const searchQuery = {
                 id: 'search-results',
                 type: 'search',
+                dataField: ['Dest', 'Origin', 'Carrier', 'DestCityName', 'OriginCityName'],
                 size: pageSize,
                 from: (page - 1) * pageSize,
                 includeFields: ['*'],
                 execute: true
             };
 
-            // Add search with wildcard if there's a search value
+            // If there's a search value, add the custom query OBJECT (not function)
             if (search && search.trim() !== '') {
                 searchQuery.value = search;
-                searchQuery.dataField = ['Dest', 'Origin', 'Carrier', 'DestCityName', 'OriginCityName'];
-                searchQuery.customQuery = {
+                searchQuery.defaultQuery = {
                     query: {
                         bool: {
                             should: [
-                                { wildcard: { Dest: { value: `*${search.toUpperCase()}*`, case_insensitive: true } } },
-                                { wildcard: { Origin: { value: `*${search.toUpperCase()}*`, case_insensitive: true } } },
-                                { wildcard: { Carrier: { value: `*${search}*`, case_insensitive: true } } },
-                                { wildcard: { DestCityName: { value: `*${search}*`, case_insensitive: true } } },
-                                { wildcard: { OriginCityName: { value: `*${search}*`, case_insensitive: true } } }
+                                { wildcard: { 'Dest': { value: `*${search}*`, case_insensitive: true } } },
+                                { wildcard: { 'Origin': { value: `*${search}*`, case_insensitive: true } } },
+                                { wildcard: { 'Carrier': { value: `*${search}*`, case_insensitive: true } } },
+                                { wildcard: { 'DestCityName': { value: `*${search}*`, case_insensitive: true } } },
+                                { wildcard: { 'OriginCityName': { value: `*${search}*`, case_insensitive: true } } }
                             ],
                             minimum_should_match: 1
                         }
                     }
-                };
-            } else {
-                // Default query to show all results
-                searchQuery.defaultQuery = {
-                    query: { match_all: {} }
                 };
             }
 
@@ -103,7 +97,6 @@ function RsApiFlightSearchApp() {
                     and: ['origin-filter']
                 };
 
-                // Add origin filter query
                 queries.push({
                     id: 'origin-filter',
                     type: 'term',
@@ -115,6 +108,8 @@ function RsApiFlightSearchApp() {
 
             queries.push(searchQuery);
 
+            console.log('Sending request:', JSON.stringify({ query: queries }, null, 2));
+
             const response = await fetch('http://localhost:8000/opensearch_dashboards_sample_data_flights/_reactivesearch', {
                 method: 'POST',
                 headers: {
@@ -124,23 +119,30 @@ function RsApiFlightSearchApp() {
                 body: JSON.stringify({
                     query: queries,
                     settings: {
-                        recordAnalytics: true,
+                        recordAnalytics: false,
                         backend: 'opensearch'
                     }
                 })
             });
 
             const data = await response.json();
-            
+            console.log('Response:', data);
+
             if (data['search-results']?.hits?.hits) {
                 setFlights(data['search-results'].hits.hits);
                 setTotalResults(data['search-results'].hits.total.value);
+            } else if (data['search-results']?.error) {
+                console.error('Search error:', data['search-results'].error);
+                setFlights([]);
+                setTotalResults(0);
             } else {
                 setFlights([]);
                 setTotalResults(0);
             }
         } catch (err) {
             console.error('Error fetching flights:', err);
+            setFlights([]);
+            setTotalResults(0);
         } finally {
             setLoading(false);
         }
