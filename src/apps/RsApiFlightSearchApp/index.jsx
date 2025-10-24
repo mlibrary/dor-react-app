@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+// https://ant.design/docs/react/v5-for-19
+import '@ant-design/v5-patch-for-react-19';
 import { Row, Col, Card, Button, Input, Select, Pagination } from 'antd';
 import createDOMPurify from 'dompurify';
 
@@ -222,17 +224,6 @@ function RsApiFlightSearchApp() {
             <h1>ReactiveSearch API Flight Search 🛫</h1>
             
             <Row gutter={16} style={{ marginBottom: '20px' }}>
-                <Col span={18}>
-                    <Search
-                        placeholder="Search by destination, origin, carrier, or city..."
-                        allowClear
-                        enterButton="Search"
-                        size="large"
-                        onSearch={handleSearch}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                        value={searchValue}
-                    />
-                </Col>
                 <Col span={6}>
                     <Select
                         placeholder="Filter by Origin"
@@ -253,6 +244,18 @@ function RsApiFlightSearchApp() {
                             </Option>
                         ))}
                     </Select>
+                </Col>
+                <Col span={18}>
+                    <Search
+                        name="search"
+                        placeholder="Search by destination, origin, carrier, or city..."
+                        allowClear
+                        enterButton="Search"
+                        size="large"
+                        onSearch={handleSearch}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                        value={searchValue}
+                    />
                 </Col>
             </Row>
 

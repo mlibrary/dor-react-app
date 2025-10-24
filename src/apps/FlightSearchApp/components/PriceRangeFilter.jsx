@@ -25,6 +25,7 @@ function PriceRangeFilter({ minPrice, maxPrice, actualMinPrice, actualMaxPrice, 
                         Min Price: ${minPrice}
                     </label>
                     <input
+                        name={"minPrice"}
                         type="range"
                         min={rangeMin}
                         max={rangeMax}
@@ -43,6 +44,7 @@ function PriceRangeFilter({ minPrice, maxPrice, actualMinPrice, actualMaxPrice, 
                         Max Price: ${maxPrice}
                     </label>
                     <input
+                        name={"maxPrice"}
                         type="range"
                         min={rangeMin}
                         max={rangeMax}

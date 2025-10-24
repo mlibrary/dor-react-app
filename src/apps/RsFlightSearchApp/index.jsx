@@ -12,6 +12,8 @@ import {
     ReactiveList
 } from '@appbaseio/reactivesearch';
 
+// https://ant.design/docs/react/v5-for-19
+import '@ant-design/v5-patch-for-react-19';
 import {
     Row,
     Button,
