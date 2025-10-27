@@ -90,6 +90,17 @@ export const searchFlights = async (query, status, priceRange = null, size = 50)
     };
   }
 
+  let mySearchBody;
+  mySearchBody = {
+      size,
+    query: {
+        multi_match: {
+            query: query,
+            fields: SEARCH_FIELDS
+        }
+    }
+  }
+
   const response = await fetch(`${OPENSEARCH_CONFIG.url}/${OPENSEARCH_CONFIG.index}/_search`, {
     method: 'POST',
     headers: {

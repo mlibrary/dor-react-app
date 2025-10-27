@@ -40,7 +40,16 @@ function FlightSearchApp() {
         setError(null);
 
         try {
-            const results = await searchFlights(query, status, priceRange);
+            // Normalise empty query to null so that the backend treats it as “no filter”
+            const trimmedQuery = query.trim();
+            const effectiveQuery = trimmedQuery ? trimmedQuery : null;
+            // Encode the query to safely pass to the backend
+            const encodedQuery = encodeURIComponent(effectiveQuery ?? "");
+
+            console.log("Searching flights:", { query: trimmedQuery, status, priceRange, encodedQuery });
+
+            const results = await searchFlights(encodedQuery, status, priceRange);
+            console.log("Received flights:", results);
             setFlights(results);
         } catch (err) {
             console.error('Error fetching flights:', err);

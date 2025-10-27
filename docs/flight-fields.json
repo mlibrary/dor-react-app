@@ -1,0 +1,148 @@
+{
+  "opensearch_dashboards_sample_data_flights": {
+    "mappings": {
+      "dynamic": "true",
+      "dynamic_templates": [
+        {
+          "strings": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "analyzer": "standard",
+              "fields": {
+                "search": {
+                  "search_analyzer": "ngram_search_analyzer",
+                  "analyzer": "ngram_analyzer",
+                  "type": "text"
+                },
+                "synonyms": {
+                  "analyzer": "synonyms",
+                  "type": "text"
+                },
+                "delimiter": {
+                  "analyzer": "universal_delimiter_analyzer",
+                  "type": "text",
+                  "index_options": "offsets"
+                },
+                "autosuggest": {
+                  "search_analyzer": "ngram_search_analyzer",
+                  "analyzer": "autosuggest_analyzer",
+                  "type": "text"
+                },
+                "keyword": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "lang": {
+                  "analyzer": "universal",
+                  "type": "text",
+                  "index_options": "offsets"
+                }
+              },
+              "index_phrases": true,
+              "type": "text"
+            }
+          }
+        },
+        {
+          "double": {
+            "match_mapping_type": "double",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "long": {
+            "match_mapping_type": "long",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "AvgTicketPrice": {
+          "type": "float"
+        },
+        "Cancelled": {
+          "type": "boolean"
+        },
+        "Carrier": {
+          "type": "keyword"
+        },
+        "Dest": {
+          "type": "keyword"
+        },
+        "DestAirportID": {
+          "type": "keyword"
+        },
+        "DestCityName": {
+          "type": "keyword"
+        },
+        "DestCountry": {
+          "type": "keyword"
+        },
+        "DestLocation": {
+          "type": "geo_point"
+        },
+        "DestRegion": {
+          "type": "keyword"
+        },
+        "DestWeather": {
+          "type": "keyword"
+        },
+        "DistanceKilometers": {
+          "type": "float"
+        },
+        "DistanceMiles": {
+          "type": "float"
+        },
+        "FlightDelay": {
+          "type": "boolean"
+        },
+        "FlightDelayMin": {
+          "type": "integer"
+        },
+        "FlightDelayType": {
+          "type": "keyword"
+        },
+        "FlightNum": {
+          "type": "keyword"
+        },
+        "FlightTimeHour": {
+          "type": "keyword"
+        },
+        "FlightTimeMin": {
+          "type": "float"
+        },
+        "Origin": {
+          "type": "keyword"
+        },
+        "OriginAirportID": {
+          "type": "keyword"
+        },
+        "OriginCityName": {
+          "type": "keyword"
+        },
+        "OriginCountry": {
+          "type": "keyword"
+        },
+        "OriginLocation": {
+          "type": "geo_point"
+        },
+        "OriginRegion": {
+          "type": "keyword"
+        },
+        "OriginWeather": {
+          "type": "keyword"
+        },
+        "dayOfWeek": {
+          "type": "integer"
+        },
+        "timestamp": {
+          "type": "date"
+        }
+      }
+    }
+  }
+}

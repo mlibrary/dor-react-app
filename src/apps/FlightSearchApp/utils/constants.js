@@ -4,12 +4,14 @@ export const OPENSEARCH_CONFIG = {
 };
 
 export const SEARCH_FIELDS = [
+    "Origin",
+    "Dest",
     "OriginCityName",
     "DestCityName",
-    "Carrier",
-    "FlightNum",
     "OriginCountry",
-    "DestCountry"
+    "DestCountry",
+    "Carrier",
+    "FlightNum"
 ];
 
 export const STATUS_OPTIONS = {
