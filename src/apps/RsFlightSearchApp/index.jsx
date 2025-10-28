@@ -9,11 +9,16 @@ import {
     SearchBox,
     MultiList,
     SelectedFilters,
-    ReactiveList
+    ReactiveList,
+    ResultCard,
+    MultiRange,
+    RangeInput,
+    RangeSlider,
+    DynamicRangeSlider,
 } from '@appbaseio/reactivesearch';
 
 // https://ant.design/docs/react/v5-for-19
-import '@ant-design/v5-patch-for-react-19';
+// import '@ant-design/v5-patch-for-react-19';
 import {
     Row,
     Button,
@@ -43,24 +48,15 @@ function getNestedValue(obj, path) {
 }
 
 function renderItem(res, triggerClickAnalytics) {
-    let { image, url, description, title } = {"title":"Dest","description":"Origin","image":"Carrier","url":"","showRest":false};
-    image = getNestedValue(res,image);
-    title = getNestedValue(res,title);
-    url = getNestedValue(res,url);
-    description = getNestedValue(res,description)
+    let { first, last } = {"title":"customer_first_name","description":"customer_last_name","showRest":false};
+    first = getNestedValue(res,first);
+    last = getNestedValue(res,last);
     return (
         <Row onClick={triggerClickAnalytics} type="flex" gutter={16} key={res._id} style={{margin:'20px auto',borderBottom:'1px solid #ededed'}}>
-            <Col span={image ? 6 : 0}>
-                {image &&  <img src={image} alt={title} /> }
+            <Col span={24}>
+                <h3 style={{ fontWeight: '600' }} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(first || 'Choose a valid First Field') }}/>
+                <p style={{ fontSize: '1em' }} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(last || 'Choose a valid Last Field')}}/>
             </Col>
-            <Col span={image ? 18 : 24}>
-                <h3 style={{ fontWeight: '600' }} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(title || 'Choose a valid Title Field') }}/>
-                <p style={{ fontSize: '1em' }} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(description || 'Choose a valid Description Field')}}/>
-            </Col>
-            <div style={{padding:'20px'}}>
-                {url ? <Button shape="circle" icon="link" style={{ marginRight: '5px' }} onClick={() => window.open(url, '_blank')} />
-                    : null}
-            </div>
         </Row>
     );
 };
@@ -69,73 +65,84 @@ function RsFlightSearchApp() {
     return (
     <div style={{ padding: '20px', maxWidth: '100%', margin: '0 auto' }}>
         <ReactiveBase
-            app="opensearch_dashboards_sample_data_flights"
+            // app="opensearch_dashboards_sample_data_flights"
+            app="opensearch_dashboards_sample_data_ecommerce"
             credentials="rs-admin-user:rs-password"
             url="http://localhost:8000"
-            analytics={false}
-            searchStateHeader
+            reactivesearchAPIConfig={{
+                recordAnalytics: false,
+                suggestionAnalytics: false,
+                enableQueryRules: false,
+            }}
         >
             <Row gutter={16} style={{ padding: 20 }}>
                 <Col span={6}>
                     <Card>
                         <MultiList
-                            componentId="list-1"
-                            dataField="Origin"
-                            size={100}
-                            style={{
-                                marginBottom: 20
-                            }}
-                            title="Origin"
+                            componentId="categoryfilter"
+                            dataField="products.category.keyword"
+                            // size={100}
+                            // style={{
+                            //     marginBottom: 20
+                            // }}
+                            title="Products"
                         />
                     </Card>
+                    {/*<Card>*/}
+                    {/*    <DynamicRangeSlider*/}
+                    {/*        componentId="products.base_price"*/}
+                    {/*        dataField="products.price"*/}
+                    {/*    />*/}
+                    {/*</Card>*/}
+                    {/*<Card>*/}
+                    {/*    <RangeInput*/}
+                    {/*        componentId="pricerange"*/}
+                    {/*        // dataField="products.quantity"*/}
+                    {/*        dataField="day_of_week_i"*/}
+                    {/*        title="Price"*/}
+                    {/*        range={{*/}
+                    {/*            start: 1,*/}
+                    {/*            end: 7,*/}
+                    {/*        }}*/}
+                    {/*    />*/}
+                    {/*</Card>*/}
                 </Col>
                 <Col span={18}>
                     <SearchBox
+                        // autosuggest={false}
                         componentId="search"
-                        dataField={[
-                            'Carrier',
-                            'Dest'
-                        ]}
-                        fieldWeights={[
-                            1,
-                            1
-                        ]}
-                        fuzziness={0}
-                        highlight={true}
-                        highlightField={[
-                            'Carrier',
-                            'Dest'
-                        ]}
-                        placeholder="Search Carrier or Destination"
-                        title="Search"
-                        style={{
-                            marginBottom: 20
-                        }}
+                        dataField={["customer_full_name"]}
+                        placeholder="Search Destination"
                     />
-
-                    <SelectedFilters />
+                    {/*<SelectedFilters />*/}
                     <div id="result">
                         <ReactiveList
-                            componentId="result"
+                            componentId="results"
                             dataField="_score"
+                            size={6}
                             pagination={true}
-                            // react={{
-                            //     and: [
-                            //         'search',
-                            renderItem={renderItem}
-                            size={5}
-                            style={{
-                                marginTop: 20
+                            react={{
+                                and: ["search", "categoryfilter"],
                             }}
-                            renderNoResults={() => (
-                                <div style={{ padding: '20px', textAlign: 'center' }}>
-                                    No flights found. Try adjusting your filters.
-                                </div>
+                            render={({ data }) => (
+                                <ReactiveList.ResultCardsWrapper>
+                                    {data.map((item) => (
+                                        <ResultCard key={item._id}>
+                                            <ResultCard.Title
+                                                dangerouslySetInnerHTML={{
+                                                    __html: item.customer_full_name
+                                                }}
+                                            />
+                                            <ResultCard.Description>
+                                                {item.category}
+                                            </ResultCard.Description>
+                                        </ResultCard>
+                                    ))}
+                                </ReactiveList.ResultCardsWrapper>
                             )}
                         />
                     </div>
                 </Col>
-
             </Row>
         </ReactiveBase>
     </div>
