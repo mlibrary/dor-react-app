@@ -1,0 +1,1026 @@
+{
+  "bhl": {
+    "mappings": {
+      "dynamic": "true",
+      "dynamic_templates": [
+        {
+          "strings": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "analyzer": "standard",
+              "fields": {
+                "search": {
+                  "search_analyzer": "ngram_search_analyzer",
+                  "analyzer": "ngram_analyzer",
+                  "type": "text"
+                },
+                "synonyms": {
+                  "analyzer": "synonyms",
+                  "type": "text"
+                },
+                "delimiter": {
+                  "analyzer": "universal_delimiter_analyzer",
+                  "type": "text",
+                  "index_options": "offsets"
+                },
+                "autosuggest": {
+                  "search_analyzer": "ngram_search_analyzer",
+                  "analyzer": "autosuggest_analyzer",
+                  "type": "text"
+                },
+                "keyword": {
+                  "ignore_above": 256,
+                  "type": "keyword"
+                },
+                "lang": {
+                  "analyzer": "universal",
+                  "type": "text",
+                  "index_options": "offsets"
+                }
+              },
+              "index_phrases": true,
+              "type": "text"
+            }
+          }
+        },
+        {
+          "double": {
+            "match_mapping_type": "double",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "long": {
+            "match_mapping_type": "long",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "strings_as_text_keyword": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "fields": {
+                "keyword": {
+                  "ignore_above": 32766,
+                  "type": "keyword"
+                }
+              },
+              "type": "text"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "architect_builder": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "bhl_da_1": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "bhl_da_2": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "bhl_mirlyn": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "box_drawer": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "collection_creator": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "collection_title": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "copyright": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "daohref": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "date": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "description": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "filename": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "finding_aid": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "folder_container_volume": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "genre": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "id": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "item_number": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "location": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "negative_number": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "notes": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "photographer_artist": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "repository": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "scan_source": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "source_of_title": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "sport": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "subjects": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        },
+        "title": {
+          "type": "text",
+          "fields": {
+            "autosuggest": {
+              "type": "text",
+              "analyzer": "autosuggest_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "delimiter": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal_delimiter_analyzer"
+            },
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "lang": {
+              "type": "text",
+              "index_options": "offsets",
+              "analyzer": "universal"
+            },
+            "search": {
+              "type": "text",
+              "analyzer": "ngram_analyzer",
+              "search_analyzer": "ngram_search_analyzer"
+            },
+            "synonyms": {
+              "type": "text",
+              "analyzer": "synonyms"
+            }
+          },
+          "analyzer": "standard",
+          "index_phrases": true
+        }
+      }
+    }
+  }
+}

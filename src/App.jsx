@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import FlightSearchApp from './apps/FlightSearchApp/index.jsx';
 import RsFlightSearchApp from './apps/RsFlightSearchApp/index.jsx';
 import RsApiFlightSearchApp from './apps/RsApiFlightSearchApp/index.jsx';
-
+import RsBhlApp from './apps/RsBhlApp/index.jsx';
 
 function App() {
     return (
@@ -12,12 +12,14 @@ function App() {
                 <Link to="/" style={{ marginRight: '20px' }}>Open Search API</Link>
                 <Link to="/rs-api" style={{ marginRight: '20px' }}>Reactive Search API</Link>
                 <Link to="/rs" style={{ marginRight: '20px' }}>Reactive Search Components</Link>
+                <Link to="/bhl" style={{ marginRight: '20px' }}>RS-BHL</Link>
             </nav>
 
             <Routes>
                 <Route path="/" element={<FlightSearchApp />} />
                 <Route path="/rs-api" element={<RsApiFlightSearchApp />} />
                 <Route path="/rs" element={<RsFlightSearchApp />} />
+                <Route path="/bhl" element={<RsBhlApp />} />
             </Routes>
         </BrowserRouter>
     );
