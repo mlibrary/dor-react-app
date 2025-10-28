@@ -133,7 +133,7 @@ function RsFlightSearchApp() {
                             dataField={["customer_full_name"]}
                             placeholder="Search Destination"
                         />
-                        {/*<SelectedFilters />*/}
+                        <SelectedFilters />
                         <div id="result">
                             <ReactiveList
                                 componentId="results"
