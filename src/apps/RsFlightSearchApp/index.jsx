@@ -88,24 +88,22 @@ function RsFlightSearchApp() {
                             title="Products"
                         />
                     </Card>
-                    {/*<Card>*/}
-                    {/*    <DynamicRangeSlider*/}
-                    {/*        componentId="products.base_price"*/}
-                    {/*        dataField="products.price"*/}
-                    {/*    />*/}
-                    {/*</Card>*/}
-                    {/*<Card>*/}
-                    {/*    <RangeInput*/}
-                    {/*        componentId="pricerange"*/}
-                    {/*        // dataField="products.quantity"*/}
-                    {/*        dataField="day_of_week_i"*/}
-                    {/*        title="Price"*/}
-                    {/*        range={{*/}
-                    {/*            start: 1,*/}
-                    {/*            end: 7,*/}
-                    {/*        }}*/}
-                    {/*    />*/}
-                    {/*</Card>*/}
+                    <Card>
+                        <RangeInput
+                            componentId="pricerange"
+                            dataField="products.price"
+                            title="Price"
+                            range={{
+                                start: 0,
+                                end: 1100,
+                            }}
+                            setValue={1}
+                            react={{
+                                and: ['search', 'categoryfilter'],
+                            }}
+                            showHistogram={true}
+                        />
+                    </Card>
                 </Col>
                 <Col span={18}>
                     <SearchBox
@@ -122,7 +120,7 @@ function RsFlightSearchApp() {
                             size={6}
                             pagination={true}
                             react={{
-                                and: ["search", "categoryfilter"],
+                                and: ["search", "categoryfilter", "pricerange"],
                             }}
                             render={({ data }) => (
                                 <ReactiveList.ResultCardsWrapper>

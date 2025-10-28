@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // https://ant.design/docs/react/v5-for-19
-import '@ant-design/v5-patch-for-react-19';
+// import '@ant-design/v5-patch-for-react-19';
 import { Row, Col, Card, Button, Input, Select, Pagination } from 'antd';
 import createDOMPurify from 'dompurify';
 
