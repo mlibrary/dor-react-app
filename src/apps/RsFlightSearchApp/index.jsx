@@ -1,8 +1,5 @@
 import React from 'react';
-// import { createRoot } from 'react-dom/client';
-
-
-// import * as ReactiveSearch from '@appbaseio/reactivesearch';
+import { useEffect, useState } from 'react';
 // console.log(Object.keys(ReactiveSearch));
 import {
     ReactiveBase,
@@ -17,16 +14,12 @@ import {
     DynamicRangeSlider,
 } from '@appbaseio/reactivesearch';
 
-// https://ant.design/docs/react/v5-for-19
-// import '@ant-design/v5-patch-for-react-19';
 import {
     Row,
     Button,
     Col,
     Card,
 } from 'antd';
-// import 'antd/dist/reset.css';
-
 
 import createDOMPurify from 'dompurify';
 
@@ -62,88 +55,116 @@ function renderItem(res, triggerClickAnalytics) {
 };
 
 function RsFlightSearchApp() {
+    const [priceRange, setPriceRange] = useState({ start: 0, end: 1100 });
+
+    useEffect(() => {
+        // Query OpenSearch for min/max of products.price
+        const fetchRange = async () => {
+            try {
+                const resp = await fetch('http://localhost:8000/opensearch_dashboards_sample_data_ecommerce/_search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Basic cnMtYWRtaW4tdXNlcjpycy1wYXNzd29yZA=='
+                    },
+                    body: JSON.stringify({
+                        size: 0,
+                        aggs: {
+                            minPrice: { min: { field: 'products.price' } },
+                            maxPrice: { max: { field: 'products.price' } }
+                        }
+                    })
+                });
+                const data = await resp.json();
+                const min = data.aggregations.minPrice.value || 0;
+                const max = data.aggregations.maxPrice.value || 1100;
+                setPriceRange({ start: min, end: max });
+            } catch (e) {
+                console.error('Failed to fetch price range', e);
+            }
+        };
+        fetchRange();
+    }, []); // run once on mount
+
     return (
-    <div style={{ padding: '20px', maxWidth: '100%', margin: '0 auto' }}>
-        <ReactiveBase
-            // app="opensearch_dashboards_sample_data_flights"
-            app="opensearch_dashboards_sample_data_ecommerce"
-            credentials="rs-admin-user:rs-password"
-            url="http://localhost:8000"
-            reactivesearchAPIConfig={{
-                recordAnalytics: false,
-                suggestionAnalytics: false,
-                enableQueryRules: false,
-            }}
-        >
-            <Row gutter={16} style={{ padding: 20 }}>
-                <Col span={6}>
-                    <Card>
-                        <MultiList
-                            componentId="categoryfilter"
-                            dataField="products.category.keyword"
-                            // size={100}
-                            // style={{
-                            //     marginBottom: 20
-                            // }}
-                            title="Products"
+        <div style={{ padding: '20px', maxWidth: '100%', margin: '0 auto' }}>
+            <ReactiveBase
+                // app="opensearch_dashboards_sample_data_flights"
+                app="opensearch_dashboards_sample_data_ecommerce"
+                credentials="rs-admin-user:rs-password"
+                url="http://localhost:8000"
+                reactivesearchAPIConfig={{
+                    recordAnalytics: false,
+                    suggestionAnalytics: false,
+                    enableQueryRules: false,
+                }}
+            >
+                <Row gutter={16} style={{ padding: 20 }}>
+                    <Col span={6}>
+                        <Card>
+                            <MultiList
+                                componentId="categoryfilter"
+                                dataField="products.category.keyword"
+                                // size={100}
+                                // style={{
+                                //     marginBottom: 20
+                                // }}
+                                title="Products"
+                            />
+                        </Card>
+                        <Card>
+                            <RangeInput
+                                componentId="pricerange"
+                                dataField="products.price"
+                                title="Price"
+                                range={priceRange}
+                                setValue={1}
+                                react={{
+                                    and: ['search', 'categoryfilter'],
+                                }}
+                                showHistogram={true}
+                            />
+                        </Card>
+                    </Col>
+                    <Col span={18}>
+                        <SearchBox
+                            // autosuggest={false}
+                            componentId="search"
+                            dataField={["customer_full_name"]}
+                            placeholder="Search Destination"
                         />
-                    </Card>
-                    <Card>
-                        <RangeInput
-                            componentId="pricerange"
-                            dataField="products.price"
-                            title="Price"
-                            range={{
-                                start: 0,
-                                end: 1100,
-                            }}
-                            setValue={1}
-                            react={{
-                                and: ['search', 'categoryfilter'],
-                            }}
-                            showHistogram={true}
-                        />
-                    </Card>
-                </Col>
-                <Col span={18}>
-                    <SearchBox
-                        // autosuggest={false}
-                        componentId="search"
-                        dataField={["customer_full_name"]}
-                        placeholder="Search Destination"
-                    />
-                    {/*<SelectedFilters />*/}
-                    <div id="result">
-                        <ReactiveList
-                            componentId="results"
-                            dataField="_score"
-                            size={6}
-                            pagination={true}
-                            react={{
-                                and: ["search", "categoryfilter", "pricerange"],
-                            }}
-                            render={({ data }) => (
-                                <ReactiveList.ResultCardsWrapper>
-                                    {data.map((item) => (
-                                        <ResultCard key={item._id}>
-                                            <ResultCard.Title
-                                                dangerouslySetInnerHTML={{
-                                                    __html: item.customer_full_name
-                                                }}
-                                            />
-                                            <ResultCard.Description>
-                                                {item.category}
-                                            </ResultCard.Description>
-                                        </ResultCard>
-                                    ))}
-                                </ReactiveList.ResultCardsWrapper>
-                            )}
-                        />
-                    </div>
-                </Col>
-            </Row>
-        </ReactiveBase>
-    </div>
+                        {/*<SelectedFilters />*/}
+                        <div id="result">
+                            <ReactiveList
+                                componentId="results"
+                                dataField="_score"
+                                size={6}
+                                pagination={true}
+                                react={{
+                                    and: ["search", "categoryfilter", "pricerange"],
+                                }}
+                                render={({ data }) => (
+                                    <ReactiveList.ResultCardsWrapper>
+                                        {data.map((item) => (
+                                            <ResultCard key={item._id}>
+                                                <ResultCard.Title
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: item.customer_full_name
+                                                    }}
+                                                />
+                                                <ResultCard.Description>
+                                                    {item.category}
+                                                </ResultCard.Description>
+                                            </ResultCard>
+                                        ))}
+                                    </ReactiveList.ResultCardsWrapper>
+                                )}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+            </ReactiveBase>
+        </div>
     );
 }
 
