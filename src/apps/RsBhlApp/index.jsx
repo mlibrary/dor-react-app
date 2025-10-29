@@ -58,7 +58,7 @@ function RsBhlApp() {
     return (
         <div style={{ padding: '20px', maxWidth: '100%', margin: '0 auto' }}>
             <ReactiveBase
-                app="bhl_index"
+                app="bhl"
                 credentials="rs-admin-user:rs-password"
                 url="http://localhost:8000"
                 reactivesearchAPIConfig={{
