@@ -58,7 +58,7 @@ function RsBhlApp() {
     return (
         <div style={{ padding: '20px', maxWidth: '100%', margin: '0 auto' }}>
             <ReactiveBase
-                app="bhl"
+                app="bhl_index"
                 credentials="rs-admin-user:rs-password"
                 url="http://localhost:8000"
                 reactivesearchAPIConfig={{
@@ -99,18 +99,18 @@ function RsBhlApp() {
                         <SearchBox
                             // autosuggest={false}
                             componentId="search"
-                            dataField={["customer_full_name"]}
-                            placeholder="Search Destination"
+                            dataField={["title"]}
+                            placeholder="Search Title"
                         />
                         <SelectedFilters />
                         <div id="result">
                             <ReactiveList
                                 componentId="results"
-                                dataField="_score"
+                                dataField="title"
                                 size={6}
                                 pagination={true}
                                 react={{
-                                    and: ["search", "categoryfilter", "pricerange"],
+                                    and: ["search"],
                                 }}
                                 render={({ data }) => (
                                     <ReactiveList.ResultCardsWrapper>
@@ -118,11 +118,11 @@ function RsBhlApp() {
                                             <ResultCard key={item._id}>
                                                 <ResultCard.Title
                                                     dangerouslySetInnerHTML={{
-                                                        __html: item.customer_full_name
+                                                        __html: item.title
                                                     }}
                                                 />
                                                 <ResultCard.Description>
-                                                    {item.category}
+                                                    {item.description}
                                                 </ResultCard.Description>
                                             </ResultCard>
                                         ))}
