@@ -70,17 +70,38 @@ function RsBhlApp() {
                 <Row gutter={16} style={{ padding: 20 }}>
                     <Col span={6}>
                         <Card>
-                            <p>To Do</p>
-                        {/*    <MultiList*/}
-                        {/*        componentId="categoryfilter"*/}
-                        {/*        dataField="products.category.keyword"*/}
-                        {/*        // size={100}*/}
-                        {/*        // style={{*/}
-                        {/*        //     marginBottom: 20*/}
-                        {/*        // }}*/}
-                        {/*        title="Products"*/}
-                        {/*    />*/}
-                        {/*</Card>*/}
+                            <MultiList
+                                componentId="repositoryfilter"
+                                dataField="repository.keyword"
+                                // size={100}
+                                // style={{
+                                //     marginBottom: 20
+                                // }}
+                                title="Repository"
+                            />
+                        </Card>
+                        <Card>
+                            <MultiList
+                                componentId="mirlynfilter"
+                                dataField="bhl_mirlyn.keyword"
+                                // size={100}
+                                // style={{
+                                //     marginBottom: 20
+                                // }}
+                                title="MIRLYN"
+                            />
+                        </Card>
+                        <Card>
+                            <MultiList
+                                componentId="genrefilter"
+                                dataField="genre.keyword"
+                                // size={100}
+                                // style={{
+                                //     marginBottom: 20
+                                // }}
+                                title="Genre"
+                            />
+                        </Card>
                         {/*<Card>*/}
                         {/*    <RangeInput*/}
                         {/*        componentId="pricerange"*/}
@@ -93,7 +114,7 @@ function RsBhlApp() {
                         {/*        }}*/}
                         {/*        showHistogram={true}*/}
                         {/*    />*/}
-                        </Card>
+                        {/*</Card>*/}
                     </Col>
                     <Col span={18}>
                         <SearchBox
@@ -107,10 +128,10 @@ function RsBhlApp() {
                             <ReactiveList
                                 componentId="results"
                                 dataField="title"
-                                size={6}
+                                size={9}
                                 pagination={true}
                                 react={{
-                                    and: ["search"],
+                                    and: ["search", "repositoryfilter", "mirlynfilter", "genrefilter"],
                                 }}
                                 render={({ data }) => (
                                     <ReactiveList.ResultCardsWrapper>
@@ -122,7 +143,15 @@ function RsBhlApp() {
                                                     }}
                                                 />
                                                 <ResultCard.Description>
-                                                    {item.description}
+                                                    <div>
+                                                        {/*<div>{item.subjects}</div>*/}
+                                                        {/*<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.description || '') }} />*/}
+                                                        {/*<br/>*/}
+                                                        <div>{item.repository}</div>
+                                                        {/*<div>Collection: {item.collection_title}</div>*/}
+                                                        <div>ID: {item.id}</div>
+                                                        <div>EAD: {item.finding_aid}</div>
+                                                    </div>
                                                 </ResultCard.Description>
                                             </ResultCard>
                                         ))}
