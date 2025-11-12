@@ -5,7 +5,8 @@ WORKDIR /app
 COPY . /app
 
 RUN npm install
+RUN npm run build
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "preview"]
 
-EXPOSE 5173
+EXPOSE 4173
