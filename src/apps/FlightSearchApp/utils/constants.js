@@ -1,5 +1,5 @@
 export const OPENSEARCH_CONFIG = {
-    url: 'http://localhost:9200',
+    url: 'http://opensearch:9200',
     index: 'opensearch_dashboards_sample_data_flights'
 };
 
