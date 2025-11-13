@@ -27,4 +27,4 @@ jobs:
           context: .kubernetes/opensearch
           push: true
           tags: 'ghcr.io/mlibrary/dor-react-app/opensearch:${{ github.sha }}'
-          file: ./kubernetes/opensearch/Dockerfile
+          file: .kubernetes/opensearch/Dockerfile
