@@ -27,4 +27,4 @@ jobs:
           context: .kubernetes/fluent-bit
           push: true
           tags: 'ghcr.io/mlibrary/dor-react-app/fluent-bit:${{ github.sha }}'
-          file: Dockerfile
+          file: .kubernetes/fluent-bit/Dockerfile
