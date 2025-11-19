@@ -42,13 +42,23 @@ function RsDorDcApp() {
                     <Col span={6}>
                         <Card>
                             <MultiList
-                                componentId="collectionfilter"
-                                dataField="collection_name"
+                                componentId="filter"
+                                dataField="dc_cov.keyword"
                                 // size={100}
                                 // style={{
                                 //     marginBottom: 20
                                 // }}
-                                title="Collection"
+                                title="Filter"
+                            />                        </Card>
+                        <Card>
+                            <MultiList
+                                componentId="dc_cov_filter"
+                                dataField="dc_cov.keyword"
+                                // size={100}
+                                // style={{
+                                //     marginBottom: 20
+                                // }}
+                                title="dc_cov"
                             />
                         </Card>
                     </Col>
@@ -67,7 +77,7 @@ function RsDorDcApp() {
                                 size={9}
                                 pagination={true}
                                 react={{
-                                    and: ["search", "collectionfilter"],
+                                    and: ["search", "dc_cov_filter"],
                                 }}
                                 render={({ data }) => (
                                     <ReactiveList.ResultCardsWrapper>
@@ -83,7 +93,7 @@ function RsDorDcApp() {
                                                         {/*<div>{item.subjects}</div>*/}
                                                         {/*<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.description || '') }} />*/}
                                                         {/*<br/>*/}
-                                                        <div>{item.all}</div>
+                                                        <div>{item.xxdc_de}</div>
                                                         {/*<div>Collection: {item.collection_title}</div>*/}
                                                         {/*<div>ID: {item.id}</div>*/}
                                                         {/*<div>EAD: {item.finding_aid}</div>*/}

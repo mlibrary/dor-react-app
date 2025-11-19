@@ -10,16 +10,16 @@ function App() {
     return (
         <BrowserRouter>
             <nav style={{ padding: '20px', backgroundColor: '#f0f0f0' }}>
-                <Link to="/dor-dc" style={{ marginRight: '20px' }}>RS-DOR-DC</Link>
-                <Link to="/" style={{ marginRight: '20px' }}>Open Search API</Link>
+                <Link to="/" style={{ marginRight: '20px' }}>RS-DOR-DC</Link>
+                <Link to="/flight" style={{ marginRight: '20px' }}>Open Search API</Link>
                 <Link to="/rs-api" style={{ marginRight: '20px' }}>Reactive Search API</Link>
                 <Link to="/rs" style={{ marginRight: '20px' }}>Reactive Search Components</Link>
                 <Link to="/bhl" style={{ marginRight: '20px' }}>RS-BHL</Link>
             </nav>
 
             <Routes>
-                <Route path="/dor-dc" element={<RsDorDcApp />} />
-                <Route path="/" element={<FlightSearchApp />} />
+                <Route path="/" element={<RsDorDcApp />} />
+                <Route path="/flight" element={<FlightSearchApp />} />
                 <Route path="/rs-api" element={<RsApiFlightSearchApp />} />
                 <Route path="/rs" element={<RsFlightSearchApp />} />
                 <Route path="/bhl" element={<RsBhlApp />} />
