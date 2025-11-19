@@ -1,6 +1,5 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
-// console.log(Object.keys(ReactiveSearch));
+
 import {
     ReactiveBase,
     SearchBox,
@@ -12,7 +11,10 @@ import {
     RangeInput,
     RangeSlider,
     DynamicRangeSlider,
+    ResultList,
 } from '@appbaseio/reactivesearch';
+
+// console.log(Object.keys(ReactiveSearch));
 
 import {
     Row,
@@ -20,10 +22,6 @@ import {
     Col,
     Card,
 } from 'antd';
-
-import createDOMPurify from 'dompurify';
-
-const DOMPurify = createDOMPurify(window);
 
 function RsDorDcApp() {
     return (
@@ -42,22 +40,15 @@ function RsDorDcApp() {
                     <Col span={6}>
                         <Card>
                             <MultiList
-                                componentId="filter"
-                                dataField="dc_cov.keyword"
-                                // size={100}
-                                // style={{
-                                //     marginBottom: 20
-                                // }}
-                                title="Filter"
-                            />                        </Card>
+                                componentId="web_directory_filter"
+                                dataField="web_directory.keyword"
+                                title="web_directory"
+                            />
+                        </Card>
                         <Card>
                             <MultiList
                                 componentId="dc_cov_filter"
                                 dataField="dc_cov.keyword"
-                                // size={100}
-                                // style={{
-                                //     marginBottom: 20
-                                // }}
                                 title="dc_cov"
                             />
                         </Card>
@@ -77,31 +68,53 @@ function RsDorDcApp() {
                                 size={9}
                                 pagination={true}
                                 react={{
-                                    and: ["search", "dc_cov_filter"],
+                                    and: ["search", "web_directory_filter", "dc_cov_filter"],
                                 }}
                                 render={({ data }) => (
-                                    <ReactiveList.ResultCardsWrapper>
+                                    <ReactiveList.ResultListWrapper>
                                         {data.map((item) => (
-                                            <ResultCard key={item._id}>
-                                                <ResultCard.Title
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: item.collection_name
-                                                    }}
-                                                />
-                                                <ResultCard.Description>
+                                            <ResultList key={item._id}>
+                                                <ResultList.Content>
+                                                    <ResultList.Title dangerouslySetInnerHTML={{__html: item.dc_ti}} />
+                                                    <ResultList.Description dangerouslySetInnerHTML={{__html: item.dc_de}} />
+                                                    <br />
                                                     <div>
-                                                        {/*<div>{item.subjects}</div>*/}
-                                                        {/*<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.description || '') }} />*/}
-                                                        {/*<br/>*/}
-                                                        <div>{item.xxdc_de}</div>
-                                                        {/*<div>Collection: {item.collection_title}</div>*/}
-                                                        {/*<div>ID: {item.id}</div>*/}
-                                                        {/*<div>EAD: {item.finding_aid}</div>*/}
+                                                        <div>_id: {item._id}</div>
+                                                        <div>XXX_dc_de: {item.XXX_dc_de}</div>
+                                                        <div>all: {item.all}</div>
+                                                        <div>collection_id: {item.collection_id}</div>
+                                                        <div>collection_name: {item.collection_name}</div>
+                                                        <div>dc_cov: {item.dc_cov}</div>
+                                                        <div>dc_cr: {item.dc_cr}</div>
+                                                        <div>dc_cv: {item.dc_cv}</div>
+                                                        <div>dc_da: {item.dc_da}</div>
+                                                        <div>dc_de: {item.dc_de}</div>
+                                                        <div>dc_fo: {item.dc_fo}</div>
+                                                        <div>dc_ge: {item.dc_ge}</div>
+                                                        <div>dc_id: {item.dc_id}</div>
+                                                        <div>dc_la: {item.dc_la}</div>
+                                                        <div>dc_lo: {item.dc_lo}</div>
+                                                        <div>dc_pu: {item.dc_pu}</div>
+                                                        <div>dc_re: {item.dc_re}</div>
+                                                        <div>dc_so: {item.dc_so}</div>
+                                                        <div>dc_su: {item.dc_su}</div>
+                                                        <div>dc_ti: {item.dc_ti}</div>
+                                                        <div>dc_type: {item.dc_type}</div>
+                                                        <div>ic_all: {item.ic_all}</div>
+                                                        <div>item_id: {item.item_id}</div>
+                                                        <div>media_id: {item.media_id}</div>
+                                                        <div>uid: {item.uid}</div>
+                                                        <div>web_directory: {item.web_directory}</div>
+                                                        <div>xx_dc_co: {item.xx_dc_co}</div>
+                                                        <div>xx_dc_cr: {item.xx_dc_cr}</div>
+                                                        <div>xx_dc_cv: {item.xx_dc_cv}</div>
+                                                        <div>xxdc_da: {item.xxdc_da}</div>
+                                                        <div>xxdc_de: {item.xxdc_de}</div>
                                                     </div>
-                                                </ResultCard.Description>
-                                            </ResultCard>
+                                                </ResultList.Content>
+                                            </ResultList>
                                         ))}
-                                    </ReactiveList.ResultCardsWrapper>
+                                    </ReactiveList.ResultListWrapper>
                                 )}
                             />
                         </div>
