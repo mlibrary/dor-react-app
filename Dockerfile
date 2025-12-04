@@ -18,6 +18,9 @@ RUN chown $UID:$GID /app
 COPY --chown=$UID:$GID . /app
 USER $UNAME
 WORKDIR /app
-CMD ["sleep", "infinity"]
+RUN npm install
+RUN npm run build
+CMD ["npm", "run", "preview"]
+#CMD ["sleep", "infinity"]
 EXPOSE 4173
 EXPOSE 5173
