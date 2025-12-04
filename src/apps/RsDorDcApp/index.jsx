@@ -47,6 +47,14 @@ function RsDorDcApp() {
                         </Card>
                         <Card>
                             <MultiList
+                                componentId="collection_id_filter"
+                                nestedField="collection_id"
+                                dataField="collection_id.facet.keyword"
+                                title="collection_id"
+                            />
+                        </Card>
+                        <Card>
+                            <MultiList
                                 componentId="dc_cov_filter"
                                 dataField="dc_cov.keyword"
                                 title="dc_cov"
@@ -68,7 +76,7 @@ function RsDorDcApp() {
                                 size={9}
                                 pagination={true}
                                 react={{
-                                    and: ["search", "web_directory_filter", "dc_cov_filter"],
+                                    and: ["search", "collection_id_filter", "web_directory_filter", "dc_cov_filter"],
                                 }}
                                 render={({ data }) => (
                                     <ReactiveList.ResultListWrapper>
