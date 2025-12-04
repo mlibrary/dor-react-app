@@ -14,7 +14,7 @@ function FlightCard({ flight }) {
             <p><strong>To:</strong> {flight._source.DestCityName} ({flight._source.DestCountry})</p>
             <p><strong>Price:</strong> ${flight._source.AvgTicketPrice.toFixed(2)}</p>
             <p><strong>Distance:</strong> {flight._source.DistanceKilometers.toFixed(0)} km</p>
-            <p><strong>Status:</strong> {flight._source.Cancelled ? '❌ Cancelled' : '✅ On Time'}</p>
+            <p><strong>Collection:</strong> {flight._source.Cancelled ? '❌ Cancelled' : '✅ On Time'}</p>
         </div>
     );
 }

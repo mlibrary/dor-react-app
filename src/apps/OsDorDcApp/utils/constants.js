@@ -7,7 +7,7 @@ export const SEARCH_FIELDS = [
     "ic_all"
 ];
 
-export const STATUS_OPTIONS = {
+export const COLLECTION_OPTIONS = {
     ALL: 'all',
     ON_TIME: 'ontime',
     CANCELLED: 'cancelled'
