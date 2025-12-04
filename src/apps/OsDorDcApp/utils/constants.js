@@ -1,5 +1,5 @@
 export const OPENSEARCH_CONFIG = {
-    url: 'http://reactivesearch.discovery.dor.lib.umich.edu',
+    url: 'https://reactivesearch.discovery.dor.lib.umich.edu',
     index: 'dor-dc'
 };
 

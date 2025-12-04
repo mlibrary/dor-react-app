@@ -29,7 +29,7 @@ function RsDorDcApp() {
             <ReactiveBase
                 app="dor-dc"
                 credentials="rs-admin-user:rs-password"
-                url="http://reactivesearch.discovery.dor.lib.umich.edu"
+                url="https://reactivesearch.discovery.dor.lib.umich.edu"
                 reactivesearchAPIConfig={{
                     recordAnalytics: false,
                     suggestionAnalytics: false,
