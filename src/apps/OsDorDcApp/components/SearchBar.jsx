@@ -13,7 +13,7 @@ function SearchBar({ searchQuery, setSearchQuery, onSearch, onClear }) {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search by city, carrier, flight number..."
+                    placeholder="Search ..."
                     style={{
                         name: 'searchQuery',
                         flex: 1,

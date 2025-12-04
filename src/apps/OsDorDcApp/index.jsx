@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import SearchBar from './components/SearchBar.jsx';
 import CollectionFilter from './components/CollectionFilter.jsx';
-import PriceRangeFilter from './components/PriceRangeFilter.jsx';
-// import FlightCard from './components/FlightCard.jsx';
+// import PriceRangeFilter from './components/PriceRangeFilter.jsx';
+// import ThingCard from './components/ThingCard.jsx';
 import { searchThings } from './services/openSearchService.js';
 import { COLLECTION_OPTIONS, PRICE_RANGE } from './utils/constants.js';
 
@@ -21,11 +21,11 @@ function OsDorDcApp() {
     useEffect(() => {
         const fetchPriceStats = async () => {
             try {
-                const stats = await getPriceStats();
-                setActualMinPrice(stats.min);
-                setActualMaxPrice(stats.max);
-                setMinPrice(stats.min);
-                setMaxPrice(stats.max);
+                // const stats = await getPriceStats();
+                // setActualMinPrice(stats.min);
+                // setActualMaxPrice(stats.max);
+                // setMinPrice(stats.min);
+                // setMaxPrice(stats.max);
             } catch (err) {
                 console.error('Error fetching price stats:', err);
                 // Fallback to defaults from constants
@@ -79,19 +79,19 @@ function OsDorDcApp() {
         fetchThings(searchQuery, newCollection, { min: minPrice, max: maxPrice });
     };
 
-    const handlePriceChange = (newMin, newMax) => {
-        // Ensure min doesn't exceed max
-        if (newMin > newMax) {
-            newMin = newMax;
-        }
-        if (newMax < newMin) {
-            newMax = newMin;
-        }
-
-        setMinPrice(newMin);
-        setMaxPrice(newMax);
-        fetchThings(searchQuery, collectionFilter, { min: newMin, max: newMax });
-    };
+    // const handlePriceChange = (newMin, newMax) => {
+    //     // Ensure min doesn't exceed max
+    //     if (newMin > newMax) {
+    //         newMin = newMax;
+    //     }
+    //     if (newMax < newMin) {
+    //         newMax = newMin;
+    //     }
+    //
+    //     setMinPrice(newMin);
+    //     setMaxPrice(newMax);
+    //     fetchThings(searchQuery, collectionFilter, { min: newMin, max: newMax });
+    // };
 
     return (
         <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
@@ -109,13 +109,13 @@ function OsDorDcApp() {
                 onCollectionChange={handleCollectionChange}
             />
 
-            <PriceRangeFilter
-                minPrice={minPrice}
-                maxPrice={maxPrice}
-                actualMinPrice={actualMinPrice}
-                actualMaxPrice={actualMaxPrice}
-                onPriceChange={handlePriceChange}
-            />
+            {/*<PriceRangeFilter*/}
+            {/*    minPrice={minPrice}*/}
+            {/*    maxPrice={maxPrice}*/}
+            {/*    actualMinPrice={actualMinPrice}*/}
+            {/*    actualMaxPrice={actualMaxPrice}*/}
+            {/*    onPriceChange={handlePriceChange}*/}
+            {/*/>*/}
 
             {error && (
                 <div style={{
@@ -148,7 +148,7 @@ function OsDorDcApp() {
                         <div>
                             {things.map((thing) => (
                                 <div>{thing._id}</div>
-                                // <FlightCard key={thing._id} thing={thing} />
+                                // <ThingCard key={thing._id} thing={thing} />
                             ))}
                         </div>
                     )}
