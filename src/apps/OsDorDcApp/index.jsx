@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import SearchBar from './components/SearchBar.jsx';
 import CollectionFilter from './components/CollectionFilter.jsx';
 // import PriceRangeFilter from './components/PriceRangeFilter.jsx';
-// import ThingCard from './components/ThingCard.jsx';
+import ThingCard from './components/ThingCard.jsx';
 import { searchThings } from './services/openSearchService.js';
 import { COLLECTION_OPTIONS, PRICE_RANGE } from './utils/constants.js';
 
@@ -95,7 +95,7 @@ function OsDorDcApp() {
 
     return (
         <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-            <h1>OS DOR DC APP Demo</h1>
+            <h1>OS-DOR-DC</h1>
 
             <SearchBar
                 searchQuery={searchQuery}
@@ -147,8 +147,8 @@ function OsDorDcApp() {
                     ) : (
                         <div>
                             {things.map((thing) => (
-                                <div>{thing._id}</div>
-                                // <ThingCard key={thing._id} thing={thing} />
+                                // <div>{thing._id}</div>
+                                <ThingCard key={thing._id} thing={thing} />
                             ))}
                         </div>
                     )}
