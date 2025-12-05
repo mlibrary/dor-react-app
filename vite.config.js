@@ -13,6 +13,9 @@ export default defineConfig({
     strictPort: true
   },
   preview: {
+    host: '0.0.0.0',
+    port: 4173,
+    strictPort: true,
     allowedHosts: ['discovery.dor.lib.umich.edu']
   }
 })

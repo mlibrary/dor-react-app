@@ -8,3 +8,6 @@ services:
       - "5173:5173"
     volumes:
       - .:/app
+    command:
+      - "sleep"
+      - "infinity"
