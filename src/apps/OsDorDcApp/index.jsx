@@ -3,7 +3,7 @@ import SearchBar from './components/SearchBar.jsx';
 import CollectionFilter from './components/CollectionFilter.jsx';
 // import PriceRangeFilter from './components/PriceRangeFilter.jsx';
 import ThingCard from './components/ThingCard.jsx';
-import { searchThings } from './services/openSearchService.js';
+import { searchThings, checkHealth } from './services/openSearchService.js';
 import { COLLECTION_OPTIONS, PRICE_RANGE } from './utils/constants.js';
 
 function OsDorDcApp() {
@@ -16,10 +16,22 @@ function OsDorDcApp() {
     const [actualMinPrice, setActualMinPrice] = useState(PRICE_RANGE.DEFAULT_MIN);
     const [actualMaxPrice, setActualMaxPrice] = useState(PRICE_RANGE.DEFAULT_MAX);
     const [error, setError] = useState(null);
+    const [connectionStatus, setConnectionStatus] = useState('checking');
 
-    // Fetch price stats on component mount
+    // Check OpenSearch connection and fetch price stats on component mount
     useEffect(() => {
-        const fetchPriceStats = async () => {
+        const initialize = async () => {
+            // First check if OpenSearch is accessible
+            const healthCheck = await checkHealth();
+            if (healthCheck.status === 'error') {
+                setConnectionStatus('error');
+                setError(`Cannot connect to OpenSearch: ${healthCheck.message}. The service may be down or unreachable.`);
+                console.error('OpenSearch connection failed:', healthCheck.message);
+            } else {
+                setConnectionStatus('connected');
+                console.log('OpenSearch connection successful');
+            }
+
             try {
                 // const stats = await getPriceStats();
                 // setActualMinPrice(stats.min);
@@ -32,7 +44,7 @@ function OsDorDcApp() {
             }
         };
 
-        fetchPriceStats();
+        initialize();
     }, []);
 
     const fetchThings = async (query, collection, priceRange) => {
@@ -96,6 +108,31 @@ function OsDorDcApp() {
     return (
         <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
             <h1>OS-DOR-DC</h1>
+
+            {connectionStatus === 'checking' && (
+                <div style={{
+                    padding: '15px',
+                    backgroundColor: '#e3f2fd',
+                    color: '#1565c0',
+                    borderRadius: '5px',
+                    marginBottom: '20px'
+                }}>
+                    Checking OpenSearch connection...
+                </div>
+            )}
+
+            {connectionStatus === 'connected' && (
+                <div style={{
+                    padding: '10px',
+                    backgroundColor: '#e8f5e9',
+                    color: '#2e7d32',
+                    borderRadius: '5px',
+                    marginBottom: '20px',
+                    fontSize: '14px'
+                }}>
+                    ✓ Connected to OpenSearch
+                </div>
+            )}
 
             <SearchBar
                 searchQuery={searchQuery}
