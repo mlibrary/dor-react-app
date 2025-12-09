@@ -1,8 +1,8 @@
-import { OPENSEARCH_CONFIG, SEARCH_FIELDS } from '../utils/constants.js';
+import { SEARCH_FIELDS } from '../utils/constants.js';
 
 export const checkHealth = async () => {
   try {
-    const response = await fetch(`${OPENSEARCH_CONFIG.url}/_cluster/health`, {
+    const response = await fetch("opensearch-api/_cluster/health", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -28,10 +28,10 @@ export const checkHealth = async () => {
 // Test function to check OpenSearch connectivity
 export const testOpenSearchConnection = async () => {
   try {
-    console.log('Testing OpenSearch connection to:', `${OPENSEARCH_CONFIG.url}/${OPENSEARCH_CONFIG.index}`);
+    console.log('Testing OpenSearch connection to: opensearch-api/dor-dc');
 
     // Try a simple cluster health check first
-    const healthResponse = await fetch(`${OPENSEARCH_CONFIG.url}/_cluster/health`, {
+    const healthResponse = await fetch("opensearch-api/_cluster/health", {
       method: 'GET',
       credentials: 'omit'
     });
@@ -155,7 +155,7 @@ export const searchThings = async (query, collection, priceRange = null, size = 
   }
 
   try {
-    const response = await fetch(`${OPENSEARCH_CONFIG.url}/${OPENSEARCH_CONFIG.index}/_search`, {
+    const response = await fetch("opensearch-api/dor_dc/_search", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

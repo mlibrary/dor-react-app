@@ -1,9 +1,3 @@
-export const OPENSEARCH_CONFIG = {
-    url: '/opensearch-api',
-    credentials: import.meta.env.VITE_OPENSEARCH_CREDENTIALS || 'admin:password',
-    index: import.meta.env.VITE_OPENSEARCH_INDEX || 'index'
-};
-
 export const SEARCH_FIELDS = [
     "ic_all"
 ];
