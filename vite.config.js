@@ -10,8 +10,6 @@ export default defineConfig(({ mode }) => {
   const opensearchUrl = env.VITE_OPENSEARCH_URL || 'http://opensearch:9200'
   const opensearchCredentials = env.VITE_OPENSEARCH_CREDENTIALS || 'admin:password'
 
-  console.log('Vite config loaded with OpenSearch URL:', opensearchUrl)
-
   return {
     define: {
       'process.env': {}
