@@ -7,8 +7,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   // Use environment variables with fallbacks
-  const opensearchUrl = env.VITE_OPENSEARCH_URL || 'https://opensearch.discovery.dor.lib.umich.edu'
-  const opensearchCredentials = env.VITE_OPENSEARCH_CREDENTIALS || 'admin:DiscOvery0!234dawg'
+  const opensearchUrl = env.VITE_OPENSEARCH_URL || 'http://opensearch:9200'
+  const opensearchCredentials = env.VITE_OPENSEARCH_CREDENTIALS || 'admin:password'
 
   console.log('Vite config loaded with OpenSearch URL:', opensearchUrl)
 
