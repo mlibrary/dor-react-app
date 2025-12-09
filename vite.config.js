@@ -13,7 +13,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       '/opensearch-api': {
-        target: 'https://opensearch.discovery.dor.lib.umich.edu',
+        target: process.env.VITE_OPENSEARCH_URL,
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/opensearch-api/, ''),
@@ -24,7 +24,7 @@ export default defineConfig({
           proxy.on('proxyReq', (proxyReq, req, res) => {
             console.log('Proxying request to:', proxyReq.path);
             // Add authentication header
-            const credentials = 'admin:DiscOvery0!234dawg';
+            const credentials = process.env.VITE_OPENSEARCH_CREDENTIALS;
             const base64Credentials = Buffer.from(credentials).toString('base64');
             proxyReq.setHeader('Authorization', `Basic ${base64Credentials}`);
           });
@@ -32,13 +32,36 @@ export default defineConfig({
             console.log('Received response from OpenSearch:', proxyRes.statusCode);
           });
         }
-      }
+      },
     }
   },
   preview: {
     host: '0.0.0.0',
     port: 4173,
     strictPort: true,
+    proxy: {
+      '/opensearch-api': {
+        target: process.env.VITE_OPENSEARCH_URL,
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/opensearch-api/, ''),
+        configure: (proxy, options) => {
+          proxy.on('error', (err, req, res) => {
+            console.error('Proxy error:', err);
+          });
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            console.log('Proxying request to:', proxyReq.path);
+            // Add authentication header
+            const credentials = process.env.VITE_OPENSEARCH_CREDENTIALS;
+            const base64Credentials = Buffer.from(credentials).toString('base64');
+            proxyReq.setHeader('Authorization', `Basic ${base64Credentials}`);
+          });
+          proxy.on('proxyRes', (proxyRes, req, res) => {
+            console.log('Received response from OpenSearch:', proxyRes.statusCode);
+          });
+        }
+      },
+    },
     allowedHosts: ['discovery.dor.lib.umich.edu']
   }
 })

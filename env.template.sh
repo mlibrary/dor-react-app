@@ -1,0 +1,4 @@
+OPENSEARCH_URL=https://opensearch:9200
+OPENSEARCH_CREDENTIALS=admin:password
+REACTIVESEARCH_URL=https://reactivesearch:8000
+REACTIVESEARCH_CREDENTIALS=admin:password

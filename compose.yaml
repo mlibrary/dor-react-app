@@ -8,6 +8,11 @@ services:
       - "5173:5173"
     volumes:
       - .:/app
+    environment:
+      - OPENSEARCH_URL="https://opensearch.discovery.dor.lib.umich.edu"
+      - OPENSEARCH_CREDENTIALS="admin:DiscOvery0!234dawg"
+      - REACTIVESEARCH_URL="https://reactivesearch.discovery.dor.lib.umich.edu"
+      - REACTIVESEARCH_CREDENTIALS="rs-admin-user:rs-password"
     command:
       - "sleep"
       - "infinity"

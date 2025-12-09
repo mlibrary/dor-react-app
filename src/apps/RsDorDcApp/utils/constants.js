@@ -1,7 +1,6 @@
-export const OPENSEARCH_CONFIG = {
-    url: '/opensearch-api',
-    credentials: import.meta.env.VITE_OPENSEARCH_CREDENTIALS || 'admin:password',
-    index: import.meta.env.VITE_OPENSEARCH_INDEX || 'index'
+export const REACTIVESEARCH_CONFIG = {
+    url: import.meta.env.VITE_REACTIVESEARCH_URL || 'https://reactivesearch.discovery.dor.lib.umich.edu',
+    credentials: import.meta.env.VITE_REACTIVESEARCH_CREDENTIALS || 'rs-admin-user:rs-password',
 };
 
 export const SEARCH_FIELDS = [

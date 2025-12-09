@@ -23,13 +23,16 @@ import {
     Card,
 } from 'antd';
 
+import { REACTIVESEARCH_CONFIG, SEARCH_FIELDS } from './utils/constants.js';
+
+
 function RsDorDcApp() {
     return (
         <div style={{ padding: '20px', maxWidth: '100%', margin: '0 auto' }}>
             <ReactiveBase
                 app="dor-dc"
-                credentials="rs-admin-user:rs-password"
-                url="https://reactivesearch.discovery.dor.lib.umich.edu"
+                credentials={REACTIVESEARCH_CONFIG.credentials}
+                url={REACTIVESEARCH_CONFIG.url}
                 reactivesearchAPIConfig={{
                     recordAnalytics: false,
                     suggestionAnalytics: false,
