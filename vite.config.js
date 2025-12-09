@@ -41,7 +41,8 @@ export default defineConfig(({ mode }) => {
             });
           }
         },
-      }
+      },
+      allowedHosts: ['discovery.dor.lib.umich.edu']
     },
     preview: {
       host: '0.0.0.0',
