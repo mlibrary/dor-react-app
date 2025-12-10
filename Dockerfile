@@ -19,7 +19,10 @@ COPY --chown=$UID:$GID . /app
 USER $UNAME
 WORKDIR /app
 RUN npm install
+
 #RUN npm run build
+#CMD ["npm", "run", "preview"]
+#EXPOSE 4173
+
 CMD ["npm", "run", "dev"]
-EXPOSE 4173
 EXPOSE 5173

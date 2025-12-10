@@ -1,3 +1,8 @@
+export const OPENSEARCH_CONFIG = {
+    url: import.meta.env.VITE_OPENSEARCH_URL || 'https://opensearch.discovery.dor.lib.umich.edu',
+    credentials: import.meta.env.VITE_OPENSEARCH_CREDENTIALS || 'admin:DiscOvery0!234dawg',
+};
+
 export const SEARCH_FIELDS = [
     "ic_all"
 ];
