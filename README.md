@@ -9,7 +9,14 @@ ls .devcontainer
 ```
 
 ## Local Development Against Remote Servers
-
+### Environment File
+``` shell
+VITE_OPENSEARCH_URL="http://opensearch:9200"
+VITE_OPENSEARCH_CREDENTIALS="admin:password"
+VITE_REACTIVESEARCH_URL="http://reactivesearch:8000"
+VITE_REACTIVESEARCH_CREDENTIALS="admin:password"
+```
+### Docker Compose
 ``` shell
 docker compose build
 docker compose up
