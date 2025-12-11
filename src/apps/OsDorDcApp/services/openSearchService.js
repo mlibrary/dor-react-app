@@ -7,7 +7,7 @@ export const checkHealth = async () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      credentials: 'omit'
+      credentials: `${OPENSEARCH_CONFIG.credentials}`
     });
 
     if (!response.ok) {
@@ -31,9 +31,9 @@ export const testOpenSearchConnection = async () => {
     console.log(`Testing OpenSearch connection to: ${OPENSEARCH_CONFIG.url}/dor-dc`);
 
     // Try a simple cluster health check first
-    const healthResponse = await fetch("${OPENSEARCH_CONFIG.url}/_cluster/health", {
+    const healthResponse = await fetch(`${OPENSEARCH_CONFIG.url}/_cluster/health`, {
       method: 'GET',
-      credentials: 'omit'
+      credentials: `${OPENSEARCH_CONFIG.credentials}`
     });
 
     console.log('Health check response:', healthResponse.status, healthResponse.statusText);
@@ -155,13 +155,14 @@ export const searchThings = async (query, collection, priceRange = null, size = 
   }
 
   try {
-    const response = await fetch("${OPENSEARCH_CONFIG.url}/dor_dc/_search", {
+    console.log(`Searching OpenSearch at: ${OPENSEARCH_CONFIG.url}/dor-dc/_search`);
+    const response = await fetch(`${OPENSEARCH_CONFIG.url}/dor-dc/_search`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(searchBody),
-      credentials: 'omit'
+      credentials: `${OPENSEARCH_CONFIG.credentials}`
     });
 
     if (!response.ok) {
