@@ -1,6 +1,6 @@
 export const OPENSEARCH_CONFIG = {
-    url: import.meta.env.VITE_OPENSEARCH_URL || 'https://opensearch.discovery.dor.lib.umich.edu',
-    credentials: import.meta.env.VITE_OPENSEARCH_CREDENTIALS || 'admin:DiscOvery0!234dawg',
+    url: import.meta.env.VITE_OPENSEARCH_URL || 'http://opensearch:9200',
+    credentials: import.meta.env.VITE_OPENSEARCH_CREDENTIALS || 'admin:password',
 };
 
 export const SEARCH_FIELDS = [

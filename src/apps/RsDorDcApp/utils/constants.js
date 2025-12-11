@@ -1,6 +1,6 @@
 export const REACTIVESEARCH_CONFIG = {
-    url: import.meta.env.VITE_REACTIVESEARCH_URL || 'https://reactivesearch.discovery.dor.lib.umich.edu',
-    credentials: import.meta.env.VITE_REACTIVESEARCH_CREDENTIALS || 'rs-admin-user:rs-password',
+    url: import.meta.env.VITE_REACTIVESEARCH_URL || 'http://reactivesearch:8000',
+    credentials: import.meta.env.VITE_REACTIVESEARCH_CREDENTIALS || 'admin:password',
 };
 
 export const SEARCH_FIELDS = [
