@@ -3,7 +3,7 @@ import SearchBar from './components/SearchBar.jsx';
 import CollectionFilter from './components/CollectionFilter.jsx';
 // import PriceRangeFilter from './components/PriceRangeFilter.jsx';
 import ThingCard from './components/ThingCard.jsx';
-import { searchThings, checkHealth } from './services/openSearchService.js';
+import {searchThings, checkHealth, getCollections} from './services/openSearchService.js';
 import { COLLECTION_OPTIONS, PRICE_RANGE } from './utils/constants.js';
 
 import {
@@ -15,6 +15,7 @@ import {
 
 function OsDorDcApp() {
     const [things, setThings] = useState([]);
+    const [collections, setCollections] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [collectionFilter, setCollectionFilter] = useState(COLLECTION_OPTIONS.ALL);
@@ -40,13 +41,16 @@ function OsDorDcApp() {
             }
 
             try {
+                const collections = await getCollections();
+                console.log('Collections:', collections);
+                setCollections(collections);
                 // const stats = await getPriceStats();
                 // setActualMinPrice(stats.min);
                 // setActualMaxPrice(stats.max);
                 // setMinPrice(stats.min);
                 // setMaxPrice(stats.max);
             } catch (err) {
-                console.error('Error fetching price stats:', err);
+                console.error('Error fetching collections:', err);
                 // Fallback to defaults from constants
             }
         };
@@ -146,6 +150,15 @@ function OsDorDcApp() {
                         collectionFilter={collectionFilter}
                         onCollectionChange={handleCollectionChange}
                     />
+                    {collections.length === 0 ? (
+                        <p>No collections found.</p>
+                    ) : (
+                        <div>
+                            {collections.map((collection) => (
+                                <div>{collection}</div>
+                            ))}
+                        </div>
+                    )}
                 </Col>
                 <Col span={18}>
 
@@ -186,7 +199,7 @@ function OsDorDcApp() {
             {loading ? (
                 <p>Loading things...</p>
             ) : (
-                <>
+                <div>
                     <h2>
                         {searchQuery
                             ? `Search Results for "${searchQuery}" (${things.length} things)`
@@ -206,7 +219,7 @@ function OsDorDcApp() {
                             ))}
                         </div>
                     )}
-                </>
+                </div>
             )}
                 </Col>
             </Row>

@@ -55,6 +55,38 @@ export const testOpenSearchConnection = async () => {
   }
 };
 
+export const getCollections = async () => {
+  const searchBody = {
+    size: 0, // Don't return documents, only aggregations
+    aggs: {
+      collections: {
+        terms: {
+          field: "dc_lo.keyword",
+          size: 1000 // Adjust size as needed to capture all unique collections
+        }
+      }
+    }
+  };
+
+  const response = await fetch(`${OPENSEARCH_CONFIG.url}/dor-dc/_search`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Basic ${btoa(OPENSEARCH_CONFIG.credentials)}`
+    },
+    body: JSON.stringify(searchBody)
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error on collections! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  const collections = data.aggregations.collections.buckets.map(bucket => bucket.key);
+
+  return collections;
+};
+
 // export const getPriceStats = async () => {
 //   const searchBody = {
 //     size: 0,  // Don't return documents, only aggregations
@@ -76,7 +108,7 @@ export const testOpenSearchConnection = async () => {
 //   });
 //
 //   if (!response.ok) {
-//     throw new Error(`HTTP error! collection: ${response.collection}`);
+//     throw new Error(`HTTP error!: ${response.status}`);
 //   }
 //
 //   const data = await response.json();
@@ -143,17 +175,6 @@ export const searchThings = async (query, collection, priceRange = null, size = 
         }
       }
     };
-  }
-
-  let mySearchBody;
-  mySearchBody = {
-      size,
-    query: {
-        multi_match: {
-            query: query,
-            fields: SEARCH_FIELDS
-        }
-    }
   }
 
   try {
