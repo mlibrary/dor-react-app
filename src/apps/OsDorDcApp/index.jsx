@@ -6,6 +6,13 @@ import ThingCard from './components/ThingCard.jsx';
 import { searchThings, checkHealth } from './services/openSearchService.js';
 import { COLLECTION_OPTIONS, PRICE_RANGE } from './utils/constants.js';
 
+import {
+    Row,
+    Button,
+    Col,
+    Card,
+} from 'antd';
+
 function OsDorDcApp() {
     const [things, setThings] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -133,6 +140,16 @@ function OsDorDcApp() {
                     ✓ Connected to OpenSearch
                 </div>
             )}
+            <Row gutter={16}>
+                <Col span={6}>
+                    <CollectionFilter
+                        collectionFilter={collectionFilter}
+                        onCollectionChange={handleCollectionChange}
+                    />
+                </Col>
+                <Col span={18}>
+
+
 
             <SearchBar
                 searchQuery={searchQuery}
@@ -141,10 +158,10 @@ function OsDorDcApp() {
                 onClear={handleClear}
             />
 
-            <CollectionFilter
-                collectionFilter={collectionFilter}
-                onCollectionChange={handleCollectionChange}
-            />
+            {/*<CollectionFilter*/}
+            {/*    collectionFilter={collectionFilter}*/}
+            {/*    onCollectionChange={handleCollectionChange}*/}
+            {/*/>*/}
 
             {/*<PriceRangeFilter*/}
             {/*    minPrice={minPrice}*/}
@@ -191,6 +208,8 @@ function OsDorDcApp() {
                     )}
                 </>
             )}
+                </Col>
+            </Row>
         </div>
     );
 }

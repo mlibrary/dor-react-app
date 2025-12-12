@@ -18,8 +18,7 @@ VITE_REACTIVESEARCH_CREDENTIALS="admin:password"
 ```
 ### Docker Compose
 ``` shell
-docker compose build
-docker compose up
+docker compose up -d
 docker compose exec -- app npm install
 docker compose exec -- app npm run dev
 ```
