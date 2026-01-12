@@ -1,14 +1,14 @@
 import React from 'react';
 
-function SearchBar({ searchQuery, setSearchQuery, onSearch, onClear }) {
+function SearchBar({searchQuery, setSearchQuery, onSearch, onClear}) {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSearch();
     };
 
     return (
-        <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
-            <div style={{ display: 'flex', gap: '10px' }}>
+        <form onSubmit={handleSubmit} style={{marginBottom: '20px'}}>
+            <div style={{display: 'flex', gap: '10px'}}>
                 <input
                     type="text"
                     value={searchQuery}

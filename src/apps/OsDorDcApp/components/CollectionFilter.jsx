@@ -1,7 +1,7 @@
 import React from 'react';
-import { COLLECTION_OPTIONS } from '../utils/constants.js';
+import {COLLECTION_OPTIONS} from '../utils/constants.js';
 
-function CollectionFilter({ collectionFilter, onCollectionChange }) {
+function CollectionFilter({collectionFilter, onCollectionChange}) {
     const getButtonStyle = (filterValue) => ({
         padding: '10px 20px',
         fontSize: '14px',
@@ -18,27 +18,33 @@ function CollectionFilter({ collectionFilter, onCollectionChange }) {
     });
 
     return (
-        <div style={{ marginBottom: '30px' }}>
-            <label style={{ marginRight: '15px', fontWeight: 'bold' }}>Filter by Collection:</label>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <div><button
-                    onClick={() => onCollectionChange(COLLECTION_OPTIONS.ALL)}
-                    style={getButtonStyle(COLLECTION_OPTIONS.ALL)}
-                >
-                    All Things
-                </button></div>
-                <div><button
-                    onClick={() => onCollectionChange(COLLECTION_OPTIONS.ON_TIME)}
-                    style={getButtonStyle(COLLECTION_OPTIONS.ON_TIME)}
-                >
-                    ✅ On Time
-                </button></div>
-                <div><button
-                    onClick={() => onCollectionChange(COLLECTION_OPTIONS.CANCELLED)}
-                    style={getButtonStyle(COLLECTION_OPTIONS.CANCELLED)}
-                >
-                    ❌ Cancelled
-                </button></div>
+        <div style={{marginBottom: '30px'}}>
+            <label style={{marginRight: '15px', fontWeight: 'bold'}}>Filter by Collection:</label>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+                <div>
+                    <button
+                        onClick={() => onCollectionChange(COLLECTION_OPTIONS.ALL)}
+                        style={getButtonStyle(COLLECTION_OPTIONS.ALL)}
+                    >
+                        All Things
+                    </button>
+                </div>
+                <div>
+                    <button
+                        onClick={() => onCollectionChange(COLLECTION_OPTIONS.ON_TIME)}
+                        style={getButtonStyle(COLLECTION_OPTIONS.ON_TIME)}
+                    >
+                        ✅ On Time
+                    </button>
+                </div>
+                <div>
+                    <button
+                        onClick={() => onCollectionChange(COLLECTION_OPTIONS.CANCELLED)}
+                        style={getButtonStyle(COLLECTION_OPTIONS.CANCELLED)}
+                    >
+                        ❌ Cancelled
+                    </button>
+                </div>
             </div>
         </div>
     );

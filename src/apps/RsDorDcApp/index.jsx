@@ -23,12 +23,12 @@ import {
     Card,
 } from 'antd';
 
-import { REACTIVESEARCH_CONFIG, SEARCH_FIELDS } from './utils/constants.js';
+import {REACTIVESEARCH_CONFIG, SEARCH_FIELDS} from './utils/constants.js';
 
 
 function RsDorDcApp() {
     return (
-        <div style={{ padding: '20px', maxWidth: '100%', margin: '0 auto' }}>
+        <div style={{padding: '20px', maxWidth: '100%', margin: '0 auto'}}>
             <ReactiveBase
                 app="dor-dc"
                 credentials={REACTIVESEARCH_CONFIG.credentials}
@@ -39,7 +39,7 @@ function RsDorDcApp() {
                     enableQueryRules: false,
                 }}
             >
-                <Row gutter={16} style={{ padding: 20 }}>
+                <Row gutter={16} style={{padding: 20}}>
                     <Col span={6}>
                         <Card>
                             <MultiList
@@ -71,7 +71,7 @@ function RsDorDcApp() {
                             dataField={["all"]}
                             placeholder="Search All"
                         />
-                        <SelectedFilters />
+                        <SelectedFilters/>
                         <div id="result">
                             <ReactiveList
                                 componentId="results"
@@ -81,14 +81,15 @@ function RsDorDcApp() {
                                 react={{
                                     and: ["search", "collection_id_filter", "web_directory_filter", "dc_cov_filter"],
                                 }}
-                                render={({ data }) => (
+                                render={({data}) => (
                                     <ReactiveList.ResultListWrapper>
                                         {data.map((item) => (
                                             <ResultList key={item._id}>
                                                 <ResultList.Content>
-                                                    <ResultList.Title dangerouslySetInnerHTML={{__html: item.dc_ti}} />
-                                                    <ResultList.Description dangerouslySetInnerHTML={{__html: item.dc_de}} />
-                                                    <br />
+                                                    <ResultList.Title dangerouslySetInnerHTML={{__html: item.dc_ti}}/>
+                                                    <ResultList.Description
+                                                        dangerouslySetInnerHTML={{__html: item.dc_de}}/>
+                                                    <br/>
                                                     <div>
                                                         <div>_id: {item._id}</div>
                                                         <div>XXX_dc_de: {item.XXX_dc_de}</div>

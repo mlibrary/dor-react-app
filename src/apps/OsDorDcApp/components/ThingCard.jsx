@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ThingCard({ thing }) {
+function ThingCard({thing}) {
     return (
         <div style={{
             marginBottom: '15px',

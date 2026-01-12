@@ -1,13 +1,13 @@
 import React from 'react';
-import { PRICE_RANGE } from '../utils/constants.js';
+import {PRICE_RANGE} from '../utils/constants.js';
 
-function PriceRangeFilter({ minPrice, maxPrice, actualMinPrice, actualMaxPrice, onPriceChange }) {
+function PriceRangeFilter({minPrice, maxPrice, actualMinPrice, actualMaxPrice, onPriceChange}) {
     const rangeMin = actualMinPrice || PRICE_RANGE.MIN;
     const rangeMax = actualMaxPrice || PRICE_RANGE.MAX;
 
     return (
-        <div style={{ marginBottom: '30px' }}>
-            <label style={{ marginRight: '15px', fontWeight: 'bold' }}>
+        <div style={{marginBottom: '30px'}}>
+            <label style={{marginRight: '15px', fontWeight: 'bold'}}>
                 Filter by Price: ${minPrice} - ${maxPrice}
             </label>
             <div style={{
@@ -16,7 +16,7 @@ function PriceRangeFilter({ minPrice, maxPrice, actualMinPrice, actualMaxPrice, 
                 alignItems: 'center',
                 marginTop: '10px'
             }}>
-                <div style={{ flex: 1 }}>
+                <div style={{flex: 1}}>
                     <label style={{
                         display: 'block',
                         marginBottom: '5px',
@@ -32,10 +32,10 @@ function PriceRangeFilter({ minPrice, maxPrice, actualMinPrice, actualMaxPrice, 
                         step={PRICE_RANGE.STEP}
                         value={minPrice}
                         onChange={(e) => onPriceChange(Number(e.target.value), maxPrice)}
-                        style={{ width: '100%' }}
+                        style={{width: '100%'}}
                     />
                 </div>
-                <div style={{ flex: 1 }}>
+                <div style={{flex: 1}}>
                     <label style={{
                         display: 'block',
                         marginBottom: '5px',
@@ -51,7 +51,7 @@ function PriceRangeFilter({ minPrice, maxPrice, actualMinPrice, actualMaxPrice, 
                         step={PRICE_RANGE.STEP}
                         value={maxPrice}
                         onChange={(e) => onPriceChange(minPrice, Number(e.target.value))}
-                        style={{ width: '100%' }}
+                        style={{width: '100%'}}
                     />
                 </div>
                 <button
