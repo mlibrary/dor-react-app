@@ -1,0 +1,6 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+# Use MySQL as the database for Active Record
+gem 'mysql2'
