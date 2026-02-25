@@ -115,19 +115,19 @@ function RsDorDcApp() {
                                                     )}
                                                     <br/>
                                                     <div>
-                                                        {item.dc_cov && <div>dc_cov: {item.dc_cov}</div>}
-                                                        {item.dc_cv && <div>dc_cv: {item.dc_cv}</div>}
-                                                        {item.dc_da && <div>dc_da: {item.dc_da}</div>}
-                                                        {item.dc_fo && <div>dc_fo: {item.dc_fo}</div>}
-                                                        {item.dc_ge && <div>dc_ge: {item.dc_ge}</div>}
-                                                        {item.dc_la && <div>dc_la: {item.dc_la}</div>}
-                                                        {item.dc_pu && <div>dc_pu: {item.dc_pu}</div>}
-                                                        {item.dc_re && <div>dc_re: {item.dc_re}</div>}
-                                                        {item.dc_so && <div>dc_so: {item.dc_so}</div>}
-                                                        {item.dc_su && <div>dc_su: {item.dc_su}</div>}
-                                                        {item.dc_type && <div>dc_type: {item.dc_type}</div>}
-                                                        {item.xxdc_da && <div>xxdc_da: {item.xxdc_da}</div>}
-                                                        {item.xxdc_de && <div>xxdc_de: {item.xxdc_de}</div>}
+                                                        {item.dc_cov && <div>dc_cov: {Array.isArray(item.dc_cov) ? item.dc_cov.join(', ') : item.dc_cov}</div>}
+                                                        {item.dc_cv && <div>dc_cv: {Array.isArray(item.dc_cv) ? item.dc_cv.join(', ') : item.dc_cv}</div>}
+                                                        {item.dc_da && <div>dc_da: {Array.isArray(item.dc_da) ? item.dc_da.join(', ') : item.dc_da}</div>}
+                                                        {item.dc_fo && <div>dc_fo: {Array.isArray(item.dc_fo) ? item.dc_fo.join(', ') : item.dc_fo}</div>}
+                                                        {item.dc_ge && <div>dc_ge: {Array.isArray(item.dc_ge) ? item.dc_ge.join(', ') : item.dc_ge}</div>}
+                                                        {item.dc_la && <div>dc_la: {Array.isArray(item.dc_la) ? item.dc_la.join(', ') : item.dc_la}</div>}
+                                                        {item.dc_pu && <div>dc_pu: {Array.isArray(item.dc_pu) ? item.dc_pu.join(', ') : item.dc_pu}</div>}
+                                                        {item.dc_re && <div>dc_re: {Array.isArray(item.dc_re) ? item.dc_re.join(', ') : item.dc_re}</div>}
+                                                        {item.dc_so && <div>dc_so: {Array.isArray(item.dc_so) ? item.dc_so.join(', ') : item.dc_so}</div>}
+                                                        {item.dc_su && <div>dc_su: {Array.isArray(item.dc_su) ? item.dc_su.join(', ') : item.dc_su}</div>}
+                                                        {item.dc_type && <div>dc_type: {Array.isArray(item.dc_type) ? item.dc_type.join(', ') : item.dc_type}</div>}
+                                                        {item.xxdc_da && <div>xxdc_da: {Array.isArray(item.xxdc_da) ? item.xxdc_da.join(', ') : item.xxdc_da}</div>}
+                                                        {item.xxdc_de && <div>xxdc_de: {Array.isArray(item.xxdc_de) ? item.xxdc_de.join(', ') : item.xxdc_de}</div>}
                                                     </div>
                                                 </ResultList.Content>
                                             </ResultList>
