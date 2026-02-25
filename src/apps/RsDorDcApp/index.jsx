@@ -43,24 +43,30 @@ function RsDorDcApp() {
                     <Col span={6}>
                         <Card>
                             <MultiList
-                                componentId="web_directory_filter"
-                                dataField="web_directory.keyword"
-                                title="web_directory"
+                                componentId="coll"
+                                dataField="collection_name.facet"
+                                title="Collection"
                             />
                         </Card>
                         <Card>
                             <MultiList
-                                componentId="collection_id_filter"
-                                nestedField="collection_id"
-                                dataField="collection_id.facet.keyword"
-                                title="collection_id"
+                                componentId="subject"
+                                dataField="dc_su.facet"
+                                title="Subject"
                             />
                         </Card>
                         <Card>
                             <MultiList
-                                componentId="dc_cov_filter"
+                                componentId="date"
+                                dataField="dc_da.facet"
+                                title="Date"
+                            />
+                        </Card>
+                        <Card>
+                            <MultiList
+                                componentId="coverage"
                                 dataField="dc_cov.keyword"
-                                title="dc_cov"
+                                title="Coverage"
                             />
                         </Card>
                     </Col>
@@ -79,7 +85,7 @@ function RsDorDcApp() {
                                 size={9}
                                 pagination={true}
                                 react={{
-                                    and: ["search", "collection_id_filter", "web_directory_filter", "dc_cov_filter"],
+                                    and: ["search", "coll", "subject", "date", "coverage"],
                                 }}
                                 render={({data}) => (
                                     <ReactiveList.ResultListWrapper>
