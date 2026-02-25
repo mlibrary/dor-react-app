@@ -90,44 +90,44 @@ function RsDorDcApp() {
                                 render={({data}) => (
                                     <ReactiveList.ResultListWrapper>
                                         {data.map((item) => (
-                                            <ResultList key={item._id}>
+                                            <ResultList key={item._id} className="result-list-container">
                                                 <ResultList.Content>
                                                     <ResultList.Title dangerouslySetInnerHTML={{__html: item.dc_ti}}/>
-                                                    <ResultList.Description
-                                                        dangerouslySetInnerHTML={{__html: item.dc_de}}/>
+                                                    <ResultList.Description dangerouslySetInnerHTML={{__html: item.dc_de}}/>
+                                                    <br/>
+                                                    {item.dc_cr && (<div dangerouslySetInnerHTML={{__html: item.dc_cr}}/>)}
+                                                    {item.collection_id && item.item_id && item.media_id && item.media_id !== "NOFILE" && (
+                                                        <div>
+                                                            <img src={`https://quod.lib.umich.edu/cgi/i/image/api/image/${item.collection_id}:${item.item_id}:${item.media_id}/full/140,/0/native.jpg`} />
+                                                        </div>
+                                                    )}
+                                                    {item.collection_name && <dib>{item.collection_name}</dib>}
+                                                    {item.web_directory && item.item_id && (
+                                                        <div>
+                                                            <a
+                                                                href={`https://quod.lib.umich.edu${item.web_directory}/${item.item_id}`}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                {`https://quod.lib.umich.edu${item.web_directory}/${item.item_id}`}
+                                                            </a>
+                                                        </div>
+                                                    )}
                                                     <br/>
                                                     <div>
-                                                        <div>_id: {item._id}</div>
-                                                        <div>XXX_dc_de: {item.XXX_dc_de}</div>
-                                                        <div>all: {item.all}</div>
-                                                        <div>collection_id: {item.collection_id}</div>
-                                                        <div>collection_name: {item.collection_name}</div>
-                                                        <div>dc_cov: {item.dc_cov}</div>
-                                                        <div>dc_cr: {item.dc_cr}</div>
-                                                        <div>dc_cv: {item.dc_cv}</div>
-                                                        <div>dc_da: {item.dc_da}</div>
-                                                        <div>dc_de: {item.dc_de}</div>
-                                                        <div>dc_fo: {item.dc_fo}</div>
-                                                        <div>dc_ge: {item.dc_ge}</div>
-                                                        <div>dc_id: {item.dc_id}</div>
-                                                        <div>dc_la: {item.dc_la}</div>
-                                                        <div>dc_lo: {item.dc_lo}</div>
-                                                        <div>dc_pu: {item.dc_pu}</div>
-                                                        <div>dc_re: {item.dc_re}</div>
-                                                        <div>dc_so: {item.dc_so}</div>
-                                                        <div>dc_su: {item.dc_su}</div>
-                                                        <div>dc_ti: {item.dc_ti}</div>
-                                                        <div>dc_type: {item.dc_type}</div>
-                                                        <div>ic_all: {item.ic_all}</div>
-                                                        <div>item_id: {item.item_id}</div>
-                                                        <div>media_id: {item.media_id}</div>
-                                                        <div>uid: {item.uid}</div>
-                                                        <div>web_directory: {item.web_directory}</div>
-                                                        <div>xx_dc_co: {item.xx_dc_co}</div>
-                                                        <div>xx_dc_cr: {item.xx_dc_cr}</div>
-                                                        <div>xx_dc_cv: {item.xx_dc_cv}</div>
-                                                        <div>xxdc_da: {item.xxdc_da}</div>
-                                                        <div>xxdc_de: {item.xxdc_de}</div>
+                                                        {item.dc_cov && <div>dc_cov: {item.dc_cov}</div>}
+                                                        {item.dc_cv && <div>dc_cv: {item.dc_cv}</div>}
+                                                        {item.dc_da && <div>dc_da: {item.dc_da}</div>}
+                                                        {item.dc_fo && <div>dc_fo: {item.dc_fo}</div>}
+                                                        {item.dc_ge && <div>dc_ge: {item.dc_ge}</div>}
+                                                        {item.dc_la && <div>dc_la: {item.dc_la}</div>}
+                                                        {item.dc_pu && <div>dc_pu: {item.dc_pu}</div>}
+                                                        {item.dc_re && <div>dc_re: {item.dc_re}</div>}
+                                                        {item.dc_so && <div>dc_so: {item.dc_so}</div>}
+                                                        {item.dc_su && <div>dc_su: {item.dc_su}</div>}
+                                                        {item.dc_type && <div>dc_type: {item.dc_type}</div>}
+                                                        {item.xxdc_da && <div>xxdc_da: {item.xxdc_da}</div>}
+                                                        {item.xxdc_de && <div>xxdc_de: {item.xxdc_de}</div>}
                                                     </div>
                                                 </ResultList.Content>
                                             </ResultList>
