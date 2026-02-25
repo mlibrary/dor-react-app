@@ -57,6 +57,65 @@ button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Custom hover styles for ResultList */
+.result-list-container {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, border-left 0.3s ease;
+}
+
+.result-list-container:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    border-left: 4px solid #646cff;
+}
+
+/* Prevent text color changes on hover - keep text black */
+.result-list-container:hover,
+.result-list-container:hover div,
+.result-list-container:hover h1,
+.result-list-container:hover h2,
+.result-list-container:hover h3,
+.result-list-container:hover h4,
+.result-list-container:hover h5,
+.result-list-container:hover h6,
+.result-list-container:hover p,
+.result-list-container:hover span {
+    color: #213547 !important;
+}
+
+/* Keep links blue */
+.result-list-container a,
+.result-list-container:hover a {
+    color: #646cff !important;
+}
+
+/* Allow direct link hover to change color */
+.result-list-container a:hover {
+    color: #747bff !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .result-list-container:hover {
+        background-color: #2a2a2a;
+        box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+        border-left: 4px solid #646cff;
+    }
+
+    /* Keep text white in dark mode */
+    .result-list-container:hover,
+    .result-list-container:hover div,
+    .result-list-container:hover h1,
+    .result-list-container:hover h2,
+    .result-list-container:hover h3,
+    .result-list-container:hover h4,
+    .result-list-container:hover h5,
+    .result-list-container:hover h6,
+    .result-list-container:hover p,
+    .result-list-container:hover span {
+        color: rgba(255, 255, 255, 0.87) !important;
+    }
+}
+
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;
