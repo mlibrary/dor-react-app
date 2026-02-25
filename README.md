@@ -23,6 +23,16 @@ docker compose exec -- app npm install
 docker compose exec -- app npm run dev
 ```
 
+### OpenSearch
+#### indices (apps)
+```shell
+curl -X GET "http://localhost:9200/_cat/indices?v" -u admin:password
+```
+#### fields (mappings)
+```shell
+curl -X GET "http://localhost:9200/dor-dc/_mapping?pretty" -u admin:password
+```
+
 ## GitHub Actions to Build Images
 
 ``` shell

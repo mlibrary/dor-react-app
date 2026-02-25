@@ -1,0 +1,237 @@
+//gkostin@m-hwf73k3946 dor-react-app % curl -X GET "https://hos.discovery.dor.lib.umich.edu/dor-dc/_mapping?pretty" -u 'admin:OpenSearch0!234dawg'
+{
+  "dor-dc": {
+    "mappings": {
+      "properties": {
+        "all": {
+          "type": "alias",
+          "path": "ic_all"
+        },
+        "collection_id": {
+          "type": "text",
+          "analyzer": "exactish"
+        },
+        "collection_name": {
+          "type": "text",
+          "fields": {
+            "facet": {
+              "type": "keyword",
+              "index": false
+            },
+            "sort": {
+              "type": "text",
+              "analyzer": "sortable"
+            }
+          },
+          "analyzer": "exactish"
+        },
+        "dc_cov": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "dc_cr": {
+          "type": "text",
+          "fields": {
+            "facet": {
+              "type": "keyword",
+              "index": false
+            }
+          },
+          "analyzer": "basic_text_stem"
+        },
+        "dc_cv": {
+          "type": "text",
+          "analyzer": "basic_text_stem"
+        },
+        "dc_da": {
+          "type": "text",
+          "fields": {
+            "facet": {
+              "type": "keyword",
+              "index": false
+            }
+          },
+          "analyzer": "basic_text_stem"
+        },
+        "dc_de": {
+          "type": "text",
+          "fields": {
+            "strict": {
+              "type": "text",
+              "analyzer": "basic_text_nostem"
+            }
+          },
+          "analyzer": "exactish"
+        },
+        "dc_fo": {
+          "type": "text",
+          "fields": {
+            "facet": {
+              "type": "keyword",
+              "index": false
+            }
+          },
+          "analyzer": "exactish"
+        },
+        "dc_ge": {
+          "type": "text",
+          "fields": {
+            "facet": {
+              "type": "keyword",
+              "index": false
+            }
+          },
+          "analyzer": "basic_text_stem"
+        },
+        "dc_id": {
+          "type": "text",
+          "analyzer": "exactish"
+        },
+        "dc_la": {
+          "type": "text",
+          "fields": {
+            "facet": {
+              "type": "keyword",
+              "index": false
+            }
+          },
+          "analyzer": "exactish"
+        },
+        "dc_pu": {
+          "type": "text",
+          "fields": {
+            "facet": {
+              "type": "keyword",
+              "index": false
+            }
+          },
+          "analyzer": "basic_text_stem"
+        },
+        "dc_re": {
+          "type": "text",
+          "fields": {
+            "facet": {
+              "type": "keyword",
+              "index": false
+            }
+          },
+          "analyzer": "exactish"
+        },
+        "dc_so": {
+          "type": "text",
+          "fields": {
+            "facet": {
+              "type": "keyword",
+              "index": false
+            }
+          },
+          "analyzer": "basic_text_stem"
+        },
+        "dc_su": {
+          "type": "text",
+          "fields": {
+            "facet": {
+              "type": "keyword",
+              "index": false
+            }
+          },
+          "analyzer": "exactish"
+        },
+        "dc_ti": {
+          "type": "text",
+          "fields": {
+            "sort": {
+              "type": "text",
+              "analyzer": "sortable"
+            },
+            "strict": {
+              "type": "text",
+              "analyzer": "basic_text_nostem"
+            }
+          },
+          "analyzer": "basic_text_stem"
+        },
+        "dc_type": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "ic_all": {
+          "type": "text",
+          "fields": {
+            "strict": {
+              "type": "text",
+              "analyzer": "basic_text_nostem"
+            }
+          },
+          "analyzer": "basic_text_stem"
+        },
+        "ic_all_vector": {
+          "type": "knn_vector",
+          "dimension": 768,
+          "space_type": "cosinesimil"
+        },
+        "ic_all_vector_temp": {
+          "properties": {
+            "knn": {
+              "type": "float"
+            }
+          }
+        },
+        "item_id": {
+          "type": "text",
+          "analyzer": "exactish"
+        },
+        "media_id": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "uid": {
+          "type": "keyword"
+        },
+        "web_directory": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "xxdc_da": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "xxdc_de": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
