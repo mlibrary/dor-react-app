@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
     ReactiveBase,
@@ -21,14 +21,47 @@ import {
     Button,
     Col,
     Card,
+    Alert,
 } from 'antd';
 
 import {REACTIVESEARCH_CONFIG, SEARCH_FIELDS} from './utils/constants.js';
 
 
 function RsDorDcApp() {
+    const [connectionError, setConnectionError] = useState(null);
+
+    useEffect(() => {
+        // Test connection to ReactiveSearch
+        const testConnection = async () => {
+            try {
+                const response = await fetch(REACTIVESEARCH_CONFIG.url, {
+                    method: 'HEAD',
+                    headers: {
+                        'Authorization': 'Basic ' + btoa(REACTIVESEARCH_CONFIG.credentials)
+                    }
+                });
+                if (!response.ok) {
+                    setConnectionError(`Cannot connect to ReactiveSearch service (HTTP ${response.status})`);
+                }
+            } catch (error) {
+                setConnectionError(`Cannot connect to ReactiveSearch service: ${error.message}`);
+            }
+        };
+        testConnection();
+    }, []);
+
     return (
         <div style={{padding: '20px', maxWidth: '100%', margin: '0 auto'}}>
+            {connectionError && (
+                <Alert
+                    message="Connection Error"
+                    description={`${connectionError}. The search functionality may not work properly. Please contact the system administrator.`}
+                    type="error"
+                    showIcon
+                    closable
+                    style={{marginBottom: 20}}
+                />
+            )}
             <ReactiveBase
                 app="dor-dc"
                 credentials={REACTIVESEARCH_CONFIG.credentials}
@@ -44,22 +77,34 @@ function RsDorDcApp() {
                         <Card>
                             <MultiList
                                 componentId="coll"
-                                dataField="collection_name.facet"
+                                dataField="collection_name.keyword"
                                 title="Collection"
+                                aggregationSize={2000}
+                                sortBy="count"
+                                showSearch={true}
+                                placeholder="Search collections"
                             />
                         </Card>
                         <Card>
                             <MultiList
                                 componentId="subject"
-                                dataField="dc_su.facet"
+                                dataField="dc_su.keyword"
                                 title="Subject"
+                                aggregationSize={2000}
+                                sortBy="count"
+                                showSearch={true}
+                                placeholder="Search subjects"
                             />
                         </Card>
                         <Card>
                             <MultiList
                                 componentId="date"
-                                dataField="dc_da.facet"
+                                dataField="dc_da.keyword"
                                 title="Date"
+                                aggregationSize={2000}
+                                sortBy="count"
+                                showSearch={true}
+                                placeholder="Search dates"
                             />
                         </Card>
                         <Card>
@@ -67,6 +112,10 @@ function RsDorDcApp() {
                                 componentId="coverage"
                                 dataField="dc_cov.keyword"
                                 title="Coverage"
+                                aggregationSize={2000}
+                                sortBy="count"
+                                showSearch={true}
+                                placeholder="Search coverage"
                             />
                         </Card>
                     </Col>
@@ -74,14 +123,14 @@ function RsDorDcApp() {
                         <SearchBox
                             // autosuggest={false}
                             componentId="search"
-                            dataField={["all"]}
+                            dataField={["ic_all"]}
                             placeholder="Search All"
                         />
                         <SelectedFilters/>
                         <div id="result">
                             <ReactiveList
                                 componentId="results"
-                                dataField="all"
+                                dataField="ic_all"
                                 size={9}
                                 pagination={true}
                                 react={{
@@ -115,22 +164,40 @@ function RsDorDcApp() {
                                                     )}
                                                     <br/>
                                                     <div style={{display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 16px', alignItems: 'start'}}>
+                                                        {item.XXX_dc_de && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>XXX_dc_de:</div>
+                                                                <div>{Array.isArray(item.XXX_dc_de) ? item.XXX_dc_de.join(', ') : item.XXX_dc_de}</div>
+                                                            </>
+                                                        )}
+                                                        {item.dc_co && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>dc_co:</div>
+                                                                <div>{Array.isArray(item.dc_co) ? item.dc_co.join(', ') : item.dc_co}</div>
+                                                            </>
+                                                        )}
                                                         {item.dc_cov && (
                                                             <>
                                                                 <div style={{fontWeight: 'bold'}}>dc_cov:</div>
                                                                 <div>{Array.isArray(item.dc_cov) ? item.dc_cov.join(', ') : item.dc_cov}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_cv && (
+                                                        {item.dc_cr && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_cv:</div>
-                                                                <div>{Array.isArray(item.dc_cv) ? item.dc_cv.join(', ') : item.dc_cv}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_cr:</div>
+                                                                <div>{Array.isArray(item.dc_cr) ? item.dc_cr.join(', ') : item.dc_cr}</div>
                                                             </>
                                                         )}
                                                         {item.dc_da && (
                                                             <>
                                                                 <div style={{fontWeight: 'bold'}}>dc_da:</div>
                                                                 <div>{Array.isArray(item.dc_da) ? item.dc_da.join(', ') : item.dc_da}</div>
+                                                            </>
+                                                        )}
+                                                        {item.dc_de && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>dc_de:</div>
+                                                                <div>{Array.isArray(item.dc_de) ? item.dc_de.join(', ') : item.dc_de}</div>
                                                             </>
                                                         )}
                                                         {item.dc_fo && (
@@ -151,6 +218,12 @@ function RsDorDcApp() {
                                                                 <div>{Array.isArray(item.dc_la) ? item.dc_la.join(', ') : item.dc_la}</div>
                                                             </>
                                                         )}
+                                                        {item.dc_lo && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>dc_lo:</div>
+                                                                <div>{Array.isArray(item.dc_lo) ? item.dc_lo.join(', ') : item.dc_lo}</div>
+                                                            </>
+                                                        )}
                                                         {item.dc_pu && (
                                                             <>
                                                                 <div style={{fontWeight: 'bold'}}>dc_pu:</div>
@@ -161,6 +234,12 @@ function RsDorDcApp() {
                                                             <>
                                                                 <div style={{fontWeight: 'bold'}}>dc_re:</div>
                                                                 <div>{Array.isArray(item.dc_re) ? item.dc_re.join(', ') : item.dc_re}</div>
+                                                            </>
+                                                        )}
+                                                        {item.dc_rel && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>dc_rel:</div>
+                                                                <div>{Array.isArray(item.dc_rel) ? item.dc_rel.join(', ') : item.dc_rel}</div>
                                                             </>
                                                         )}
                                                         {item.dc_so && (
@@ -175,24 +254,49 @@ function RsDorDcApp() {
                                                                 <div>{Array.isArray(item.dc_su) ? item.dc_su.join(', ') : item.dc_su}</div>
                                                             </>
                                                         )}
+                                                        {item.dc_ty && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>dc_ty:</div>
+                                                                <div>{Array.isArray(item.dc_ty) ? item.dc_ty.join(', ') : item.dc_ty}</div>
+                                                            </>
+                                                        )}
                                                         {item.dc_type && (
                                                             <>
                                                                 <div style={{fontWeight: 'bold'}}>dc_type:</div>
                                                                 <div>{Array.isArray(item.dc_type) ? item.dc_type.join(', ') : item.dc_type}</div>
                                                             </>
                                                         )}
-                                                        {item.xxdc_da && (
+                                                        {item.xx_dc_co && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>xxdc_da:</div>
-                                                                <div>{Array.isArray(item.xxdc_da) ? item.xxdc_da.join(', ') : item.xxdc_da}</div>
+                                                                <div style={{fontWeight: 'bold'}}>xx_dc_co:</div>
+                                                                <div>{Array.isArray(item.xx_dc_co) ? item.xx_dc_co.join(', ') : item.xx_dc_co}</div>
                                                             </>
                                                         )}
-                                                        {item.xxdc_de && (
+                                                        {item.xx_dc_cr && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>xxdc_de:</div>
-                                                                <div>{Array.isArray(item.xxdc_de) ? item.xxdc_de.join(', ') : item.xxdc_de}</div>
+                                                                <div style={{fontWeight: 'bold'}}>xx_dc_cr:</div>
+                                                                <div>{Array.isArray(item.xx_dc_cr) ? item.xx_dc_cr.join(', ') : item.xx_dc_cr}</div>
                                                             </>
                                                         )}
+                                                        {item.xx_dc_cv && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>xx_dc_cv:</div>
+                                                                <div>{Array.isArray(item.xx_dc_cv) ? item.xx_dc_cv.join(', ') : item.xx_dc_cv}</div>
+                                                            </>
+                                                        )}
+                                                        {item.xx_dc_fo && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>xx_dc_fo:</div>
+                                                                <div>{Array.isArray(item.xx_dc_fo) ? item.xx_dc_fo.join(', ') : item.xx_dc_fo}</div>
+                                                            </>
+                                                        )}
+                                                        {item.xx_dc_so && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>xx_dc_so:</div>
+                                                                <div>{Array.isArray(item.xx_dc_so) ? item.xx_dc_so.join(', ') : item.xx_dc_so}</div>
+                                                            </>
+                                                        )}
+
                                                     </div>
                                                 </ResultList.Content>
                                             </ResultList>
