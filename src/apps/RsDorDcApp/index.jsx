@@ -76,7 +76,7 @@ function RsDorDcApp() {
                     <Col span={6}>
                         <Card>
                             <MultiList
-                                componentId="coll"
+                                componentId="collection"
                                 dataField="collection_name.keyword"
                                 title="Collection"
                                 aggregationSize={2000}
@@ -98,7 +98,7 @@ function RsDorDcApp() {
                                 showSearch={true}
                                 placeholder="Search subjects"
                                 react={{
-                                    and: ["search", "coll", "coverage", "date"]
+                                    and: ["search", "collection", "coverage", "date"]
                                 }}
                             />
                         </Card>
@@ -112,7 +112,7 @@ function RsDorDcApp() {
                                 showSearch={true}
                                 placeholder="Search dates"
                                 react={{
-                                    and: ["search", "coll", "subject", "coverage"]
+                                    and: ["search", "collection", "subject", "coverage"]
                                 }}
                             />
                         </Card>
@@ -126,7 +126,7 @@ function RsDorDcApp() {
                                 showSearch={true}
                                 placeholder="Search coverage"
                                 react={{
-                                    and: ["search", "coll", "subject", "date"]
+                                    and: ["search", "collection", "subject", "date"]
                                 }}
                             />
                         </Card>
@@ -146,7 +146,7 @@ function RsDorDcApp() {
                                 size={9}
                                 pagination={true}
                                 react={{
-                                    and: ["search", "coll", "subject", "date", "coverage"],
+                                    and: ["search", "collection", "subject", "date", "coverage"],
                                 }}
                                 render={({data}) => (
                                     <ReactiveList.ResultListWrapper>
