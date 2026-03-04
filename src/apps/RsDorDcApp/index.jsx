@@ -136,7 +136,41 @@ function RsDorDcApp() {
                             // autosuggest={false}
                             componentId="search"
                             dataField={["ic_all"]}
-                            placeholder="Search All"
+                            placeholder="Search All (Use AND, OR, NOT for Boolean logic)"
+                            queryFormat="and"
+                            fuzziness={0}
+                            enableRecentSuggestions={false}
+                            customQuery={(value, props) => {
+                                if (!value) return null;
+
+                                // Check if the query contains Boolean operators
+                                const hasBooleanOperators = /\b(AND|OR|NOT)\b/i.test(value);
+
+                                if (hasBooleanOperators) {
+                                    // Use query_string for Boolean logic support
+                                    return {
+                                        query: {
+                                            query_string: {
+                                                query: value,
+                                                fields: props.dataField,
+                                                default_operator: "AND"
+                                            }
+                                        }
+                                    };
+                                } else {
+                                    // Use standard match query for simple searches
+                                    return {
+                                        query: {
+                                            multi_match: {
+                                                query: value,
+                                                fields: props.dataField,
+                                                type: "best_fields",
+                                                operator: "and"
+                                            }
+                                        }
+                                    };
+                                }
+                            }}
                         />
                         <SelectedFilters/>
                         <div id="result">
