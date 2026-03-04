@@ -83,6 +83,9 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search collections"
+                                react={{
+                                    and: ["search", "subject", "coverage", "date"]
+                                }}
                             />
                         </Card>
                         <Card>
@@ -94,6 +97,9 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search subjects"
+                                react={{
+                                    and: ["search", "coll", "coverage", "date"]
+                                }}
                             />
                         </Card>
                         <Card>
@@ -105,6 +111,9 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search dates"
+                                react={{
+                                    and: ["search", "coll", "subject", "coverage"]
+                                }}
                             />
                         </Card>
                         <Card>
@@ -116,6 +125,9 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search coverage"
+                                react={{
+                                    and: ["search", "coll", "subject", "date"]
+                                }}
                             />
                         </Card>
                     </Col>
