@@ -71,6 +71,48 @@ function RsDorDcApp() {
                     suggestionAnalytics: false,
                     enableQueryRules: false,
                 }}
+                transformRequest={(props) => {
+                    // Use custom endpoint if configured, otherwise use default
+                    if (REACTIVESEARCH_CONFIG.customEndpoint) {
+                        const newUrl = props.url
+                            .replace('/_reactivesearch.v3', REACTIVESEARCH_CONFIG.customEndpoint)
+                            .replace(`/dor-dc/_reactivesearch.v3`, `/dor-dc${REACTIVESEARCH_CONFIG.customEndpoint}`);
+                        
+                        // Transform body for search template if using /_search/template
+                        let transformedBody = props.body;
+                        if (REACTIVESEARCH_CONFIG.customEndpoint === '/_search/template' && 
+                            REACTIVESEARCH_CONFIG.searchTemplate.useTemplate) {
+                            
+                            // Wrap the query in search template format
+                            transformedBody = {
+                                id: REACTIVESEARCH_CONFIG.searchTemplate.id,
+                                params: {
+                                    // Pass the original query as template parameters
+                                    query: props.body?.query || {},
+                                    size: props.body?.size || 10,
+                                    from: props.body?.from || 0,
+                                    aggs: props.body?.aggs || {},
+                                    // Include any other fields from original body
+                                    ...props.body
+                                }
+                            };
+                        }
+                        
+                        // Log in development mode
+                        if (import.meta.env.DEV) {
+                            console.log('ReactiveSearch Request URL:', newUrl);
+                            console.log('Original Body:', props.body);
+                            console.log('Transformed Body:', transformedBody);
+                        }
+                        
+                        return {
+                            ...props,
+                            url: newUrl,
+                            body: transformedBody
+                        };
+                    }
+                    return props;
+                }}
             >
                 <Row gutter={16} style={{padding: 20}}>
                     <Col span={6}>
