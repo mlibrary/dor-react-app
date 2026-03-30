@@ -1,30 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
-    ReactiveBase,
-    SearchBox,
     MultiList,
-    SelectedFilters,
+    ReactiveBase,
     ReactiveList,
-    ResultCard,
-    MultiRange,
-    RangeInput,
-    RangeSlider,
-    DynamicRangeSlider,
     ResultList,
+    SearchBox,
+    SelectedFilters,
 } from '@appbaseio/reactivesearch';
 
 // console.log(Object.keys(ReactiveSearch));
+import {Alert, Card, Col, Row,} from 'antd';
 
-import {
-    Row,
-    Button,
-    Col,
-    Card,
-    Alert,
-} from 'antd';
-
-import {REACTIVESEARCH_CONFIG, SEARCH_FIELDS} from './utils/constants.js';
+import {REACTIVESEARCH_CONFIG} from './utils/constants.js';
 
 
 function RsDorDcApp() {
@@ -161,11 +149,59 @@ function RsDorDcApp() {
                                     // Use standard match query for simple searches
                                     return {
                                         query: {
-                                            multi_match: {
-                                                query: value,
-                                                fields: props.dataField,
-                                                type: "best_fields",
-                                                operator: "and"
+                                            "bool": {
+                                                "should": [
+                                                    {
+                                                        "match": {
+                                                            "ic_all": {
+                                                                "query": value,
+                                                                "operator": "and",
+                                                                "boost": 3
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "match": {
+                                                            "ic_all": {
+                                                                "query": value,
+                                                                "operator": "or",
+                                                                "minimum_should_match": "75%"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "multi_match": {
+                                                            "query": value,
+                                                            "fields": [
+                                                                "dc_ti^5",
+                                                                "dc_ti.strict^7",
+                                                                "dc_cr^3",
+                                                                "dc_de^2",
+                                                                "dc_su^3",
+                                                                "dc_ge",
+                                                                "dc_pu",
+                                                                "dc_so"
+                                                            ],
+                                                            "type": "best_fields",
+                                                            "tie_breaker": 0.3
+                                                        }
+                                                    },
+                                                    {
+                                                        "multi_match": {
+                                                            "query": value,
+                                                            "type": "phrase",
+                                                            "fields": [
+                                                                "dc_ti^8",
+                                                                "dc_ti.strict^10",
+                                                                "dc_cr^5",
+                                                                "dc_de^3",
+                                                                "dc_su^5"
+                                                            ],
+                                                            "tie_breaker": 0.3
+                                                        }
+                                                    }
+                                                ],
+                                                "minimum_should_match": 1
                                             }
                                         }
                                     };
@@ -188,12 +224,15 @@ function RsDorDcApp() {
                                             <ResultList key={item._id} className="result-list-container">
                                                 <ResultList.Content>
                                                     <ResultList.Title dangerouslySetInnerHTML={{__html: item.dc_ti}}/>
-                                                    <ResultList.Description dangerouslySetInnerHTML={{__html: item.dc_de}}/>
+                                                    <ResultList.Description
+                                                        dangerouslySetInnerHTML={{__html: item.dc_de}}/>
                                                     <br/>
-                                                    {item.dc_cr && (<div dangerouslySetInnerHTML={{__html: item.dc_cr}}/>)}
+                                                    {item.dc_cr && (
+                                                        <div dangerouslySetInnerHTML={{__html: item.dc_cr}}/>)}
                                                     {item.collection_id && item.item_id && item.media_id && item.media_id !== "NOFILE" && (
                                                         <div>
-                                                            <img src={`https://quod.lib.umich.edu/cgi/i/image/api/image/${item.collection_id}:${item.item_id}:${item.media_id}/full/140,/0/native.jpg`} />
+                                                            <img
+                                                                src={`https://quod.lib.umich.edu/cgi/i/image/api/image/${item.collection_id}:${item.item_id}:${item.media_id}/full/140,/0/native.jpg`}/>
                                                         </div>
                                                     )}
                                                     {item.collection_name && <dib>{item.collection_name}</dib>}
@@ -209,7 +248,12 @@ function RsDorDcApp() {
                                                         </div>
                                                     )}
                                                     <br/>
-                                                    <div style={{display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 16px', alignItems: 'start'}}>
+                                                    <div style={{
+                                                        display: 'grid',
+                                                        gridTemplateColumns: 'auto 1fr',
+                                                        gap: '8px 16px',
+                                                        alignItems: 'start'
+                                                    }}>
                                                         {item.XXX_dc_de && (
                                                             <>
                                                                 <div style={{fontWeight: 'bold'}}>XXX_dc_de:</div>
