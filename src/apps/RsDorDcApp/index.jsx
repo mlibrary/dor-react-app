@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {
     MultiList,
@@ -10,13 +10,16 @@ import {
 } from '@appbaseio/reactivesearch';
 
 // console.log(Object.keys(ReactiveSearch));
-import {Alert, Card, Col, Row,} from 'antd';
+import {Alert, Button, Card, Col, Row,} from 'antd';
+import {FormOutlined} from '@ant-design/icons';
 
 import {REACTIVESEARCH_CONFIG} from './utils/constants.js';
 
 
 function RsDorDcApp() {
     const [connectionError, setConnectionError] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const latestDataRef = useRef([]);
 
     useEffect(() => {
         // Test connection to ReactiveSearch
@@ -37,6 +40,42 @@ function RsDorDcApp() {
         };
         testConnection();
     }, []);
+
+    // Generate Google Form URL with prepopulated fields
+    const generateFeedbackFormUrl = (searchQueryOverride) => {
+        const baseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSehpVZ-rcfsvv9fTlRwIpO2JR7fx29pveSh9A7djlBxOm1l1A/viewform?usp=pp_url';
+
+        // Note: You need to inspect the Google Form to get the correct entry IDs
+        // These are placeholder entry IDs - replace with actual ones from your form
+        const params = new URLSearchParams();
+
+        // Index Version
+        params.append('entry.1352964690', 'dor-dc'); // Replace with actual entry ID
+
+        // Search query - use override if provided, otherwise use state
+        const queryValue = searchQueryOverride !== undefined ? searchQueryOverride : searchQuery;
+        if (queryValue) {
+            params.append('entry.396741779', queryValue); // Replace with actual entry ID
+        }
+
+        // Top 5 results - use the latest data from ref
+        const resultsData = latestDataRef.current;
+        if (resultsData && resultsData.length > 0) {
+            const top5Results = resultsData.slice(0, 5).map((item, index) => {
+                // Handle dc_ti as either string or array
+                let title = 'Untitled';
+                if (item.dc_ti) {
+                    const titleRaw = Array.isArray(item.dc_ti) ? item.dc_ti.join(', ') : item.dc_ti;
+                    title = titleRaw.replace(/<[^>]*>/g, '');
+                }
+                return `${index + 1}. ${title}`;
+            }).join('\n');
+
+            params.append('entry.1552271952', top5Results); // Replace with actual entry ID
+        }
+
+        return `${baseUrl}&${params.toString()}`;
+    };
 
     return (
         <div style={{padding: '20px', maxWidth: '100%', margin: '0 auto'}}>
@@ -128,6 +167,12 @@ function RsDorDcApp() {
                             queryFormat="and"
                             fuzziness={0}
                             enableRecentSuggestions={false}
+                            onChange={(value, triggerQuery, event) => {
+                                setSearchQuery(value || '');
+                            }}
+                            onValueChange={(value) => {
+                                setSearchQuery(value || '');
+                            }}
                             customQuery={(value, props) => {
                                 if (!value) return null;
 
@@ -208,6 +253,18 @@ function RsDorDcApp() {
                                 }
                             }}
                         />
+                        <div style={{marginTop: '16px', marginBottom: '16px'}}>
+                            <Button
+                                type="primary"
+                                icon={<FormOutlined />}
+                                onClick={() => {
+                                    const url = generateFeedbackFormUrl(searchQuery);
+                                    window.open(url, '_blank', 'noopener,noreferrer');
+                                }}
+                            >
+                                Provide Feedback on Search Results
+                            </Button>
+                        </div>
                         <SelectedFilters/>
                         <div id="result">
                             <ReactiveList
@@ -218,7 +275,11 @@ function RsDorDcApp() {
                                 react={{
                                     and: ["search", "collection", "subject", "date", "coverage"],
                                 }}
-                                render={({data}) => (
+                                render={({data}) => {
+                                    // Store latest data in ref for feedback form
+                                    latestDataRef.current = data || [];
+
+                                    return (
                                     <ReactiveList.ResultListWrapper>
                                         {data.map((item) => (
                                             <ResultList key={item._id} className="result-list-container">
@@ -387,12 +448,13 @@ function RsDorDcApp() {
                                                             </>
                                                         )}
 
-                                                    </div>
+                                                     </div>
                                                 </ResultList.Content>
                                             </ResultList>
                                         ))}
                                     </ReactiveList.ResultListWrapper>
-                                )}
+                                );
+                                }}
                             />
                         </div>
                     </Col>

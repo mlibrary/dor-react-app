@@ -1,7 +1,7 @@
 import React from "react";
-import {BrowserRouter, Routes, Route, Link} from "react-router-dom";
+// import {BrowserRouter, Routes, Route, Link} from "react-router-dom";
 import RsDorDcApp from './apps/RsDorDcApp/index.jsx';
-import OsDorDcApp from './apps/OsDorDcApp/index.jsx';
+// import OsDorDcApp from './apps/OsDorDcApp/index.jsx';
 
 function App() {
     return <RsDorDcApp />;
