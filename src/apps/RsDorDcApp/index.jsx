@@ -47,10 +47,25 @@ function RsDorDcApp() {
 
         // Note: You need to inspect the Google Form to get the correct entry IDs
         // These are placeholder entry IDs - replace with actual ones from your form
+        // https://docs.google.com/forms/d/e/1FAIpQLSehpVZ-rcfsvv9fTlRwIpO2JR7fx29pveSh9A7djlBxOm1l1A/viewform?usp=pp_url
+        // <input type="hidden" name="entry.886322516" value="">
+        // <input type="hidden" name="entry.1352964690" value="">
+        // <input type="hidden" name="entry.1700152720" value="">
+        // <input type="hidden" name="entry.396741779" value="">
+        // <input type="hidden" name="entry.1552271952" value="">
+        // <input type="hidden" name="entry.1585935040" value="">
+
         const params = new URLSearchParams();
 
+        // Identifier - generate a unique UUID for this feedback submission
+        const identifier = crypto.randomUUID();
+        params.append('entry.886322516', identifier);
+
         // Index Version
-        params.append('entry.1352964690', 'dor-dc'); // Replace with actual entry ID
+        params.append('entry.1352964690', '1'); // Replace with actual entry ID
+
+        // Timestamp
+        params.append('entry.1700152720', new Date().toISOString()); // Replace with actual entry ID
 
         // Search query - use override if provided, otherwise use state
         const queryValue = searchQueryOverride !== undefined ? searchQueryOverride : searchQuery;
