@@ -51,16 +51,6 @@ function RsDorDcApp() {
     const generateFeedbackFormUrl = (searchQueryOverride) => {
         const baseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSehpVZ-rcfsvv9fTlRwIpO2JR7fx29pveSh9A7djlBxOm1l1A/viewform?usp=pp_url';
 
-        // Note: You need to inspect the Google Form to get the correct entry IDs
-        // These are placeholder entry IDs - replace with actual ones from your form
-        // https://docs.google.com/forms/d/e/1FAIpQLSehpVZ-rcfsvv9fTlRwIpO2JR7fx29pveSh9A7djlBxOm1l1A/viewform?usp=pp_url
-        // <input type="hidden" name="entry.886322516" value="">
-        // <input type="hidden" name="entry.1352964690" value="">
-        // <input type="hidden" name="entry.1700152720" value="">
-        // <input type="hidden" name="entry.396741779" value="">
-        // <input type="hidden" name="entry.1552271952" value="">
-        // <input type="hidden" name="entry.1585935040" value="">
-
         const params = new URLSearchParams();
 
         // Identifier - generate a unique UUID for this feedback submission
@@ -68,10 +58,10 @@ function RsDorDcApp() {
         params.append('entry.886322516', identifier);
 
         // Index Version
-        params.append('entry.1352964690', '1'); // Replace with actual entry ID
+        params.append('entry.1352964690', '1');
 
         // Timestamp
-        params.append('entry.1700152720', new Date().toISOString()); // Replace with actual entry ID
+        params.append('entry.1700152720', new Date().toISOString());
 
         // Search query - use override if provided, otherwise use state
         const queryValue = searchQueryOverride !== undefined ? searchQueryOverride : searchQuery;
@@ -119,7 +109,7 @@ function RsDorDcApp() {
                 return `${index + 1}. ${title}`;
             }).join('\n');
 
-            params.append('entry.1552271952', top5Results); // Replace with actual entry ID
+            params.append('entry.1552271952', top5Results);
         }
 
         return `${baseUrl}&${params.toString()}`;
@@ -220,16 +210,12 @@ function RsDorDcApp() {
                     </Col>
                     <Col span={18}>
                         <SearchBox
-                            // autosuggest={false}
                             componentId="search"
                             dataField={["ic_all"]}
                             placeholder="Search All (Use AND, OR, NOT for Boolean logic)"
                             queryFormat="and"
                             fuzziness={0}
                             enableRecentSuggestions={false}
-                            onChange={(value) => {
-                                setSearchQuery(value || '');
-                            }}
                             onValueChange={(value) => {
                                 setSearchQuery(value || '');
                             }}
