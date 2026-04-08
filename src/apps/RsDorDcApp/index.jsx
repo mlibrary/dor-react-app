@@ -18,7 +18,6 @@ import {REACTIVESEARCH_CONFIG} from './utils/constants.js';
 
 function RsDorDcApp() {
     const [connectionError, setConnectionError] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
     const [filters, setFilters] = useState({
         collection: [],
         subject: [],
@@ -26,6 +25,7 @@ function RsDorDcApp() {
         coverage: []
     });
     const latestDataRef = useRef([]);
+    const searchQueryRef = useRef('');
 
     useEffect(() => {
         // Test connection to ReactiveSearch
@@ -63,8 +63,8 @@ function RsDorDcApp() {
         // Timestamp
         params.append('entry.1700152720', new Date().toISOString());
 
-        // Search query - use override if provided, otherwise use state
-        const queryValue = searchQueryOverride !== undefined ? searchQueryOverride : searchQuery;
+        // Search query - use override if provided, otherwise use ref
+        const queryValue = searchQueryOverride !== undefined ? searchQueryOverride : searchQueryRef.current;
 
         // Build complete query string including filters
         let fullQuery = queryValue || '';
@@ -113,7 +113,7 @@ function RsDorDcApp() {
         }
 
         return `${baseUrl}&${params.toString()}`;
-    }, [searchQuery, filters]);
+    }, [filters]);
 
     // Memoized filter change handlers
     const handleCollectionChange = useCallback((value) => {
@@ -133,7 +133,8 @@ function RsDorDcApp() {
     }, []);
 
     const handleSearchChange = useCallback((value) => {
-        setSearchQuery(value || '');
+        // Store in ref to avoid re-renders on every keystroke
+        searchQueryRef.current = value || '';
     }, []);
 
     return (
@@ -315,8 +316,7 @@ function RsDorDcApp() {
                                 type="primary"
                                 icon={<FormOutlined />}
                                 onClick={() => {
-                                    const url = generateFeedbackFormUrl(searchQuery);
-
+                                    const url = generateFeedbackFormUrl(searchQueryRef.current);
                                     window.open(url, '_blank', 'noopener,noreferrer');
                                 }}
                             >
