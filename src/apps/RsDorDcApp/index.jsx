@@ -19,6 +19,12 @@ import {REACTIVESEARCH_CONFIG} from './utils/constants.js';
 function RsDorDcApp() {
     const [connectionError, setConnectionError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [filters, setFilters] = useState({
+        collection: [],
+        subject: [],
+        date: [],
+        coverage: []
+    });
     const latestDataRef = useRef([]);
 
     useEffect(() => {
@@ -69,8 +75,35 @@ function RsDorDcApp() {
 
         // Search query - use override if provided, otherwise use state
         const queryValue = searchQueryOverride !== undefined ? searchQueryOverride : searchQuery;
-        if (queryValue) {
-            params.append('entry.396741779', queryValue); // Replace with actual entry ID
+
+        // Build complete query string including filters
+        let fullQuery = queryValue || '';
+
+        // Add active filters to the query
+        const filterParts = [];
+        if (filters.collection.length > 0) {
+            filterParts.push(`Collection: ${filters.collection.join(', ')}`);
+        }
+        if (filters.subject.length > 0) {
+            filterParts.push(`Subject: ${filters.subject.join(', ')}`);
+        }
+        if (filters.date.length > 0) {
+            filterParts.push(`Date: ${filters.date.join(', ')}`);
+        }
+        if (filters.coverage.length > 0) {
+            filterParts.push(`Coverage: ${filters.coverage.join(', ')}`);
+        }
+
+        if (filterParts.length > 0) {
+            if (fullQuery) {
+                fullQuery += '\n\nActive Filters:\n' + filterParts.join('\n');
+            } else {
+                fullQuery = 'Active Filters:\n' + filterParts.join('\n');
+            }
+        }
+
+        if (fullQuery) {
+            params.append('entry.396741779', fullQuery);
         }
 
         // Top 5 results - use the latest data from ref
@@ -128,6 +161,9 @@ function RsDorDcApp() {
                                 react={{
                                     and: ["search", "subject", "coverage", "date"]
                                 }}
+                                onValueChange={(value) => {
+                                    setFilters(prev => ({ ...prev, collection: value || [] }));
+                                }}
                             />
                         </Card>
                         <Card>
@@ -141,6 +177,9 @@ function RsDorDcApp() {
                                 placeholder="Search subjects"
                                 react={{
                                     and: ["search", "collection", "coverage", "date"]
+                                }}
+                                onValueChange={(value) => {
+                                    setFilters(prev => ({ ...prev, subject: value || [] }));
                                 }}
                             />
                         </Card>
@@ -156,6 +195,9 @@ function RsDorDcApp() {
                                 react={{
                                     and: ["search", "collection", "subject", "coverage"]
                                 }}
+                                onValueChange={(value) => {
+                                    setFilters(prev => ({ ...prev, date: value || [] }));
+                                }}
                             />
                         </Card>
                         <Card>
@@ -170,6 +212,9 @@ function RsDorDcApp() {
                                 react={{
                                     and: ["search", "collection", "subject", "date"]
                                 }}
+                                onValueChange={(value) => {
+                                    setFilters(prev => ({ ...prev, coverage: value || [] }));
+                                }}
                             />
                         </Card>
                     </Col>
@@ -182,7 +227,7 @@ function RsDorDcApp() {
                             queryFormat="and"
                             fuzziness={0}
                             enableRecentSuggestions={false}
-                            onChange={(value, triggerQuery, event) => {
+                            onChange={(value) => {
                                 setSearchQuery(value || '');
                             }}
                             onValueChange={(value) => {
@@ -274,6 +319,7 @@ function RsDorDcApp() {
                                 icon={<FormOutlined />}
                                 onClick={() => {
                                     const url = generateFeedbackFormUrl(searchQuery);
+
                                     window.open(url, '_blank', 'noopener,noreferrer');
                                 }}
                             >
