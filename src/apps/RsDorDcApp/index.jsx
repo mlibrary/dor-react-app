@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import {
     MultiList,
@@ -47,8 +47,8 @@ function RsDorDcApp() {
         testConnection();
     }, []);
 
-    // Generate Google Form URL with prepopulated fields
-    const generateFeedbackFormUrl = (searchQueryOverride) => {
+    // Generate Google Form URL with prepopulated fields - memoized to avoid recreation
+    const generateFeedbackFormUrl = useCallback((searchQueryOverride) => {
         const baseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSehpVZ-rcfsvv9fTlRwIpO2JR7fx29pveSh9A7djlBxOm1l1A/viewform?usp=pp_url';
 
         const params = new URLSearchParams();
@@ -113,7 +113,28 @@ function RsDorDcApp() {
         }
 
         return `${baseUrl}&${params.toString()}`;
-    };
+    }, [searchQuery, filters]);
+
+    // Memoized filter change handlers
+    const handleCollectionChange = useCallback((value) => {
+        setFilters(prev => ({ ...prev, collection: value || [] }));
+    }, []);
+
+    const handleSubjectChange = useCallback((value) => {
+        setFilters(prev => ({ ...prev, subject: value || [] }));
+    }, []);
+
+    const handleDateChange = useCallback((value) => {
+        setFilters(prev => ({ ...prev, date: value || [] }));
+    }, []);
+
+    const handleCoverageChange = useCallback((value) => {
+        setFilters(prev => ({ ...prev, coverage: value || [] }));
+    }, []);
+
+    const handleSearchChange = useCallback((value) => {
+        setSearchQuery(value || '');
+    }, []);
 
     return (
         <div style={{padding: '20px', maxWidth: '100%', margin: '0 auto'}}>
@@ -151,9 +172,7 @@ function RsDorDcApp() {
                                 react={{
                                     and: ["search", "subject", "coverage", "date"]
                                 }}
-                                onValueChange={(value) => {
-                                    setFilters(prev => ({ ...prev, collection: value || [] }));
-                                }}
+                                onValueChange={handleCollectionChange}
                             />
                         </Card>
                         <Card>
@@ -168,9 +187,7 @@ function RsDorDcApp() {
                                 react={{
                                     and: ["search", "collection", "coverage", "date"]
                                 }}
-                                onValueChange={(value) => {
-                                    setFilters(prev => ({ ...prev, subject: value || [] }));
-                                }}
+                                onValueChange={handleSubjectChange}
                             />
                         </Card>
                         <Card>
@@ -185,9 +202,7 @@ function RsDorDcApp() {
                                 react={{
                                     and: ["search", "collection", "subject", "coverage"]
                                 }}
-                                onValueChange={(value) => {
-                                    setFilters(prev => ({ ...prev, date: value || [] }));
-                                }}
+                                onValueChange={handleDateChange}
                             />
                         </Card>
                         <Card>
@@ -202,9 +217,7 @@ function RsDorDcApp() {
                                 react={{
                                     and: ["search", "collection", "subject", "date"]
                                 }}
-                                onValueChange={(value) => {
-                                    setFilters(prev => ({ ...prev, coverage: value || [] }));
-                                }}
+                                onValueChange={handleCoverageChange}
                             />
                         </Card>
                     </Col>
@@ -216,9 +229,7 @@ function RsDorDcApp() {
                             queryFormat="and"
                             fuzziness={0}
                             enableRecentSuggestions={false}
-                            onValueChange={(value) => {
-                                setSearchQuery(value || '');
-                            }}
+                            onValueChange={handleSearchChange}
                             customQuery={(value, props) => {
                                 if (!value) return null;
 
