@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 .env
+
+# Agent-generated files
+dotpy/commit_msg.txt
+pr-summary.md
+
