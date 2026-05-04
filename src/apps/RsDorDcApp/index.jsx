@@ -11,7 +11,7 @@ import {
 
 // console.log(Object.keys(ReactiveSearch));
 import {Alert, Button, Card, Col, Row,} from 'antd';
-import {FormOutlined} from '@ant-design/icons';
+import {FormOutlined, ClearOutlined} from '@ant-design/icons';
 
 import {REACTIVESEARCH_CONFIG} from './utils/constants.js';
 
@@ -135,6 +135,15 @@ function RsDorDcApp() {
         searchQueryRef.current = value || '';
     }, []);
 
+    const clearAllFilters = useCallback(() => {
+        setFilters({
+            collection: [],
+            subject: [],
+            date: [],
+            coverage: []
+        });
+    }, []);
+
     return (
         <div style={{padding: '20px', maxWidth: '100%', margin: '0 auto'}}>
             {connectionError && (
@@ -168,6 +177,7 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search collections"
+                                value={filters.collection}
                                 react={{
                                     and: ["search", "subject", "coverage", "date"]
                                 }}
@@ -183,6 +193,7 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search subjects"
+                                value={filters.subject}
                                 react={{
                                     and: ["search", "collection", "coverage", "date"]
                                 }}
@@ -198,6 +209,7 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search dates"
+                                value={filters.date}
                                 react={{
                                     and: ["search", "collection", "subject", "coverage"]
                                 }}
@@ -213,6 +225,7 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search coverage"
+                                value={filters.coverage}
                                 react={{
                                     and: ["search", "collection", "subject", "date"]
                                 }}
@@ -309,7 +322,7 @@ function RsDorDcApp() {
                                 }
                             }}
                         />
-                        <div style={{marginTop: '16px', marginBottom: '16px'}}>
+                        <div style={{marginTop: '16px', marginBottom: '16px', display: 'flex', gap: '8px'}}>
                             <Button
                                 type="primary"
                                 icon={<FormOutlined />}
@@ -319,6 +332,12 @@ function RsDorDcApp() {
                                 }}
                             >
                                 Provide Feedback on Search Results
+                            </Button>
+                            <Button
+                                icon={<ClearOutlined />}
+                                onClick={clearAllFilters}
+                            >
+                                Clear All Filters
                             </Button>
                         </div>
                         <SelectedFilters/>
