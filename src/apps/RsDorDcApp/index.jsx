@@ -14,10 +14,13 @@ import {Alert, Button, Card, Col, Row,} from 'antd';
 import {FormOutlined, ClearOutlined} from '@ant-design/icons';
 
 import {REACTIVESEARCH_CONFIG} from './utils/constants.js';
+import {parseSearchQuery, checkParserHealth} from './services/searchParserService.js';
 
 
 function RsDorDcApp() {
     const [connectionError, setConnectionError] = useState(null);
+    const [parserError, setParserError] = useState(null);
+    const [parserAvailable, setParserAvailable] = useState(true);
     const [filters, setFilters] = useState({
         collection: [],
         subject: [],
@@ -26,10 +29,12 @@ function RsDorDcApp() {
     });
     const latestDataRef = useRef([]);
     const searchQueryRef = useRef('');
+    const parsedQueryRef = useRef('');
 
     useEffect(() => {
-        // Test connection to ReactiveSearch
-        const testConnection = async () => {
+        // Test connections to ReactiveSearch and Search Parser
+        const testConnections = async () => {
+            // Test ReactiveSearch connection
             try {
                 const response = await fetch(REACTIVESEARCH_CONFIG.url, {
                     method: 'HEAD',
@@ -43,8 +48,16 @@ function RsDorDcApp() {
             } catch (error) {
                 setConnectionError(`Cannot connect to ReactiveSearch service: ${error.message}`);
             }
+
+            // Test Search Parser service
+            const parserHealthy = await checkParserHealth();
+            setParserAvailable(parserHealthy);
+            if (!parserHealthy) {
+                setParserError('Search parser service is unavailable. Using raw queries.');
+                console.warn('Search parser service is not available, queries will not be transformed');
+            }
         };
-        testConnection();
+        testConnections();
     }, []);
 
     // Generate Google Form URL with prepopulated fields - memoized to avoid recreation
@@ -130,10 +143,36 @@ function RsDorDcApp() {
         setFilters(prev => ({ ...prev, coverage: value || [] }));
     }, []);
 
-    const handleSearchChange = useCallback((value) => {
-        // Store in ref to avoid re-renders on every keystroke
+    const handleSearchChange = useCallback(async (value) => {
+        // Store raw query in ref
         searchQueryRef.current = value || '';
-    }, []);
+
+        // Call parser service to get parsed query
+        if (parserAvailable && value) {
+            try {
+                const result = await parseSearchQuery(value);
+                parsedQueryRef.current = result.parsedQuery;
+
+                // Clear any previous parser errors
+                if (parserError && !result.error) {
+                    setParserError(null);
+                }
+
+                // Show warning if parser service failed but we're continuing
+                if (result.error && !parserError) {
+                    setParserError('Search parser service error: using raw query');
+                }
+            } catch (error) {
+                console.error('Error parsing query:', error);
+                // Fallback to raw query
+                parsedQueryRef.current = value;
+                setParserError('Parser service error: using raw query');
+            }
+        } else {
+            // If parser not available, use raw query
+            parsedQueryRef.current = value || '';
+        }
+    }, [parserAvailable, parserError]);
 
     const clearAllFilters = useCallback(() => {
         setFilters({
@@ -153,6 +192,17 @@ function RsDorDcApp() {
                     type="error"
                     showIcon
                     closable
+                    style={{marginBottom: 20}}
+                />
+            )}
+            {parserError && (
+                <Alert
+                    message="Search Parser Service Warning"
+                    description={parserError}
+                    type="warning"
+                    showIcon
+                    closable
+                    onClose={() => setParserError(null)}
                     style={{marginBottom: 20}}
                 />
             )}
@@ -245,15 +295,18 @@ function RsDorDcApp() {
                             customQuery={(value, props) => {
                                 if (!value) return null;
 
+                                // Use parsed query if available, otherwise fall back to raw value
+                                const queryToUse = parsedQueryRef.current || value;
+
                                 // Check if the query contains Boolean operators
-                                const hasBooleanOperators = /\b(AND|OR|NOT)\b/i.test(value);
+                                const hasBooleanOperators = /\b(AND|OR|NOT)\b/i.test(queryToUse);
 
                                 if (hasBooleanOperators) {
                                     // Use query_string for Boolean logic support
                                     return {
                                         query: {
                                             query_string: {
-                                                query: value,
+                                                query: queryToUse,
                                                 fields: props.dataField,
                                                 default_operator: "AND"
                                             }
@@ -268,7 +321,7 @@ function RsDorDcApp() {
                                                     {
                                                         "match": {
                                                             "ic_all": {
-                                                                "query": value,
+                                                                "query": queryToUse,
                                                                 "operator": "and",
                                                                 "boost": 3
                                                             }
@@ -277,7 +330,7 @@ function RsDorDcApp() {
                                                     {
                                                         "match": {
                                                             "ic_all": {
-                                                                "query": value,
+                                                                "query": queryToUse,
                                                                 "operator": "or",
                                                                 "minimum_should_match": "75%"
                                                             }
@@ -285,7 +338,7 @@ function RsDorDcApp() {
                                                     },
                                                     {
                                                         "multi_match": {
-                                                            "query": value,
+                                                            "query": queryToUse,
                                                             "fields": [
                                                                 "dc_ti^5",
                                                                 "dc_ti.strict^7",
@@ -302,7 +355,7 @@ function RsDorDcApp() {
                                                     },
                                                     {
                                                         "multi_match": {
-                                                            "query": value,
+                                                            "query": queryToUse,
                                                             "type": "phrase",
                                                             "fields": [
                                                                 "dc_ti^8",

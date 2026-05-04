@@ -1,15 +1,30 @@
-feat: add Ruby search parser microservice
+feat: integrate search-parser service into RsDorDcApp
 
-Add a Ruby microservice to parse/transform search queries before sending
-them to ReactiveSearch/OpenSearch. Currently implements a stub that echoes
-back the input query.
+Wire up the RsDorDcApp to call the search-parser microservice before
+sending queries to OpenSearch. This enables centralized query transformation
+logic in the Ruby microservice.
 
-Service structure:
-- search-parser-service/app.rb: Sinatra-based REST API
-- GET /health: Health check endpoint
-- POST /parse: Query parsing endpoint (currently echoes input)
-- Runs on port 4567, accessible as http://search-parser:4567 in Docker
-- Added to compose.yaml with proper dependencies
+Changes:
+- Created searchParserService.js: Client for parser service API
+  - parseSearchQuery(): Calls POST /parse endpoint
+  - checkParserHealth(): Health check on startup
+  - Graceful fallback to raw queries if service unavailable
 
-Future enhancements will add query expansion, synonym handling, and
-field-specific query parsing logic.
+- Updated RsDorDcApp component:
+  - Added parserAvailable and parserError state
+  - Test parser health on mount alongside ReactiveSearch
+  - Modified handleSearchChange to call parser service asynchronously
+  - Store parsed query in parsedQueryRef
+  - Updated customQuery to use parsed query instead of raw value
+  - Added warning alert when parser service unavailable
+
+- Configuration:
+  - Added VITE_SEARCH_PARSER_URL to env.template.sh
+  - Default: http://localhost:4567
+  - Docker network: http://search-parser:4567
+
+- Documentation:
+  - Created INTEGRATION.md with architecture and testing guide
+
+The app gracefully degrades if the parser service is down, showing a
+warning but continuing to search with raw queries.
