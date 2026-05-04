@@ -1,3 +1,15 @@
-# Placeholder commit message file
-# This file is used by dotpy/commit.py to avoid shell quoting issues
-# Write your commit message here, then run: python3 dotpy/commit.py
+feat: add Ruby search parser microservice
+
+Add a Ruby microservice to parse/transform search queries before sending
+them to ReactiveSearch/OpenSearch. Currently implements a stub that echoes
+back the input query.
+
+Service structure:
+- search-parser-service/app.rb: Sinatra-based REST API
+- GET /health: Health check endpoint
+- POST /parse: Query parsing endpoint (currently echoes input)
+- Runs on port 4567, accessible as http://search-parser:4567 in Docker
+- Added to compose.yaml with proper dependencies
+
+Future enhancements will add query expansion, synonym handling, and
+field-specific query parsing logic.

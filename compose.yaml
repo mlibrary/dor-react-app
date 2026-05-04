@@ -12,3 +12,15 @@ services:
     command:
       - "sleep"
       - "infinity"
+    depends_on:
+      - search-parser
+
+  search-parser:
+    build:
+      context: ./search-parser-service
+      dockerfile: Dockerfile
+    ports:
+      - "4567:4567"
+    volumes:
+      - ./search-parser-service:/app
+    restart: unless-stopped
