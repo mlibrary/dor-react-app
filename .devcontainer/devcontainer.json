@@ -22,5 +22,14 @@
   
   "mounts": [
     "source=${localWorkspaceFolder}/.idea,target=${containerWorkspaceFolder}/.idea,type=bind,consistency=cached"
-  ]
+  ],
+
+  "customizations": {
+    "jetbrains": {
+      "plugins": [
+        "com.intellij.ml.llm",
+        "com.github.copilot"
+      ]
+    }
+  }
 }
