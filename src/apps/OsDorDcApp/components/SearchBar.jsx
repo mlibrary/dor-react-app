@@ -21,7 +21,9 @@ function SearchBar({searchQuery, setSearchQuery, onSearch, onClear}) {
                         fontSize: '16px',
                         border: '2px solid #ddd',
                         borderRadius: '5px',
-                        outline: 'none'
+                        outline: 'none',
+                        color: '#213547',
+                        backgroundColor: '#ffffff'
                     }}
                     onFocus={(e) => e.target.style.borderColor = '#4CAF50'}
                     onBlur={(e) => e.target.style.borderColor = '#ddd'}

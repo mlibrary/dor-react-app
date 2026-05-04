@@ -116,6 +116,37 @@ button:focus-visible {
     }
 }
 
+/* Fix SearchBox input text visibility in both light and dark modes */
+input[type="text"],
+input[type="search"],
+textarea {
+    color: #213547 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #d9d9d9 !important;
+}
+
+input[type="text"]::placeholder,
+input[type="search"]::placeholder,
+textarea::placeholder {
+    color: #999999 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    input[type="text"],
+    input[type="search"],
+    textarea {
+        color: #213547 !important;
+        background-color: #ffffff !important;
+        border: 1px solid #d9d9d9 !important;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="search"]::placeholder,
+    textarea::placeholder {
+        color: #999999 !important;
+    }
+}
+
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;
@@ -128,5 +159,19 @@ button:focus-visible {
 
     button {
         background-color: #f9f9f9;
+    }
+
+    input[type="text"],
+    input[type="search"],
+    textarea {
+        color: #213547 !important;
+        background-color: #ffffff !important;
+        border: 1px solid #d9d9d9 !important;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="search"]::placeholder,
+    textarea::placeholder {
+        color: #999999 !important;
     }
 }
