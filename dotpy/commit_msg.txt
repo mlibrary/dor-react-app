@@ -1,9 +1,9 @@
-docs(DOR-151): pre-PR polish
-- Add "What We're Asking For" call-to-action section to discussion post
-- Add pairtree vs. OCFL hashed n-tuple note to Question 2 of discussion
-  post (HathiTrust analogy is conceptually useful but storage mechanics differ)
-- Fix solution-options.md header to accurately reference problem-statement.md
-  and note that operational isolation (Problem 4) is out of scope
-- Add plans/README.md: index of all 8 plans files with purpose, reading
-  order, and public-facing vs. internal classification
-- Update STATUS.md: mark review subtask complete, add next steps for posting
+chore: adapt agent files for React application
+
+- Update AGENTS.md: Replace Java/Gradle section with React/Node.js/Vite conventions
+- Update AGENT_PROMPT.md: Change description from dor-depot (Java) to dor-react-app (React)
+- Replace AGENT_QUIZ.md: Create 20-question React-focused quiz (was 30 Java questions)
+- Replace AGENT_QUIZ_ANSWERS.md: New answers matching React quiz
+- Update tasks/README.md: Remove Java-specific DOR-142 and DOR-146 tasks
+- Delete tasks/DOR-142/: Java ingest validation task not relevant to React app
+- Clear dotpy/commit_msg.txt: Remove Java-specific commit message from copy

@@ -7,8 +7,8 @@
 
 ## Prompt
 
-You are starting a new session in the `dor-depot` repository — a Java application
-built with Spring Boot, Spring Modulith, and OCFL for digital object preservation.
+You are starting a new session in the `dor-react-app` repository — a React application
+built with Vite, React Router, and Ant Design for digital repository front-end interfaces.
 
 **Before doing anything else, follow these steps in order:**
 

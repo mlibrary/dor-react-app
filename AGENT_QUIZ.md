@@ -1,4 +1,4 @@
-# Agent Onboarding Quiz — dor-depot
+# Agent Onboarding Quiz — dor-react-app
 
 > 🚫 **DO NOT read `AGENT_QUIZ_ANSWERS.md`** until you have written out answers to all
 > questions below and the developer has told you to compare. Reading the answer file
@@ -56,100 +56,89 @@ you run before committing, in order?
 
 ---
 
-**Q6.** Before committing changes to Java source files, what Gradle task should you run
-to auto-fix formatting, and what task confirms there are no remaining style violations?
-Write the exact commands as you would type them in the terminal, including any suffix
-needed to ensure output is captured without a pager.
+**Q6.** Before committing changes to JavaScript/JSX source files, what npm command should you run
+to check for linting errors? Write the exact command as you would type it in the terminal,
+including any suffix needed to ensure output is captured without a pager.
 
-*(Hint: `AGENTS.md` § Java / Gradle Conventions and § Command-Line Tool Usage)*
+*(Hint: `AGENTS.md` § React / Node.js / Vite Conventions and § Command-Line Tool Usage)*
 
 ---
 
 ## Section 2 — Project Structure and Build
 
-**Q7.** What Java version does this project require?
+**Q7.** What build tool and dev server does this project use?
 
-*(Hint: `build.gradle` — look for the `toolchain` block)*
-
----
-
-**Q8.** What is the main class of the application (the entry point Spring Boot will bootstrap)?
-
-*(Hint: `build.gradle` — look for `springBoot { mainClass = ... }`)*
+*(Hint: `package.json` scripts; `AGENTS.md` § React / Node.js / Vite Conventions)*
 
 ---
 
-**Q9.** Name the Spring Modulith modules in this project (by their Java package names
-relative to `edu.umich.lib.dor.depot`).
+**Q8.** What command starts the development server, and what command creates a
+production build?
 
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/` — identify the sub-packages that represent Modulith modules, excluding support packages such as `config` if they are not modules)*
-
----
-
-**Q10.** What are the three application-specific path properties defined in
-`src/main/resources/application.properties`? Give the property key and its default value
-for each.
-
-*(Hint: `src/main/resources/application.properties`)*
+*(Hint: `package.json` scripts)*
 
 ---
 
-**Q11.** What two infrastructure services does the application require at runtime, and
-how are they managed in the local development environment?
+**Q9.** Name the two application modules in this project (by their directory names under `src/apps/`).
 
-*(Hint: `compose.yaml`; `README.md` § Usage)*
-
----
-
-**Q12.** What command starts the application as a running service?
-What command runs the full JUnit test suite?
-
-*(Hint: `README.md` § Usage)*
+*(Hint: `src/apps/` directory structure)*
 
 ---
 
-## Section 3 — Domain Concepts and Object Lifecycle
+**Q10.** What UI component library is used in this project? Name the package.
 
-**Q13.** What is a "Curio"? Describe its directory structure precisely — name the
-directories involved and what kind of file lives in each. Where can you find a
-concrete example of a Curio in the repository?
-
-*(Hint: `README.md` § Development — Ingesting Curios; inspect the fixture at
-`src/test/resources/inbox/e145de0c-8ffb-49fc-af26-c5b735622b3e`;
-`src/main/java/edu/umich/lib/dor/depot/preservation/HeaderFileUtility.java`)*
+*(Hint: `package.json` dependencies)*
 
 ---
 
-**Q14.** `AdminController` exposes four `POST` endpoints under `/admin`.
-Name all four paths, the query parameter(s) each accepts, and the Spring
-Modulith event each one publishes.
+**Q11.** What is the purpose of the `@appbaseio/reactivesearch` package in this project?
+What type of backend does it connect to?
 
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/console/AdminController.java`)*
-
----
-
-**Q15.** Trace the **complete** event flow that occurs after `POST /admin/submit` is called
-with a `packageId`. Name each Spring Modulith event and the service class that handles it,
-in order — including any events published on the **error path**.
-
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/console/AdminController.java`;
-`src/main/java/edu/umich/lib/dor/depot/preservation/PackageImportService.java`;
-`src/main/java/edu/umich/lib/dor/depot/preservation/IntakeService.java`)*
+*(Hint: `package.json` dependencies; `src/apps/OsDorDcApp/services/openSearchService.js`)*
 
 ---
 
-**Q16.** What storage format does `OcflPreservationGateway` use to persist digital objects,
-and what layout algorithm does it use when building the repository on disk?
+**Q12.** Where are React components that are specific to an application module stored?
+Give the path pattern.
 
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/preservation/OcflPreservationGateway.java`)*
+*(Hint: `AGENTS.md` § React / Node.js / Vite Conventions — Project structure)*
 
 ---
 
-**Q17.** `IntakeService.process()` stages and then optionally commits changes depending on
-a field in the submission label. What is that field, and what value triggers an immediate
-commit?
+## Section 3 — Application Modules
 
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/preservation/IntakeService.java`)*
+**Q13.** Look at `src/apps/OsDorDcApp/index.jsx`. What main search component from
+`@appbaseio/reactivesearch` is used to provide the search interface?
+
+*(Hint: `src/apps/OsDorDcApp/index.jsx`)*
+
+---
+
+**Q14.** In the `OsDorDcApp` module, how many custom filter components are defined
+under `src/apps/OsDorDcApp/components/`? Name each one.
+
+*(Hint: `src/apps/OsDorDcApp/components/` directory)*
+
+---
+
+**Q15.** Look at `src/apps/OsDorDcApp/utils/constants.js`. What OpenSearch/Elasticsearch
+field is used as the data field for the search query component?
+
+*(Hint: `src/apps/OsDorDcApp/utils/constants.js`)*
+
+---
+
+**Q16.** What is the purpose of the `dompurify` package, and where in the codebase
+would you expect to see it used?
+
+*(Hint: `package.json` dependencies; consider what it's commonly used for in React apps)*
+
+---
+
+**Q17.** Look at `src/App.jsx`. What routing library is used, and what is the
+route path that renders the `OsDorDcApp` component?
+
+*(Hint: `src/App.jsx`)*
 
 ---
 
@@ -158,7 +147,7 @@ commit?
 **Q18.** Look at `tasks/README.md`. List every currently active ticket with its key and a
 one-sentence summary of what it is working on.
 
-*(Hint: `tasks/README.md` and each active `tasks/DOR-nnn/STATUS.md`)*
+*(Hint: `tasks/README.md`)*
 
 ---
 
@@ -169,109 +158,22 @@ subtask. What are the steps required to archive it, and where does the task dire
 
 ---
 
-## Section 5 — Reset and Maintenance
+**Q20.** What should you update at the end of every work session before committing?
+Name the file and the specific sections within it.
 
-**Q20.** How do you fully reset the local development environment (clear the OCFL repository
-**and** the database) so the application starts from a clean state?
-List each step in order.
-
-*(Hint: `README.md` § Development — Ingesting Curios)*
+*(Hint: `AGENTS.md` § Session State)*
 
 ---
 
-## Section 6 — Submission Packaging
-
-**Q21.** Every submission package must contain a label file at its root. What is
-that file called, and what are its six required fields (give the exact key names
-as they appear in the file)?
-
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/preservation/SubmissionLabel.java`;
-inspect `src/test/resources/inbox/e145de0c-8ffb-49fc-af26-c5b735622b3e/dor-info.txt`)*
-
----
-
-**Q22.** What are the three valid values for the `Resource-Type` field in `dor-info.txt`?
-Give both the string value written in the file and the enum constant name for each.
-
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/preservation/ResourceType.java`)*
-
----
-
-**Q23.** What are the two valid values for the `Action` field in `dor-info.txt`?
-Describe the behavioural difference: what happens to OCFL changes when each value
-is used during ingest?
-
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/preservation/SubmissionAction.java`;
-`src/main/java/edu/umich/lib/dor/depot/preservation/IntakeService.java` lines 83–86)*
-
----
-
-**Q24.** After `IntakeService` publishes `BinContentsModified`, what service handles
-that event? What does it do, and what event does it publish when it completes
-successfully?
-
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/preservation/CatalogService.java`)*
-
----
-
-**Q25.** `POST /admin/publish` triggers a `PublishDraft` event. What service handles
-`PublishDraft`, and what are **all possible outcomes** — describe every code path,
-including the case where no event is published at all.
-
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/preservation/DraftPublicationService.java`)*
-
----
-
-**Q26.** What are the four database tables created by `schema.sql`?
-Give the table name and a one-sentence description of what each one stores.
-
-*(Hint: `src/main/resources/schema.sql`)*
-
----
-
-**Q27.** `IntegrityService` handles two different commands. For each one,
-name the command, the gateway method it calls, and all possible outcome events
-(success, failure, and missing-object cases).
-
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/preservation/IntegrityService.java`)*
-
----
-
-**Q28.** The console web UI is served by `ObjectController` at the `/console`
-prefix. It has four `GET` endpoints. Name all four paths and state what each one
-does (what it renders or streams).
-
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/console/ObjectController.java`)*
-
----
-
-**Q29.** `WorkingStorage.importPackage()` copies a package directory into working
-storage and returns a `SubmissionId`. What static method generates the
-`SubmissionId`, and what class reads and validates the package's label from disk?
-
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/preservation/WorkingStorage.java`;
-`src/main/java/edu/umich/lib/dor/depot/preservation/SubmissionLabel.java`)*
-
----
-
-**Q30.** Cross-module communication in this Spring Modulith application must go
-through published application events. However, the `console` module does directly
-inject two beans from the `preservation` module in `ObjectController`. Name those
-two beans, and explain why this is intentional (what kind of operations do they
-serve versus what goes through events)?
-
-*(Hint: `src/main/java/edu/umich/lib/dor/depot/console/ObjectController.java`;
-`AGENTS.md` § Java / Gradle Conventions — Module boundaries)*
-
----
-
-## When You Have Answered All 30 Questions
+## When You Have Answered All 20 Questions
 
 Stop here. Do **not** open `AGENT_QUIZ_ANSWERS.md`.
 
 Tell the developer:
 
-> "I have answered all 30 quiz questions. Please open `AGENT_QUIZ_ANSWERS.md` to grade
+> "I have answered all 20 quiz questions. Please open `AGENT_QUIZ_ANSWERS.md` to grade
 > my answers, or let me know when I may read it to self-grade."
 
 Wait for the developer's instruction before proceeding.
+
+

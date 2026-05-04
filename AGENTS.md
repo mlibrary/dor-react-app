@@ -235,22 +235,28 @@ git commit -m "chore: single line message" | cat
   - To validate alignment after editing, run: `python3 dotpy/check_tables.py <file.md>` — exits `0` if all tables are consistent, `1` with error details if not.
   - If a table requires very long lines (e.g., > 120 characters per row), prefer using a shorter link display text or a bullet-list format instead of a wide table.
 
-## Java / Gradle Conventions
+## React / Node.js / Vite Conventions
 
-- **Build tool**: Gradle with the Gradle wrapper (`./gradlew`). Never install or invoke a system `gradle` directly — always use `./gradlew` so the pinned version is used.
-- **Imports**: Always use import statements for annotations and types in method parameters and signatures, rather than fully qualified class names. Prefer imports throughout the code — including within method bodies and logic — instead of fully qualified class names.
-- **Code style**: Spotless is configured with Palantir Java Format (AOSP style). Before committing Java files, run:
+- **Package manager**: Use `npm` for all dependency management. Never use `yarn` or `pnpm` unless the developer explicitly requests it.
+- **Imports**: Always use ES6 import syntax. Use named imports for utilities and components; default imports for React components that are the primary export of a file.
+- **Code style**: ESLint is configured for React. Before committing, run:
   ```shell
-  ./gradlew spotlessApply | cat
+  npm run lint | cat
   ```
-  Then confirm there are no remaining issues:
-  ```shell
-  ./gradlew spotlessCheck | cat
-  ```
-- **Tests**: Use JUnit 5 with `./gradlew test`. Tests require Docker to be running (PostgreSQL and RabbitMQ are managed via Testcontainers).
-- **Running the app**: `./gradlew bootRun` starts the application. Docker must be running first (PostgreSQL + RabbitMQ via `compose.yaml`).
-- **Module boundaries**: This project uses Spring Modulith. Each top-level package under `edu.umich.lib.dor.depot` is a module. Cross-module communication must go through published application events — never call internal service classes from another module directly.
-- **Application properties**: Configuration lives in `src/main/resources/application.properties`. Key properties:
-  - `dor.inbox.path` — where incoming packages are placed before processing
-  - `dor.workingStorage.path` — transient working area during ingest
-  - `dor.ocfl.path` — root of the OCFL repository on disk
+- **Development server**: `npm run dev` starts the Vite development server (typically on `http://localhost:5173`).
+- **Building**: `npm run build` creates a production build in the `dist/` directory.
+- **Project structure**:
+  - `src/` — all source code
+  - `src/apps/` — application modules/pages (e.g., `OsDorDcApp`, `RsDorDcApp`)
+  - `src/apps/*/components/` — React components specific to an app
+  - `src/apps/*/services/` — API clients and data services
+  - `src/apps/*/utils/` — utility functions and constants
+  - `src/assets/` — static assets (images, icons, etc.)
+  - `public/` — public static files served at root
+- **Key dependencies**:
+  - `react` + `react-dom` — React framework
+  - `react-router-dom` — client-side routing
+  - `antd` — Ant Design UI component library
+  - `@appbaseio/reactivesearch` — Elasticsearch/OpenSearch search UI components
+  - `dompurify` — HTML sanitization
+  - `vite` — build tool and dev server

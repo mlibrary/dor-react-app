@@ -7,10 +7,9 @@ rules, see [`AGENTS.md`](../AGENTS.md).
 
 ## Active Tasks
 
-| Ticket  | Branch                                   | Summary                                                                                 |
-|---------|------------------------------------------|-----------------------------------------------------------------------------------------|
-| DOR-142 | `DOR-142/ingest-validation`              | Implement ingest validation (Roger Algorithm) and rename IntegrityCheck* → FixityCheck* |
-| DOR-146 | `DOR-146/agent-options-and-implications` | Document agent design choices and trade-offs in dor-depot preservation metadata         |
+| Ticket       | Branch | Summary |
+|--------------|--------|---------|
+| *(none yet)* |        |         |
 
 ---
 
