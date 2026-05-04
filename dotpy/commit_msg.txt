@@ -1,9 +1,3 @@
-chore: adapt agent files for React application
-
-- Update AGENTS.md: Replace Java/Gradle section with React/Node.js/Vite conventions
-- Update AGENT_PROMPT.md: Change description from dor-depot (Java) to dor-react-app (React)
-- Replace AGENT_QUIZ.md: Create 20-question React-focused quiz (was 30 Java questions)
-- Replace AGENT_QUIZ_ANSWERS.md: New answers matching React quiz
-- Update tasks/README.md: Remove Java-specific DOR-142 and DOR-146 tasks
-- Delete tasks/DOR-142/: Java ingest validation task not relevant to React app
-- Clear dotpy/commit_msg.txt: Remove Java-specific commit message from copy
+# Placeholder commit message file
+# This file is used by dotpy/commit.py to avoid shell quoting issues
+# Write your commit message here, then run: python3 dotpy/commit.py

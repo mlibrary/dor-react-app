@@ -60,8 +60,6 @@ function RsDorDcApp() {
         // Index Version
         params.append('entry.1352964690', '1');
 
-        // Timestamp
-        params.append('entry.1700152720', new Date().toISOString());
 
         // Search query - use override if provided, otherwise use ref
         const queryValue = searchQueryOverride !== undefined ? searchQueryOverride : searchQueryRef.current;
