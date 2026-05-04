@@ -15,20 +15,24 @@ A prominent button appears below the search box:
 ```
 
 ### 2. Prepopulated Google Form Fields
-When clicked, the button opens your Google Form with three prepopulated fields:
+When clicked, the button opens your Google Form with four prepopulated fields:
 
-| Field | Value | Source |
-|-------|-------|--------|
-| **Index Version** | `dor-dc` | The search index name |
-| **Search Query** | User's search text | Captured from SearchBox onChange |
-| **Top 5 Results** | Numbered list of titles | Extracted from search results |
+| Field             | Value                               | Source                                      |
+|-------------------|-------------------------------------|---------------------------------------------|
+| **Identifier**    | UUID (e.g., `abc-123-def`)          | Generated unique ID for each submission     |
+| **Index Version** | `1`                                 | Version number of the search implementation |
+| **Search Query**  | User's search text + active filters | Captured from SearchBox and filter state    |
+| **Top 5 Results** | Numbered list of titles             | Extracted from search results               |
 
 ### 3. Data Handling
+- ✅ Generates unique UUID identifier for each submission
+- ✅ Captures active filters and includes them with search query
 - ✅ Handles `dc_ti` as both string and array
 - ✅ Strips HTML tags from titles
 - ✅ URL-encodes parameters automatically
 - ✅ Opens form in new tab with proper security attributes
 - ✅ Console logging for debugging
+- ✅ Uses memoization to avoid unnecessary recreations
 
 ---
 
@@ -159,27 +163,28 @@ https://docs.google.com/forms/d/e/1FAIpQLSehpVZ-rcfsvv9fTlRwIpO2JR7fx29pveSh9A7d
 
 ## Files Modified/Created
 
-| File | Status | Purpose |
-|------|--------|---------|
-| `/src/apps/RsDorDcApp/index.jsx` | ✏️ Modified | Main implementation |
-| `GOOGLE-FORM-SETUP.md` | ✨ Created | Setup instructions |
-| `FEEDBACK-IMPLEMENTATION-SUMMARY.md` | ✨ Created | Technical details |
-| `QUICK-START.md` | ✨ Created | Quick start guide |
-| `FEEDBACK-COMPLETE.md` | ✨ Created | This file - final summary |
+| File                                 | Status      | Purpose                   |
+|--------------------------------------|-------------|---------------------------|
+| `/src/apps/RsDorDcApp/index.jsx`     | ✏️ Modified | Main implementation       |
+| `GOOGLE-FORM-SETUP.md`               | ✨ Created   | Setup instructions        |
+| `FEEDBACK-IMPLEMENTATION-SUMMARY.md` | ✨ Created   | Technical details         |
+| `QUICK-START.md`                     | ✨ Created   | Quick start guide         |
+| `FEEDBACK-COMPLETE.md`               | ✨ Created   | This file - final summary |
 
 ---
 
 ## Maintenance Notes
 
 ### If Entry IDs Change
-If you ever need to update the Google Form fields, you'll need to update three lines in `/src/apps/RsDorDcApp/index.jsx`:
+If you ever need to update the Google Form fields, you'll need to update four lines in `/src/apps/RsDorDcApp/index.jsx`:
 
-- Line ~57: `params.append('entry.XXXXXX', 'dor-dc');`
-- Line ~61: `params.append('entry.XXXXXX', searchQuery);`
-- Line ~72: `params.append('entry.XXXXXX', top5Results);`
+- Line ~71: `params.append('entry.886322516', identifier);` - Unique identifier
+- Line ~74: `params.append('entry.1352964690', '1');` - Index version
+- Line ~107: `params.append('entry.396741779', fullQuery);` - Search query + filters
+- Line ~123: `params.append('entry.1552271952', top5Results);` - Top 5 results
 
-### If Index Name Changes
-Update line ~57 to change the index version value from `'dor-dc'` to your new index name.
+### If Index Version Changes
+Update line ~74 to change the index version value from `'1'` to your new version number.
 
 ---
 

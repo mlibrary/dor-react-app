@@ -8,13 +8,14 @@
 
 2. Click the **Preview** button (eye icon 👁️) in the top right
 
-3. Right-click on the **first field** (Index Version) → Select **"Inspect Element"**
+3. Right-click on the **first field** (Identifier) → Select **"Inspect Element"**
 
 4. Look for something like: `<input ... name="entry.1234567890" ...>`
 
 5. Copy the number after `entry.` (e.g., `1234567890`)
 
-6. Repeat for the other two fields:
+6. Repeat for the other three fields:
+   - **Index Version** field → Get its entry ID
    - **Search Query** field → Get its entry ID
    - **Top 5 Results** field → Get its entry ID
 
@@ -24,25 +25,32 @@
 
 Open: `/src/apps/RsDorDcApp/index.jsx`
 
-Find these 3 lines and replace the numbers:
+Find these 4 lines and replace the numbers:
 
-**Line 54** - Index Version field:
+**Line 71** - Identifier field:
 ```javascript
-params.append('entry.123456789', 'dor-dc');
+params.append('entry.123456789', identifier);
                      ^^^^^^^^^ 
                      Replace with your actual entry ID
 ```
 
-**Line 58** - Search Query field:
+**Line 74** - Index Version field:
 ```javascript
-params.append('entry.987654321', searchQuery);
+params.append('entry.987654321', '1');
                      ^^^^^^^^^ 
                      Replace with your actual entry ID
 ```
 
-**Line 69** - Top 5 Results field:
+**Line 107** - Search Query field:
 ```javascript
-params.append('entry.555666777', top5Results);
+params.append('entry.555666777', fullQuery);
+                     ^^^^^^^^^ 
+                     Replace with your actual entry ID
+```
+
+**Line 123** - Top 5 Results field:
+```javascript
+params.append('entry.111222333', top5Results);
                      ^^^^^^^^^ 
                      Replace with your actual entry ID
 ```
@@ -65,15 +73,16 @@ params.append('entry.555666777', top5Results);
    - Google Form should open in a new tab
 
 4. **Verify the form is prepopulated:**
-   - ✅ Index Version shows "dor-dc"
-   - ✅ Search Query shows your search text
+   - ✅ Identifier shows a unique UUID (e.g., "abc-123-def-456")
+   - ✅ Index Version shows "1"
+   - ✅ Search Query shows your search text (with filters if any were active)
    - ✅ Top 5 Results shows numbered list of titles
 
 ---
 
 ## ✅ Done!
 
-If all three fields are prepopulated correctly, you're all set! 🎉
+If all four fields are prepopulated correctly, you're all set! 🎉
 
 ---
 
@@ -81,7 +90,7 @@ If all three fields are prepopulated correctly, you're all set! 🎉
 
 **Fields not prepopulated?**
 - Double-check you have the correct entry IDs
-- Make sure you replaced ALL three placeholder IDs
+- Make sure you replaced ALL four placeholder IDs
 - Ensure the form allows prefilled responses (check form settings)
 
 **Can't find entry IDs?**
@@ -100,8 +109,9 @@ Here's what your updated code should look like (with your actual IDs):
 
 ```javascript
 // Example with real entry IDs (yours will be different numbers)
-params.append('entry.1847264905', 'dor-dc');           // Index Version
-params.append('entry.2034859273', searchQuery);        // Search Query  
-params.append('entry.1923847562', top5Results);        // Top 5 Results
+params.append('entry.886322516', identifier);      // Identifier (UUID)
+params.append('entry.1352964690', '1');            // Index Version
+params.append('entry.396741779', fullQuery);       // Search Query + Filters
+params.append('entry.1552271952', top5Results);    // Top 5 Results
 ```
 

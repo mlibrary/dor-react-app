@@ -12,7 +12,7 @@
 
 - **Never read `AGENT_QUIZ_ANSWERS.md` before completing the quiz.** When taking the
   `AGENT_QUIZ.md` onboarding quiz, do not open or read `AGENT_QUIZ_ANSWERS.md` until
-  you have written out answers to all 30 questions **and** the developer has explicitly
+  you have written out answers to all 20 questions **and** the developer has explicitly
   told you to compare. Reading the answer file in advance defeats the purpose of the quiz.
 
 ## Session State (`tasks/DOR-nnn/STATUS.md`)

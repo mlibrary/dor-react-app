@@ -23,9 +23,9 @@ built with Vite, React Router, and Ant Design for digital repository front-end i
 
 3. **Take the onboarding quiz in `AGENT_QUIZ.md`** — answer every question by
    looking up the answer in the actual project files (do not rely on memory or
-   training data). When you have answered all 30 questions, stop and tell me:
+   training data). When you have answered all 20 questions, stop and tell me:
 
-   > "I have answered all 30 quiz questions. Please open `AGENT_QUIZ_ANSWERS.md`
+   > "I have answered all 20 quiz questions. Please open `AGENT_QUIZ_ANSWERS.md`
    > to grade my answers, or let me know when I may read it to self-grade."
 
 Do not read `AGENT_QUIZ_ANSWERS.md` until I explicitly tell you to.
