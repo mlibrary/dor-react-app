@@ -151,17 +151,17 @@ one-sentence summary of what it is working on.
 
 ---
 
-**Q19.** A task in `tasks/DOR-nnn/TODO.md` has all subtasks checked off including the developer-verification
-subtask. What are the steps required to archive it, and where does the task directory move to?
+**Q19.** A ticket's PR has been merged to main. What are the steps required to archive the
+ticket (on the `agents` branch), and where does the task directory move to?
 
-*(Hint: `AGENTS.md` § Task Tracking)*
+*(Hint: `AGENTS.md` § Task Tracking — "Completing a ticket" section; `tasks/README.md` — "Completing a ticket" section)*
 
 ---
 
-**Q20.** What should you update at the end of every work session before committing?
-Name the file and the specific sections within it.
+**Q20.** What file should you update at the end of every work session before committing?
+Name the file and list all sections that should be updated either during or at the end of the session.
 
-*(Hint: `AGENTS.md` § Session State)*
+*(Hint: `AGENTS.md` § Session State — "During a session" and "At the end of every session" instructions)*
 
 ---
 
