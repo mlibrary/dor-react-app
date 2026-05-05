@@ -116,6 +116,8 @@ Short description of the overall goal.
 
 - **Before executing any multi-step plan**, record it in `TODO.md` first. Do not
   begin execution until the plan is recorded so work is always resumable.
+- **After recording a plan**, ask the developer to review it before starting any work.
+  Wait for explicit approval before proceeding with implementation.
 - **Check off subtasks** (`- [x]`) as they are completed.
 - **Every task must end with a developer-verification subtask** as its final item.
   When reached, ask: *"Are there any additional subtasks needed before this task is complete?"*
