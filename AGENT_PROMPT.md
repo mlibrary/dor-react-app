@@ -1,7 +1,11 @@
 # New Session Startup Prompt
 
-> Copy and paste the block below into a new agent session, or tell the agent:
-> **"Read AGENT_PROMPT.md and follow the instructions there."**
+> Copy and paste the block below into a new agent session, or tell the agent
+> (click the copy button 📋 on the line below):
+>
+> ```text
+> Read AGENT_PROMPT.md and follow the instructions there.
+> ```
 
 ---
 
