@@ -21,12 +21,27 @@ import {parseSearchQuery, checkParserHealth} from './services/searchParserServic
 // This ensures Unicode characters are displayed correctly
 const sanitizeHtml = (html) => {
     if (!html) return '';
+
+    // Normalize input: handle arrays by joining, then coerce to string
+    let htmlString = html;
+    if (Array.isArray(html)) {
+        htmlString = html.join(', ');
+    } else {
+        htmlString = String(html);
+    }
+
     // DOMPurify sanitizes the HTML to prevent XSS attacks
     // It also properly decodes HTML entities like &eacute; → é
-    return DOMPurify.sanitize(html, {
+    const sanitized = DOMPurify.sanitize(htmlString, {
         ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'br', 'p', 'span'],
-        ALLOWED_ATTR: ['href', 'target', 'rel']
+        ALLOWED_ATTR: ['href', 'rel']
     });
+
+    // Note: We don't allow 'target' attribute to avoid reverse-tabnabbing risks.
+    // If external links need to open in new tabs, they should be handled
+    // explicitly in the JSX with proper rel="noopener noreferrer" attributes.
+
+    return sanitized;
 };
 
 function RsDorDcApp() {
