@@ -36,14 +36,21 @@ Following TDD approach: Research → Tests → Implementation → Documentation
 - Added mlibrary_search_parser to .gitignore
 - Examined mlibrary_search_parser architecture (Parslet → AST → Transformer)
 - Created integration analysis document with 4 options
-- **Developer decision: Option 1 (add transformer to gem)**
-- **Configuration approach: Simple one-at-a-time format selection**
-- **✅ Task 1 complete: All subtasks checked off**
+- Developer decision: Option 1 (add transformer to gem)
+- Configuration approach: Simple one-at-a-time format selection
+- ✅ Task 1 complete: All subtasks checked off
+- **✅ Parser setup complete:**
+  - Cloned mlibrary_search_parser to project root
+  - Created branch `DOR-159/opensearch-query-dsl` off main
+  - Ready to begin test development
 - Ready to begin Task 2 (write tests for OpenSearch transformer)
 
 ## Key Context
 - The search-parser microservice already exists as a stub at `search-parser-service/`
-- mlibrary_search_parser gem is controlled and maintained by the team
+- **mlibrary_search_parser setup:**
+  - Cloned to `/workspaces/dor-react-app/mlibrary_search_parser/` (gitignored)
+  - Working branch: `DOR-159/opensearch-query-dsl` (off main)
+  - Team controls and maintains this gem
 - Parser architecture: Parslet → AST (Node objects) → Transformer → Output
 - Current transformer: `transform/solr/json_edismax.rb`
 - **Decision: Add OpenSearch transformer at `transform/opensearch/query_dsl.rb`**
