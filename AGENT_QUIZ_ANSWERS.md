@@ -9,9 +9,9 @@
 
 ## Section 1 — Ground Rules (AGENTS.md)
 
-**A1.** Record the plan in `tasks/DOR-nnn/TODO.md` first before beginning execution, so that work is always resumable.
+**A1.** Record the plan in `tasks/DOR-nnn/TODO.md` first before beginning execution, so that work is always resumable. After recording the plan, ask the developer to review it and wait for explicit approval before starting any work.
 
-*(Source: `AGENTS.md` § Task Tracking — "Before executing any multi-step plan, record it in `TODO.md` first. Do not begin execution until the plan is recorded so work is always resumable.")*
+*(Source: `AGENTS.md` § Task Tracking — "Before executing any multi-step plan, record it in `TODO.md` first. Do not begin execution until the plan is recorded so work is always resumable." and "After recording a plan, ask the developer to review it before starting any work. Wait for explicit approval before proceeding with implementation.")*
 
 ---
 

@@ -21,7 +21,7 @@
 ## Section 1 — Ground Rules (AGENTS.md)
 
 **Q1.** You are about to start a multi-step task. What must you do *before* executing
-the first step?
+the first step, and what must you do after recording the plan?
 
 *(Hint: `AGENTS.md` § Task Tracking)*
 
