@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-05 - Task 2 complete: Comprehensive test suite written (TDD), ready for Task 3 (implementation)
+2026-05-05 - Task 2 complete, Ruby added to dev container, ready to rebuild and start Task 3
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -40,14 +40,18 @@ Following TDD approach: Research → Tests → Implementation → Documentation
 - Configuration approach: Simple one-at-a-time format selection
 - ✅ Task 1 complete: All subtasks checked off
 - ✅ Parser setup complete: Cloned parser, created DOR-159/opensearch-query-dsl branch
-- **✅ Task 2 complete: Test suite written (TDD):**
+- ✅ Task 2 complete: Test suite written (TDD):
   - Created `spec/opensearch_transforms/query_dsl_spec.rb` (290 lines)
   - Comprehensive coverage: TokensNode, AndNode, OrNode, NotNode, FieldedNode, SearchNode
   - Tests for complex nested queries and edge cases
   - API integration tests (to_opensearch_query method)
   - Committed to parser branch (commit 61c2680)
   - All tests expected to fail until implementation (Red phase of TDD)
-- Ready to begin Task 3 (implement OpenSearch transformer to make tests pass)
+- **Added Ruby to dev container:**
+  - Updated `.devcontainer/Dockerfile` with ruby-full, ruby-bundler, build-essential
+  - Committed (60564bc)
+  - **Container rebuild required before Task 3**
+- Ready to begin Task 3 after container rebuild
 
 ## Key Context
 - The search-parser microservice already exists as a stub at `search-parser-service/`
@@ -74,7 +78,12 @@ Following TDD approach: Research → Tests → Implementation → Documentation
 ## Next Steps
 1. ✅ Task 1 complete - Integration approach decided
 2. ✅ Task 2 complete - Comprehensive test suite written
-3. **Begin Task 3 - Implement OpenSearch Transformer:**
+3. **⚠️  Rebuild dev container** (Ruby added to Dockerfile)
+   - Command Palette → "Dev Containers: Rebuild Container"
+   - Or restart IntelliJ dev container
+4. **Begin Task 3 - Implement OpenSearch Transformer:**
+   - Verify Ruby/Bundler available: `ruby --version && bundle --version`
+   - Install parser dependencies: `cd mlibrary_search_parser && bundle install`
    - Create `lib/mlibrary_search_parser/transform/opensearch/` directory
    - Create `query_dsl.rb` transformer class
    - Implement TokensNode transformation (match/match_phrase)
@@ -87,5 +96,5 @@ Following TDD approach: Research → Tests → Implementation → Documentation
    - Add to_opensearch_query method to Search class
    - Run tests and iterate until all pass (Green phase of TDD)
    - Refactor code for clarity and maintainability
-4. Task 4: Update documentation with configuration and examples
+5. Task 4: Update documentation with configuration and examples
 
