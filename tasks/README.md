@@ -7,9 +7,10 @@ rules, see [`AGENTS.md`](../AGENTS.md).
 
 ## Active Tasks
 
-| Ticket  | Branch               | Summary                                                                       |
-|---------|----------------------|-------------------------------------------------------------------------------|
-| DOR-158 | DOR-158/ui-bug-fixes | Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode |
+| Ticket  | Branch                            | Summary                                                                       |
+|---------|-----------------------------------|-------------------------------------------------------------------------------|
+| DOR-158 | DOR-158/ui-bug-fixes              | Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode |
+| DOR-159 | DOR-159/query-parser-microservice | Query parser microservice: Convert Solr output to OpenSearch compatible       |
 
 ---
 
