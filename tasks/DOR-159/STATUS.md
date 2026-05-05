@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-05 - Task 2 complete, Ruby added to dev container, ready to rebuild and start Task 3
+2026-05-05 - New agent session: Completed onboarding quiz, updated documentation to current state
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -52,6 +52,12 @@ Following TDD approach: Research → Tests → Implementation → Documentation
   - Committed (60564bc)
   - **Container rebuild required before Task 3**
 - Ready to begin Task 3 after container rebuild
+- **New agent session (2026-05-05):**
+  - Completed onboarding quiz (AGENT_QUIZ.md) - all 20 questions answered from project files
+  - Self-graded using AGENT_QUIZ_ANSWERS.md - 20/20 correct
+  - Updated AGENT_QUIZ_ANSWERS.md A18 to reflect both active tickets (DOR-158 and DOR-159)
+  - Verified all markdown table formatting across project (all tables OK)
+  - Committed documentation updates (8cdc5d4)
 
 ## Key Context
 - The search-parser microservice already exists as a stub at `search-parser-service/`
