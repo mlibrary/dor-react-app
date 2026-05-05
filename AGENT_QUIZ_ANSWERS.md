@@ -117,8 +117,9 @@
 
 ## Section 4 — Active Work and Task Management
 
-**A18.** There is one currently active ticket:
+**A18.** There are two currently active tickets:
 - **DOR-158** (branch: `DOR-158/ui-bug-fixes`): Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode
+- **DOR-159** (branch: `DOR-159/query-parser-microservice`): Query parser microservice: Convert Solr output to OpenSearch compatible
 
 *(Source: `tasks/README.md` — Active Tasks table)*
 
