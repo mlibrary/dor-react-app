@@ -5,14 +5,14 @@ Add OpenSearch output formatting to the existing Ruby query parser. The parser c
 ## Task 1: Research and Document Parser Architecture and OpenSearch Syntax
 Understand the existing query parser and document how to add OpenSearch output formatting.
 
-- [ ] Examine the existing Ruby query parser code and architecture
-- [ ] Understand how the parse tree is currently structured
-- [ ] Document how the parser currently generates Solr syntax from the parse tree
-- [ ] Research OpenSearch query string syntax and DSL
-- [ ] Document the mapping between parse tree nodes and OpenSearch syntax
-- [ ] Create specification for OpenSearch output formatter in `tasks/DOR-159/plans/`
-- [ ] Verify the current state of the project achieves the task goal
-- [ ] Verify with the developer that the task is complete
+- [x] Examine the existing Ruby query parser code and architecture
+- [x] Understand how the parse tree is currently structured
+- [x] Document how the parser currently generates Solr syntax from the parse tree
+- [x] Research OpenSearch query string syntax and DSL
+- [x] Document the mapping between parse tree nodes and OpenSearch syntax
+- [x] Create specification for OpenSearch output formatter in `tasks/DOR-159/plans/`
+- [x] Verify the current state of the project achieves the task goal
+- [x] Verify with the developer that the task is complete
 
 ## Task 2: Write Tests for OpenSearch Output Formatter
 Write comprehensive tests before implementing the OpenSearch formatter (TDD approach).

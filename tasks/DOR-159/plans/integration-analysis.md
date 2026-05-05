@@ -224,8 +224,59 @@ opensearch_query = search.to_opensearch_query
 ## Questions for Developer
 
 1. Do you control the upstream `mlibrary_search_parser` gem?
-2. Is the gem actively maintained?
+2. Is it actively maintained?
 3. Would you want to contribute OpenSearch support back upstream?
 4. Do you need to support both Solr and OpenSearch simultaneously?
 5. Are there other DOR projects that could benefit from OpenSearch support?
+
+---
+
+## Decision (2026-05-05)
+
+**Selected Approach: Option 1 - Add OpenSearch Transformer to Gem**
+
+**Context:**
+- Team controls and maintains the `mlibrary_search_parser` gem
+- Only need one output format at a time (not simultaneous Solr + OpenSearch)
+- Can modify gem directly without upstream constraints
+
+**Implementation Strategy:**
+
+1. **Add OpenSearch transformer module** at `lib/mlibrary_search_parser/transform/opensearch/query_dsl.rb`
+
+2. **Configuration-based format selection:**
+   ```ruby
+   # Simple approach - one format at a time
+   config = {
+     output_format: :opensearch  # or :solr
+     # ... other config
+   }
+   
+   search = MLibrarySearchParser::Search.new("query", config)
+   query_output = search.to_query  # dispatches to correct transformer
+   ```
+
+3. **Node transformation mapping:**
+   - `TokensNode` → OpenSearch `match` or `query_string`
+   - `AndNode` → OpenSearch `bool` with `must`
+   - `OrNode` → OpenSearch `bool` with `should`
+   - `NotNode` → OpenSearch `bool` with `must_not`
+   - `FieldedNode` → OpenSearch field-specific queries
+   - `SearchNode` → Wrap in OpenSearch query structure
+
+4. **Follow TDD:** Write comprehensive tests before implementation
+
+**Benefits of This Approach:**
+- ✅ Clean, maintainable architecture
+- ✅ Reusable across DOR projects
+- ✅ Simple configuration (no simultaneous format complexity)
+- ✅ Direct AST → OpenSearch (no translation layer)
+- ✅ Can version and distribute gem updates
+
+**Next Steps:**
+- Task 1: ✅ Complete (this analysis)
+- Task 2: Write comprehensive test suite for OpenSearch transformer
+- Task 3: Implement OpenSearch transformer to make tests pass
+- Task 4: Update documentation with configuration and examples
+
 
