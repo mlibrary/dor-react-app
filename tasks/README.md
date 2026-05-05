@@ -7,9 +7,9 @@ rules, see [`AGENTS.md`](../AGENTS.md).
 
 ## Active Tasks
 
-| Ticket       | Branch | Summary |
-|--------------|--------|---------|
-| *(none yet)* |        |         |
+| Ticket  | Branch               | Summary                                                                       |
+|---------|----------------------|-------------------------------------------------------------------------------|
+| DOR-158 | DOR-158/ui-bug-fixes | Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode |
 
 ---
 

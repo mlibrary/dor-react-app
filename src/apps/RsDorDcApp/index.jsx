@@ -12,10 +12,37 @@ import {
 // console.log(Object.keys(ReactiveSearch));
 import {Alert, Button, Card, Col, Row,} from 'antd';
 import {FormOutlined, ClearOutlined} from '@ant-design/icons';
+import DOMPurify from 'dompurify';
 
 import {REACTIVESEARCH_CONFIG} from './utils/constants.js';
 import {parseSearchQuery, checkParserHealth} from './services/searchParserService.js';
 
+// Helper function to sanitize HTML and properly decode HTML entities
+// This ensures Unicode characters are displayed correctly
+const sanitizeHtml = (html) => {
+    if (!html) return '';
+
+    // Normalize input: handle arrays by joining, then coerce to string
+    let htmlString = html;
+    if (Array.isArray(html)) {
+        htmlString = html.join(', ');
+    } else {
+        htmlString = String(html);
+    }
+
+    // DOMPurify sanitizes the HTML to prevent XSS attacks
+    // It also properly decodes HTML entities like &eacute; → é
+    const sanitized = DOMPurify.sanitize(htmlString, {
+        ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'br', 'p', 'span'],
+        ALLOWED_ATTR: ['href', 'rel']
+    });
+
+    // Note: We don't allow 'target' attribute to avoid reverse-tabnabbing risks.
+    // If external links need to open in new tabs, they should be handled
+    // explicitly in the JSX with proper rel="noopener noreferrer" attributes.
+
+    return sanitized;
+};
 
 function RsDorDcApp() {
     const [connectionError, setConnectionError] = useState(null);
@@ -412,12 +439,12 @@ function RsDorDcApp() {
                                         {data.map((item) => (
                                             <ResultList key={item._id} className="result-list-container">
                                                 <ResultList.Content>
-                                                    <ResultList.Title dangerouslySetInnerHTML={{__html: item.dc_ti}}/>
+                                                    <ResultList.Title dangerouslySetInnerHTML={{__html: sanitizeHtml(item.dc_ti)}}/>
                                                     <ResultList.Description
-                                                        dangerouslySetInnerHTML={{__html: item.dc_de}}/>
+                                                        dangerouslySetInnerHTML={{__html: sanitizeHtml(item.dc_de)}}/>
                                                     <br/>
                                                     {item.dc_cr && (
-                                                        <div dangerouslySetInnerHTML={{__html: item.dc_cr}}/>)}
+                                                        <div dangerouslySetInnerHTML={{__html: sanitizeHtml(item.dc_cr)}}/>)}
                                                     {item.collection_id && item.item_id && item.media_id && item.media_id !== "NOFILE" && (
                                                         <div>
                                                             <img
