@@ -17,17 +17,17 @@ Understand the existing query parser and document how to add OpenSearch output f
 ## Task 2: Write Tests for OpenSearch Output Formatter
 Write comprehensive tests before implementing the OpenSearch formatter (TDD approach).
 
-- [ ] Set up test framework (RSpec or Minitest) for Ruby service
-- [ ] Write test cases for basic query output (simple terms, operators)
-- [ ] Write test cases for Boolean operators (AND, OR, NOT) output
-- [ ] Write test cases for field-specific query output
-- [ ] Write test cases for phrase query output
-- [ ] Write test cases for wildcard and fuzzy query output
-- [ ] Write test cases for range query output (if applicable)
-- [ ] Write test cases for edge cases and complex nested queries
-- [ ] Write integration tests for the /parse endpoint with OpenSearch output
-- [ ] Verify the current state of the project achieves the task goal
-- [ ] Verify with the developer that the task is complete
+- [x] Set up test framework (RSpec or Minitest) for Ruby service
+- [x] Write test cases for basic query output (simple terms, operators)
+- [x] Write test cases for Boolean operators (AND, OR, NOT) output
+- [x] Write test cases for field-specific query output
+- [x] Write test cases for phrase query output
+- [x] Write test cases for wildcard and fuzzy query output
+- [x] Write test cases for range query output (if applicable)
+- [x] Write test cases for edge cases and complex nested queries
+- [x] Write integration tests for the /parse endpoint with OpenSearch output
+- [x] Verify the current state of the project achieves the task goal
+- [x] Verify with the developer that the task is complete
 
 ## Task 3: Implement OpenSearch Output Formatter
 Implement the OpenSearch output formatter to make the tests pass.

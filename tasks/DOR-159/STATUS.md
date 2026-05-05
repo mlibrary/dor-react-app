@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-05 - Task 1 complete: Selected Option 1, ready to begin Task 2 (write tests)
+2026-05-05 - Task 2 complete: Comprehensive test suite written (TDD), ready for Task 3 (implementation)
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -12,11 +12,11 @@ Following TDD approach: Research → Tests → Implementation → Documentation
 ### Task 1: Research and Document Parser Architecture and OpenSearch Syntax ✅
 **Status**: Complete - Selected Option 1 (add OpenSearch transformer to gem)
 
-### Task 2: Write Tests for OpenSearch Output Formatter (TDD)
-**Status**: Ready to begin - Decision made, configuration approach defined
+### Task 2: Write Tests for OpenSearch Output Formatter (TDD) ✅
+**Status**: Complete - 290-line comprehensive test suite written, committed to parser branch
 
 ### Task 3: Implement OpenSearch Output Formatter
-**Status**: Pending - Awaiting Task 2 completion (implement to make tests pass)
+**Status**: Ready to begin - Tests written, now implement to make them pass
 
 ### Task 4: Add Documentation
 **Status**: Pending - Awaiting Task 3 completion
@@ -39,11 +39,15 @@ Following TDD approach: Research → Tests → Implementation → Documentation
 - Developer decision: Option 1 (add transformer to gem)
 - Configuration approach: Simple one-at-a-time format selection
 - ✅ Task 1 complete: All subtasks checked off
-- **✅ Parser setup complete:**
-  - Cloned mlibrary_search_parser to project root
-  - Created branch `DOR-159/opensearch-query-dsl` off main
-  - Ready to begin test development
-- Ready to begin Task 2 (write tests for OpenSearch transformer)
+- ✅ Parser setup complete: Cloned parser, created DOR-159/opensearch-query-dsl branch
+- **✅ Task 2 complete: Test suite written (TDD):**
+  - Created `spec/opensearch_transforms/query_dsl_spec.rb` (290 lines)
+  - Comprehensive coverage: TokensNode, AndNode, OrNode, NotNode, FieldedNode, SearchNode
+  - Tests for complex nested queries and edge cases
+  - API integration tests (to_opensearch_query method)
+  - Committed to parser branch (commit 61c2680)
+  - All tests expected to fail until implementation (Red phase of TDD)
+- Ready to begin Task 3 (implement OpenSearch transformer to make tests pass)
 
 ## Key Context
 - The search-parser microservice already exists as a stub at `search-parser-service/`
@@ -69,17 +73,19 @@ Following TDD approach: Research → Tests → Implementation → Documentation
 
 ## Next Steps
 1. ✅ Task 1 complete - Integration approach decided
-2. **Begin Task 2 - Write Tests (TDD):**
-   - Set up test framework in mlibrary_search_parser (already has RSpec)
-   - Create `spec/mlibrary_search_parser/transform/opensearch/query_dsl_spec.rb`
-   - Write test cases for TokensNode transformation
-   - Write test cases for AndNode (bool/must)
-   - Write test cases for OrNode (bool/should)
-   - Write test cases for NotNode (bool/must_not)
-   - Write test cases for FieldedNode
-   - Write test cases for SearchNode
-   - Write test cases for nested/complex queries
-   - Write test cases for edge cases (empty, unparseable, etc.)
-3. Task 3: Implement OpenSearch transformer to make all tests pass
+2. ✅ Task 2 complete - Comprehensive test suite written
+3. **Begin Task 3 - Implement OpenSearch Transformer:**
+   - Create `lib/mlibrary_search_parser/transform/opensearch/` directory
+   - Create `query_dsl.rb` transformer class
+   - Implement TokensNode transformation (match/match_phrase)
+   - Implement AndNode transformation (bool/must)
+   - Implement OrNode transformation (bool/should)
+   - Implement NotNode transformation (bool/must_not)
+   - Implement FieldedNode transformation (field-specific queries)
+   - Implement SearchNode transformation (wrap in query structure)
+   - Add configuration support for output_format selection
+   - Add to_opensearch_query method to Search class
+   - Run tests and iterate until all pass (Green phase of TDD)
+   - Refactor code for clarity and maintainability
 4. Task 4: Update documentation with configuration and examples
 
