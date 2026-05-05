@@ -13,8 +13,23 @@ Research the key differences between Solr and OpenSearch query syntax to identif
 - [ ] Verify the current state of the project achieves the task goal
 - [ ] Verify with the developer that the task is complete
 
-## Task 2: Implement Solr to OpenSearch Query Converter
-Implement the query conversion logic in the Ruby microservice.
+## Task 2: Write Tests for Query Converter
+Write comprehensive tests before implementing the conversion logic (TDD approach).
+
+- [ ] Set up test framework (RSpec or Minitest) for Ruby service
+- [ ] Write test cases for basic query syntax conversion
+- [ ] Write test cases for Boolean operators (AND, OR, NOT)
+- [ ] Write test cases for field-specific queries
+- [ ] Write test cases for phrase queries
+- [ ] Write test cases for wildcards and fuzzy searches
+- [ ] Write test cases for range queries (if needed)
+- [ ] Write test cases for edge cases and malformed queries
+- [ ] Write integration tests for the /parse endpoint
+- [ ] Verify the current state of the project achieves the task goal
+- [ ] Verify with the developer that the task is complete
+
+## Task 3: Implement Solr to OpenSearch Query Converter
+Implement the query conversion logic to make the tests pass.
 
 - [ ] Design the query parser/converter architecture
 - [ ] Implement basic query syntax conversion (operators, wildcards, etc.)
@@ -24,19 +39,17 @@ Implement the query conversion logic in the Ruby microservice.
 - [ ] Implement range query conversion (if needed)
 - [ ] Implement wildcard and fuzzy query conversion
 - [ ] Handle edge cases and malformed queries gracefully
+- [ ] Verify all tests pass
 - [ ] Verify the current state of the project achieves the task goal
 - [ ] Verify with the developer that the task is complete
 
-## Task 3: Add Tests and Documentation
-Add comprehensive tests and update documentation for the query parser.
+## Task 4: Add Documentation
+Update documentation to reflect the implementation.
 
-- [ ] Write unit tests for query conversion logic
-- [ ] Write integration tests for the /parse endpoint
-- [ ] Add test cases for edge cases and error handling
 - [ ] Update README.md with conversion examples
 - [ ] Update INTEGRATION.md with conversion behavior details
-- [ ] Add inline code documentation
-- [ ] Test with real queries from the application
+- [ ] Add inline code documentation and comments
+- [ ] Add usage examples for common query patterns
+- [ ] Document any limitations or known issues
 - [ ] Verify the current state of the project achieves the task goal
 - [ ] Verify with the developer that the task is complete
-
