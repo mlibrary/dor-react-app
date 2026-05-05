@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-05 - New agent session: Completed onboarding quiz, updated documentation to current state
+2026-05-05 - Ruby environment verified, all tests running, ready to begin Task 3 implementation
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -58,6 +58,13 @@ Following TDD approach: Research → Tests → Implementation → Documentation
   - Updated AGENT_QUIZ_ANSWERS.md A18 to reflect both active tickets (DOR-158 and DOR-159)
   - Verified all markdown table formatting across project (all tables OK)
   - Committed documentation updates (8cdc5d4)
+  - **Ruby environment verification successful:**
+    - Ruby 3.1.2p20 and Bundler 2.3.15 confirmed installed
+    - Bundle install completed in mlibrary_search_parser
+    - All 166 existing tests pass (0 failures, 96.27% coverage)
+    - OpenSearch tests running: 32 examples, 31 failures (TDD Red phase - expected)
+    - All failures are NoMethodError for to_opensearch_query (as expected)
+    - Test suite ready for Task 3 implementation
 
 ## Key Context
 - The search-parser microservice already exists as a stub at `search-parser-service/`
@@ -84,12 +91,8 @@ Following TDD approach: Research → Tests → Implementation → Documentation
 ## Next Steps
 1. ✅ Task 1 complete - Integration approach decided
 2. ✅ Task 2 complete - Comprehensive test suite written
-3. **⚠️  Rebuild dev container** (Ruby added to Dockerfile)
-   - Command Palette → "Dev Containers: Rebuild Container"
-   - Or restart IntelliJ dev container
+3. ✅ Ruby environment verified - All tests running, ready for implementation
 4. **Begin Task 3 - Implement OpenSearch Transformer:**
-   - Verify Ruby/Bundler available: `ruby --version && bundle --version`
-   - Install parser dependencies: `cd mlibrary_search_parser && bundle install`
    - Create `lib/mlibrary_search_parser/transform/opensearch/` directory
    - Create `query_dsl.rb` transformer class
    - Implement TokensNode transformation (match/match_phrase)
