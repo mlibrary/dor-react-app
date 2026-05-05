@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-05 - Corrected task understanding: Adding OpenSearch output formatter to existing Ruby parser
+2026-05-05 - Completed integration analysis with 4 options (pros/cons)
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -22,9 +22,9 @@ All tasks pending - following TDD approach: Research → Tests → Implementatio
 **Status**: Pending - Awaiting Task 3 completion
 
 ## Open Plans
-| File                        | Purpose                                   | Status  |
-|-----------------------------|-------------------------------------------|---------|
-| *(to be created in Task 1)* | OpenSearch output formatter specification | Pending |
+| File                          | Purpose                                              | Status   |
+|-------------------------------|------------------------------------------------------|----------|
+| plans/integration-analysis.md | Parser architecture analysis and integration options | Complete |
 
 ## Recent Activity
 - Created task directory structure for DOR-159
@@ -33,7 +33,18 @@ All tasks pending - following TDD approach: Research → Tests → Implementatio
 - Reordered tasks to follow TDD: Research → Tests → Implementation → Documentation
 - **Clarified requirements**: Not converting Solr to OpenSearch, but adding OpenSearch output formatter to existing parser
 - Updated TODO.md and STATUS.md to reflect correct understanding
-- Ready to begin research phase (examine existing parser)
+- Added mlibrary_search_parser to .gitignore
+- **Examined mlibrary_search_parser architecture**:
+  - Uses Parslet parser to build AST
+  - Has Node-based tree structure (SearchNode, TokensNode, AndNode, OrNode, etc.)
+  - Current Solr transformer at `transform/solr/json_edismax.rb`
+  - Need to add parallel `transform/opensearch/` module
+- **Created integration analysis document** with 4 options:
+  1. Add OpenSearch transformer to gem (RECOMMENDED)
+  2. Vendorize gem with modifications
+  3. Wrapper service pattern (translate Solr → OpenSearch)
+  4. Fork as internal gem
+- Ready for developer decision on integration approach
 
 ## Key Context
 - The search-parser microservice already exists as a stub at `search-parser-service/`
