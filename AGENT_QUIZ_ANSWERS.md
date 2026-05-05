@@ -117,7 +117,8 @@
 
 ## Section 4 — Active Work and Task Management
 
-**A18.** There are no currently active tickets. The Active Tasks table shows: "*(none yet)*".
+**A18.** There is one currently active ticket:
+- **DOR-158** (branch: `DOR-158/ui-bug-fixes`): Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode
 
 *(Source: `tasks/README.md` — Active Tasks table)*
 
