@@ -29,3 +29,6 @@ dist-ssr
 dotpy/commit_msg.txt
 pr-summary.md
 
+# External parser for reference
+mlibrary_search_parser/
+
