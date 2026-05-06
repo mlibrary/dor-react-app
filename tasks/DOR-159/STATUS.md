@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - PR summary created after documentation improvements
+2026-05-06 - Critical error handling fix: guarded logging and added payload validation
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -282,6 +282,20 @@
   - Included documentation improvement notes (INTEGRATION.md, README.md, analysis doc)
   - Post-merge next steps and testing instructions included
   - File opened for developer to copy content for PR creation
+- **✅ CRITICAL FIX: Error handling in /parse endpoint (2026-05-06):**
+  - **Problem**: Exception masking in error handling
+    * If JSON parses but payload isn't a Hash (e.g., Array, String)
+    * Line `raw_query = payload['query']` would raise NoMethodError
+    * Rescue block would try `raw_query.inspect` on uninitialized variable
+    * Would raise NameError, masking original error
+  - **Solution**: Initialize early, validate structure, guard logging
+  - **Changes**:
+    * Initialize `raw_query = nil` before any processing
+    * Validate `payload.is_a?(Hash)` after JSON.parse
+    * Return 400 error for non-Hash payloads with clear message
+    * Guard logging with `if raw_query` to prevent NameError
+  - Prevents exception masking and improves error diagnostics
+  - Committed (commit e2c1673)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
