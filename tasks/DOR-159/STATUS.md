@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - Task 3 complete: OpenSearch transformer implemented, all 198 tests passing
+2026-05-06 - Task 4 complete: Comprehensive documentation added, all tasks done
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -18,8 +18,8 @@ Following TDD approach: Research → Tests → Implementation → Documentation
 ### Task 3: Implement OpenSearch Output Formatter ✅
 **Status**: Complete - All implementation subtasks done, all tests passing
 
-### Task 4: Add Documentation
-**Status**: Ready to begin - Implementation complete, now need to document
+### Task 4: Add Documentation ✅
+**Status**: Complete - Comprehensive documentation added to README and code
 
 ## Open Plans
 | File                          | Purpose                                              | Status   |
@@ -80,6 +80,16 @@ Following TDD approach: Research → Tests → Implementation → Documentation
   - **All 198 tests passing (166 existing + 32 new OpenSearch tests)**
   - Test coverage: 95.9% (1545/1611 LOC)
   - Committed to parser branch (commit cbcf7f0)
+- **✅ Task 4 complete (2026-05-06):**
+  - Rewrote README.md from minimal stub to comprehensive guide (193+ lines)
+  - Added usage examples for both Solr and OpenSearch outputs
+  - Documented all query patterns with side-by-side examples
+  - Added configuration options and field mapping reference table
+  - Documented limitations and differences between Solr and OpenSearch
+  - Added comprehensive inline documentation to QueryDSL class
+  - Documented all public methods with parameters, returns, and examples
+  - Updated search-parser-service/INTEGRATION.md with OpenSearch configuration
+  - Committed to parser branch (commit 2f9c398)
 
 ## Key Context
 - The search-parser microservice already exists as a stub at `search-parser-service/`
@@ -107,13 +117,13 @@ Following TDD approach: Research → Tests → Implementation → Documentation
 1. ✅ Task 1 complete - Integration approach decided
 2. ✅ Task 2 complete - Comprehensive test suite written
 3. ✅ Task 3 complete - OpenSearch transformer implemented, all tests passing
-4. **Begin Task 4 - Add Documentation:**
-   - Update mlibrary_search_parser README.md with to_opensearch_query usage
-   - Add examples showing Solr vs OpenSearch output side-by-side
-   - Document configuration approach (output_format: :opensearch)
-   - Add inline code documentation for QueryDSL class
-   - Document node transformation mapping
-   - Note any limitations or differences between Solr and OpenSearch output
-5. Consider whether microservice wrapper needs updates for OpenSearch format selection
-6. Verify with developer that Task 4 is complete
+4. ✅ Task 4 complete - Comprehensive documentation added
+5. **All primary tasks complete!**
+6. **Considerations for ticket completion:**
+   - Parser gem ready with OpenSearch support (committed to DOR-159/opensearch-query-dsl branch)
+   - Documentation complete and comprehensive
+   - All 198 tests passing with 95.9% coverage
+   - Microservice wrapper (search-parser-service) may need updates to expose OpenSearch format option
+   - Consider if microservice needs a new endpoint or parameter for format selection
+   - Verify with developer if microservice integration is needed or if gem work is sufficient
 
