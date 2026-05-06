@@ -1,6 +1,14 @@
 source 'https://rubygems.org'
 
 gem 'sinatra'
+gem 'rackup'
 gem 'puma'
 gem 'json'
+
+# Query parser with OpenSearch Query DSL support
+gem 'mlibrary_search_parser', path: '../mlibrary_search_parser'
+
+# Required by mlibrary_search_parser
+gem 'parslet'
+gem 'pry'
 
