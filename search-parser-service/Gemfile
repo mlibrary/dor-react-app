@@ -6,7 +6,10 @@ gem 'puma'
 gem 'json'
 
 # Query parser with OpenSearch Query DSL support
-gem 'mlibrary_search_parser', path: '../mlibrary_search_parser'
+# Use a reproducible source instead of a local path outside the Docker build context.
+gem 'mlibrary_search_parser',
+  git: ENV.fetch('MLIBRARY_SEARCH_PARSER_GIT'),
+  ref: ENV.fetch('MLIBRARY_SEARCH_PARSER_REF')
 
 # Required by mlibrary_search_parser
 gem 'parslet'

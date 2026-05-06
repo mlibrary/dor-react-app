@@ -8,15 +8,15 @@
 
 ## Current State
 
-### search-parser-service (Stub Implementation)
+### search-parser-service
 **Location**: `search-parser-service/app.rb`
 
 **Current behavior**:
 - Sinatra web service on port 4567
 - `/health` endpoint - returns status
 - `/parse` endpoint - accepts `POST` with `{"query": "..."}`
-- Currently echoes back input (stub implementation)
-- Does NOT use mlibrary_search_parser gem yet
+- Uses `mlibrary_search_parser` to parse the submitted query
+- Returns parsed output rather than echoing the input as a stub
 
 ### mlibrary_search_parser (Complete)
 **Location**: `mlibrary_search_parser/` (gitignored, external gem)

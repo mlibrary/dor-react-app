@@ -9,7 +9,11 @@ set :port, 4567
 # Parser configuration
 # search_fields required by parser for field-specific queries (string keys)
 # query_fields used by OpenSearch transformer for multi_match (symbol keys)
-QUERY_FIELD_NAMES = ENV['QUERY_FIELDS']&.split(',') || ['title', 'author', 'subject', 'publisher']
+DEFAULT_QUERY_FIELDS = ['ic_all'].freeze
+QUERY_FIELD_NAMES = begin
+  configured_fields = ENV['QUERY_FIELDS']&.split(',')&.map(&:strip)&.reject(&:empty?)
+  configured_fields.nil? || configured_fields.empty? ? DEFAULT_QUERY_FIELDS : configured_fields
+end
 
 # Build search_fields hash with empty config for each field
 SEARCH_FIELDS = QUERY_FIELD_NAMES.each_with_object({}) { |field, hash| hash[field] = {} }
