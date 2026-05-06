@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - Documentation improvements: Fixed contradictions and clarified zero-config setup
+2026-05-06 - Documentation updates: Fixed contradictions, clarified setup, updated analysis status
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -262,6 +262,18 @@
     * Emphasized that Dockerfile passes through Gemfile defaults
   - Prevents confusion about whether environment variables are mandatory
   - Committed (commit 93cbc67)
+- **✅ Analysis document status update (2026-05-06):**
+  - **Problem**: MICROSERVICE-INTEGRATION-ANALYSIS.md said "implementation NOT started"
+  - **Reality**: Implementation was completed on 2026-05-06
+  - **Confusion risk**: Future readers might think work hasn't begun when it's actually done
+  - **Changes**:
+    * Added Implementation Summary section at top showing what was implemented
+    * Updated Current State section to reflect post-implementation reality
+    * Retitled sections to distinguish original analysis from final decisions
+    * Updated Decision Points to show actual implementation choices with checkmarks
+    * Preserved original analysis sections for historical reference
+  - Document now accurately represents completed implementation status
+  - Committed (commit 017910a)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
