@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - Production hardening: moved pry to development group, excluded from production
+2026-05-06 - Reviewer improvements: enhanced validation and corrected analysis document
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -324,6 +324,20 @@
     * Updated comments to explain dependency source
   - Reduces production image size, follows security best practices
   - Committed (commit 30a5225)
+- **✅ Reviewer improvements (Greg Kostin, 2026-05-06):**
+  - Enhanced payload validation in app.rb
+    * Added `payload.key?('query')` check to ensure query field exists
+    * Added `payload['query'].is_a?(String)` check to ensure query is a String
+    * Updated error message: "must be a JSON object with a query key"
+    * Removed `|| ''` fallback since we now validate query exists and is String
+    * Prevents non-string queries (nil, arrays, numbers, etc.) from reaching parser
+  - Corrected analysis document (MICROSERVICE-INTEGRATION-ANALYSIS.md)
+    * Moved Dockerfile from "No Changes Needed" to "Required Changes"
+    * Added note: "Verify/update image packages needed for git-sourced gem installation"
+    * Updated README item to mention "Docker/runtime requirements"
+    * Accurately reflects that Dockerfile needed git installation
+  - Co-authored with Copilot Autofix
+  - Committed (commit 815cb18)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
