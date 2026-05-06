@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - Reviewer changes addressed with documentation updates
+2026-05-06 - Field documentation corrected to match actual OpenSearch mappings
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -161,6 +161,15 @@
   - Fixed example response to show correct default field (ic_all)
   - Updated Implementation Details for git-based dependency
   - Committed (commit 2339111)
+- **✅ Field documentation correction (2026-05-06):**
+  - Fixed Configuration section to accurately reflect actual OpenSearch mappings
+  - Clarified QUERY_FIELDS must match OpenSearch index field names
+  - Documented this project uses ic_all as primary searchable field
+  - Added reference to src/apps/*/utils/constants.js for field configuration
+  - Added warnings to Field-Specific Query Examples about field requirements
+  - Separated default (ic_all) and multi-field configuration examples
+  - Addresses inconsistency between placeholder examples and actual mappings
+  - Committed (commit 985c3cf)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
