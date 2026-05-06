@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - Critical build fix: install git in Dockerfile for gem fetching
+2026-05-06 - Production hardening: moved pry to development group, excluded from production
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -310,6 +310,20 @@
     * Clear comments explaining system dependencies
   - Docker builds now work correctly with git-sourced gems
   - Committed (commit 52793b8)
+- **✅ Production hardening: Dependency cleanup (2026-05-06):**
+  - **Problem**: pry (debugging REPL) included as production dependency
+    * pry is a development tool, not needed in production
+    * Increases image size unnecessarily
+    * Ships debugging tools in production (security concern)
+    * Neither pry nor parslet used directly by service code
+  - **Solution**: Move to development group, exclude from production builds
+  - **Changes**:
+    * Moved pry to `group :development, :test` in Gemfile
+    * Added `--without development test` to bundle install in Dockerfile
+    * Clarified parslet is a transitive dependency of parser gem
+    * Updated comments to explain dependency source
+  - Reduces production image size, follows security best practices
+  - Committed (commit 30a5225)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
