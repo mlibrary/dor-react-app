@@ -188,13 +188,17 @@ curl -X POST http://localhost:4567/parse \
 
 ### Running Locally
 
-The service uses sensible defaults and works out of the box:
+**No configuration required** - the service works out of the box with sensible defaults from the Gemfile:
 
 ```bash
 cd search-parser-service
-bundle install  # Uses defaults: GitHub repo + DOR-159/opensearch-query-dsl branch
+bundle install  # No env vars needed - Gemfile has defaults
 ruby app.rb
 ```
+
+The Gemfile uses `ENV.fetch()` with defaults, so `bundle install` will automatically:
+- Clone from: `https://github.com/mlibrary/mlibrary_search_parser.git`
+- Check out branch: `DOR-159/opensearch-query-dsl`
 
 Service runs on port 4567.
 
@@ -217,11 +221,13 @@ bundle install
 
 ### Running with Docker Compose
 
-The service builds and runs with defaults:
+**No configuration required** - the service builds and runs with defaults from the Gemfile:
 
 ```bash
 docker compose up -d search-parser
 ```
+
+The Dockerfile passes through the Gemfile defaults, so the build will automatically use the correct parser gem source and branch.
 
 Service is accessible at `http://search-parser:4567` from other Docker Compose services.
 
