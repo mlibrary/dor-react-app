@@ -117,11 +117,11 @@
 
 ## Section 4 — Active Work and Task Management
 
-**A18.** There are two currently active tickets:
-- **DOR-158** (branch: `DOR-158/ui-bug-fixes`): Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode
-- **DOR-159** (branch: `DOR-159/query-parser-microservice`): Query parser microservice: Convert Solr output to OpenSearch compatible
+**A18.** Check `tasks/README.md` and list all tickets in the **Active Tasks** table with their ticket key, branch name, and summary. If the table shows "*(none yet)*", state that there are no currently active tickets.
 
 *(Source: `tasks/README.md` — Active Tasks table)*
+
+**Note:** This answer changes as tickets are completed and archived. Always read the actual file to get the current state rather than relying on this answer file for specific ticket numbers.
 
 ---
 
