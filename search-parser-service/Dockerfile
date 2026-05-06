@@ -6,7 +6,14 @@ ARG MLIBRARY_SEARCH_PARSER_REF=DOR-159/opensearch-query-dsl
 
 WORKDIR /app
 
-# Install dependencies
+# Install system dependencies required for git-sourced gems
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      git \
+      ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Ruby dependencies
 # Pass build args as environment variables for bundle install
 COPY Gemfile Gemfile.lock* ./
 RUN MLIBRARY_SEARCH_PARSER_GIT=${MLIBRARY_SEARCH_PARSER_GIT} \
