@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - Task 4 complete: Comprehensive documentation added, all tasks done
+2026-05-06 - Option A implementation complete: search-parser-service integrated with OpenSearch Query DSL
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -105,9 +105,38 @@ Following TDD approach: Research → Tests → Implementation → Documentation
     * Risk assessment and mitigation strategies
     * Ready for developer decision on implementation approach
     * Recommendation: Start with format parameter approach
+- **✅ Option A implementation complete (2026-05-06):**
+  - Integrated mlibrary_search_parser gem into search-parser-service
+  - **search-parser-service/Gemfile:**
+    * Added mlibrary_search_parser with local path dependency
+    * Added required dependencies: parslet, pry, rackup
+  - **search-parser-service/app.rb:**
+    * Integrated parser gem with proper configuration
+    * Configured search_fields for parser (field-specific query support)
+    * Configured query_fields for OpenSearch transformer (multi_match fields)
+    * Implemented OpenSearch Query DSL output on /parse endpoint
+    * Added proper error handling (400 for invalid JSON, 500 for parser errors)
+  - **search-parser-service/test.sh:**
+    * Enhanced with 7 comprehensive test cases
+    * Tests simple, Boolean, field-specific, phrase, and nested queries
+    * Shows OpenSearch Query DSL output for each case
+  - **search-parser-service/README.md:**
+    * Complete documentation with OpenSearch Query DSL examples
+    * Configuration via QUERY_FIELDS environment variable
+    * Usage examples for all query types
+    * Development and testing instructions
+  - **Service tested and verified working:**
+    * Health endpoint: ✓
+    * Simple queries: ✓
+    * Boolean operators (AND, OR, NOT): ✓
+    * Field-specific queries: ✓
+    * Phrase queries: ✓
+    * Complex nested queries: ✓
+  - All queries return proper OpenSearch Query DSL format ready for OpenSearch
+  - Committed (commit 009bce3)
 
 ## Key Context
-- The search-parser microservice already exists as a stub at `search-parser-service/`
+- The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
 - **mlibrary_search_parser setup:**
   - Cloned to `/workspaces/dor-react-app/mlibrary_search_parser/` (gitignored)
   - Working branch: `DOR-159/opensearch-query-dsl` (off main)
@@ -125,6 +154,12 @@ Following TDD approach: Research → Tests → Implementation → Documentation
   - SearchNode → wrap in OpenSearch query structure
 - Service is integrated with RsDorDcApp via `searchParserService.js`
 - Service runs on port 4567 in Docker (http://search-parser:4567)
+- **Service integration (Option A - completed):**
+  - Uses mlibrary_search_parser gem via local path in Gemfile
+  - /parse endpoint accepts JSON with 'query' field
+  - Returns OpenSearch Query DSL format
+  - Configurable via QUERY_FIELDS environment variable
+  - Fully tested with 7 comprehensive test cases
 - Must maintain backward compatibility with existing integration
 - **Following TDD**: Write tests first, then implement to make tests pass, then document
 
@@ -135,23 +170,27 @@ Following TDD approach: Research → Tests → Implementation → Documentation
 4. ✅ Task 4 complete - Comprehensive documentation added
 5. ✅ Task 4 verification complete - All requirements verified and documented
 6. ✅ Microservice integration analysis complete - 3 options documented with recommendations
-7. **All primary work complete - Ready for developer decision:**
+7. ✅ Option A implementation complete - search-parser-service integrated with OpenSearch Query DSL
+8. **All work complete - Ready for final verification and deployment:**
    - **Parser gem**: 100% complete with OpenSearch support
      * Branch: `DOR-159/opensearch-query-dsl` (commits: 61c2680, cbcf7f0, 2f9c398)
      * All 198 tests passing (95.9% coverage)
      * Comprehensive documentation (README, inline docs, INTEGRATION.md)
      * Ready to merge or publish
+   - **search-parser-service**: Fully functional with OpenSearch Query DSL
+     * Integrated mlibrary_search_parser gem (local path)
+     * /parse endpoint returns OpenSearch Query DSL
+     * 7 test cases passing (simple, Boolean, field-specific, phrase, nested queries)
+     * Comprehensive README with examples
+     * Committed (commit 009bce3)
    - **Analysis documents created**:
      * `TASK4-VERIFICATION.md` - Comprehensive verification report
      * `MICROSERVICE-INTEGRATION-ANALYSIS.md` - Integration options and recommendations
-   - **Developer decisions needed**:
-     * Whether to integrate parser gem into search-parser-service microservice
-     * If yes, which API design approach (format parameter vs separate endpoint)
-     * Whether to wait for gem merge/release or use branch/local path
-     * Whether React app should use OpenSearch DSL format
-   - **If microservice integration desired**: See MICROSERVICE-INTEGRATION-ANALYSIS.md for:
-     * 3 detailed implementation options
-     * Required file changes (Gemfile, app.rb, searchParserService.js)
-     * Testing strategy
-     * Risk assessment and recommendations
+   - **Next steps for developer**:
+     * Test search-parser-service in Docker environment
+     * Update RsDorDcApp to use OpenSearch Query DSL from parser service
+     * Deploy and test end-to-end integration
+     * Consider merging parser gem branch for team access
+     * Final verification of Task 4 (last unchecked subtask in TODO.md)
+
 
