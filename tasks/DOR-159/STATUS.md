@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - ALL TASKS COMPLETE: Developer verified, DONE.md created, ready for PR
+2026-05-06 - Reviewer changes addressed with documentation updates
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -140,7 +140,27 @@
   - Marked final verification subtask complete in TODO.md
   - Created DONE.md with comprehensive summary and all completed tasks
   - Updated STATUS.md with final completion status
-  - All 4 tasks complete, ticket ready for PR
+  - All tasks complete, ticket ready for PR
+- **✅ Reviewer changes reviewed (2026-05-06):**
+  - Reviewed commit 4b24f48 "Apply suggestions from code review" by Greg Kostin
+  - **search-parser-service/Gemfile**: Changed to git-based dependency with env vars
+    * MLIBRARY_SEARCH_PARSER_GIT for repository URL
+    * MLIBRARY_SEARCH_PARSER_REF for specific ref (branch/tag/commit)
+    * Critical fix for Docker compatibility and production readiness
+  - **search-parser-service/app.rb**: Improved QUERY_FIELDS configuration
+    * Changed default from ['title', 'author', 'subject', 'publisher'] to ['ic_all']
+    * Added whitespace stripping and empty value handling
+    * More robust fallback logic
+  - **MICROSERVICE-INTEGRATION-ANALYSIS.md**: Updated to reflect actual implementation
+    * Removed outdated "stub implementation" description
+    * Documented current integrated state
+  - All reviewer changes are improvements - no issues found
+- **✅ Documentation update (2026-05-06):**
+  - Updated search-parser-service/README.md in response to reviewer changes
+  - Documented MLIBRARY_SEARCH_PARSER_GIT and MLIBRARY_SEARCH_PARSER_REF
+  - Fixed example response to show correct default field (ic_all)
+  - Updated Implementation Details for git-based dependency
+  - Committed (commit 2339111)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
