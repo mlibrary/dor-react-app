@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - CRITICAL FIX: Added dual-format response for backward compatibility with React client
+2026-05-06 - SECURITY FIX: Improved error handling to prevent information disclosure
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -190,6 +190,25 @@
   - **test.sh updated**: Reflects dual-format response
   - Prevents breaking changes to existing React application
   - Committed (commit d03fd70)
+- **✅ SECURITY FIX: Error handling (2026-05-06):**
+  - **Problem**: Error responses exposed raw exception messages (e.message) to clients
+  - **Risk**: Information disclosure - leaks gem internals, file paths, versions
+  - **Could aid attackers**: Provides reconnaissance data for exploitation
+  - **Solution**: Generic error messages to clients, detailed logging server-side
+  - **app.rb changes**:
+    * Added server-side logging for all exceptions with full details
+    * JSON parse errors (400): Generic "Invalid JSON in request body"
+    * Parser errors (500): Generic message with unique request_id for correlation
+    * Added SecureRandom for request ID generation
+    * Logs include exception class, message, backtrace (first 5-10 lines)
+    * Logs include query and request_id for debugging
+  - **README.md updates**:
+    * Added "Error Responses" section with examples
+    * Documented security approach: generic messages + server logs
+    * Added security note in Implementation Details
+  - Follows security best practices for error handling
+  - Maintains debugging capability with request ID correlation
+  - Committed (commit 00ca88f)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
