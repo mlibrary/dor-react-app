@@ -69,6 +69,26 @@ Parse a search query string and return OpenSearch Query DSL.
 - `parsed_query` (string): Solr-format query string (backward compatible with existing clients)
 - `parsed_query_dsl` (object): OpenSearch Query DSL object (for direct DSL consumption)
 
+**Error Responses:**
+
+Invalid JSON (400):
+```json
+{
+  "error": "Invalid JSON in request body"
+}
+```
+
+Parser error (500):
+```json
+{
+  "error": "Query parsing failed",
+  "request_id": "a1b2c3d4e5f6g7h8",
+  "message": "An error occurred while parsing the query. Please check your syntax."
+}
+```
+
+**Security Note**: Error responses return generic messages to avoid leaking internal implementation details. Detailed error information (exception class, message, backtrace) is logged server-side and can be correlated using the `request_id` for debugging.
+
 ## Configuration
 
 ### Environment Variables
@@ -191,7 +211,11 @@ This runs a series of test queries demonstrating various OpenSearch Query DSL ou
 - **Output Format**: Dual-format response for compatibility
   - `parsed_query`: Solr-format string (backward compatible with existing React client)
   - `parsed_query_dsl`: OpenSearch Query DSL object (for future direct DSL consumption)
-- **Error Handling**: Returns 400 for invalid JSON, 500 for parser errors
+- **Error Handling**: 
+  - Returns 400 for invalid JSON, 500 for parser errors
+  - Generic error messages to clients (avoids leaking internal details)
+  - Detailed errors logged server-side with request IDs for debugging
+- **Security**: Exception messages not exposed to clients; full details in server logs
 - **Docker Ready**: Uses environment variables for reproducible builds
 - **Backward Compatibility**: Existing React clients (`RsDorDcApp`) expect a string query that can be tested with regex and interpolated into OpenSearch queries. The dual-format response maintains compatibility while enabling future DSL-based integrations.
 

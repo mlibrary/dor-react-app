@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'sinatra'
 require 'json'
+require 'securerandom'
 require 'mlibrary_search_parser'
 
 set :bind, '0.0.0.0'
@@ -64,10 +65,26 @@ post '/parse' do
     parsed_query_dsl: opensearch_dsl  # Object for future direct DSL consumption
   }.to_json
 rescue JSON::ParserError => e
+  # Log detailed error server-side for debugging
+  logger.error "JSON parsing error: #{e.class} - #{e.message}"
+  logger.error e.backtrace.first(5).join("\n") if e.backtrace
+
+  # Return generic error to client (avoid leaking internal details)
   status 400
-  { error: 'Invalid JSON', message: e.message }.to_json
+  { error: 'Invalid JSON in request body' }.to_json
 rescue => e
+  # Log detailed error server-side for debugging
+  request_id = SecureRandom.hex(8)
+  logger.error "[#{request_id}] Parser error: #{e.class} - #{e.message}"
+  logger.error "[#{request_id}] Query: #{raw_query.inspect}"
+  logger.error "[#{request_id}] Backtrace:\n#{e.backtrace.first(10).join("\n")}" if e.backtrace
+
+  # Return generic error to client with request ID for correlation
   status 500
-  { error: 'Parser error', message: e.message }.to_json
+  {
+    error: 'Query parsing failed',
+    request_id: request_id,
+    message: 'An error occurred while parsing the query. Please check your syntax.'
+  }.to_json
 end
 
