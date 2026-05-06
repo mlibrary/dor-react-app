@@ -108,18 +108,26 @@ QUERY_FIELDS=ic_all,title,author,subject
 
 **Note**: The field names in `QUERY_FIELDS` must match the actual field names in your OpenSearch index mappings. This project's indexes use `ic_all` as the primary searchable field. See `src/apps/*/utils/constants.js` for the field configuration used by the React application.
 
-**`MLIBRARY_SEARCH_PARSER_GIT`** (required for Docker)  
+**`MLIBRARY_SEARCH_PARSER_GIT`** (optional)  
 Git repository URL for the mlibrary_search_parser gem.
+
+Default: `https://github.com/mlibrary/mlibrary_search_parser.git`
 
 ```bash
 MLIBRARY_SEARCH_PARSER_GIT=https://github.com/mlibrary/mlibrary_search_parser.git
 ```
 
-**`MLIBRARY_SEARCH_PARSER_REF`** (required for Docker)  
+**`MLIBRARY_SEARCH_PARSER_REF`** (optional)  
 Git ref (branch, tag, or commit SHA) to use for the parser gem.
+
+Default: `DOR-159/opensearch-query-dsl`
 
 ```bash
 MLIBRARY_SEARCH_PARSER_REF=DOR-159/opensearch-query-dsl
+# Or use a specific commit for reproducibility:
+MLIBRARY_SEARCH_PARSER_REF=2f9c398
+# Or use main after merge:
+MLIBRARY_SEARCH_PARSER_REF=main
 ```
 
 **Default Configuration:**
@@ -180,21 +188,54 @@ curl -X POST http://localhost:4567/parse \
 
 ### Running Locally
 
+The service uses sensible defaults and works out of the box:
+
 ```bash
 cd search-parser-service
-bundle install
+bundle install  # Uses defaults: GitHub repo + DOR-159/opensearch-query-dsl branch
 ruby app.rb
 ```
 
 Service runs on port 4567.
 
+**Customizing the parser gem source** (optional):
+
+```bash
+# Use a specific commit:
+export MLIBRARY_SEARCH_PARSER_REF=2f9c398
+bundle install
+
+# Use main branch after merge:
+export MLIBRARY_SEARCH_PARSER_REF=main
+bundle install
+
+# Use a fork:
+export MLIBRARY_SEARCH_PARSER_GIT=https://github.com/yourfork/mlibrary_search_parser.git
+export MLIBRARY_SEARCH_PARSER_REF=your-branch
+bundle install
+```
+
 ### Running with Docker Compose
+
+The service builds and runs with defaults:
 
 ```bash
 docker compose up -d search-parser
 ```
 
 Service is accessible at `http://search-parser:4567` from other Docker Compose services.
+
+**Customizing the parser gem source** (optional):
+
+```bash
+# Set environment variables before building:
+export MLIBRARY_SEARCH_PARSER_REF=main
+docker compose build search-parser
+docker compose up -d search-parser
+
+# Or inline:
+MLIBRARY_SEARCH_PARSER_REF=main docker compose up -d --build search-parser
+```
 
 ### Testing
 
@@ -207,6 +248,8 @@ This runs a series of test queries demonstrating various OpenSearch Query DSL ou
 ## Implementation Details
 
 - **Gem**: `mlibrary_search_parser` (git-based dependency via environment variables)
+  - Default: `https://github.com/mlibrary/mlibrary_search_parser.git` @ `DOR-159/opensearch-query-dsl`
+  - Override via `MLIBRARY_SEARCH_PARSER_GIT` and `MLIBRARY_SEARCH_PARSER_REF` environment variables
 - **Parser Branch**: `DOR-159/opensearch-query-dsl`
 - **Output Format**: Dual-format response for compatibility
   - `parsed_query`: Solr-format string (backward compatible with existing React client)
