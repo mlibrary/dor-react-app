@@ -45,14 +45,14 @@ Parse a search query string and return OpenSearch Query DSL.
           {
             "multi_match": {
               "query": "cats",
-              "fields": ["title", "author", "subject", "publisher"],
+              "fields": ["ic_all"],
               "type": "best_fields"
             }
           },
           {
             "multi_match": {
               "query": "dogs",
-              "fields": ["title", "author", "subject", "publisher"],
+              "fields": ["ic_all"],
               "type": "best_fields"
             }
           }
@@ -65,13 +65,32 @@ Parse a search query string and return OpenSearch Query DSL.
 
 ## Configuration
 
-Set query fields via environment variable:
+### Environment Variables
+
+**`QUERY_FIELDS`** (optional)  
+Comma-separated list of fields to search. Default: `ic_all`
 
 ```bash
-QUERY_FIELDS=title,author,subject,publisher
+QUERY_FIELDS=ic_all,title,author,subject
 ```
 
-Default fields: `title`, `author`, `subject`, `publisher`
+**`MLIBRARY_SEARCH_PARSER_GIT`** (required for Docker)  
+Git repository URL for the mlibrary_search_parser gem.
+
+```bash
+MLIBRARY_SEARCH_PARSER_GIT=https://github.com/mlibrary/mlibrary_search_parser.git
+```
+
+**`MLIBRARY_SEARCH_PARSER_REF`** (required for Docker)  
+Git ref (branch, tag, or commit SHA) to use for the parser gem.
+
+```bash
+MLIBRARY_SEARCH_PARSER_REF=DOR-159/opensearch-query-dsl
+```
+
+**Default Configuration:**
+- Query fields: `ic_all`
+- Parser output: OpenSearch Query DSL format
 
 ## Query Examples
 
@@ -147,8 +166,9 @@ This runs a series of test queries demonstrating various OpenSearch Query DSL ou
 
 ## Implementation Details
 
-- **Gem**: `mlibrary_search_parser` (local path for development)
+- **Gem**: `mlibrary_search_parser` (git-based dependency via environment variables)
 - **Parser Branch**: `DOR-159/opensearch-query-dsl`
 - **Output Format**: OpenSearch Query DSL (JSON)
 - **Error Handling**: Returns 400 for invalid JSON, 500 for parser errors
+- **Docker Ready**: Uses environment variables for reproducible builds
 
