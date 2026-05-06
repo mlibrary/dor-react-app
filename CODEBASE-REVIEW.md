@@ -101,10 +101,11 @@ Image lacks `alt` attribute, violating WCAG accessibility guidelines.
 
 ---
 
-### Issue 4: Outdated Quiz Answers
+### Issue 4: Outdated Quiz Answers ✅ RESOLVED
 **File:** `AGENT_QUIZ_ANSWERS.md`  
-**Line:** 119-122  
-**Severity:** Medium (Documentation)
+**Line:** 120-122  
+**Severity:** Medium (Documentation)  
+**Status:** ✅ Fixed in commit 7bad34a
 
 **Problem:**
 ```markdown
@@ -113,19 +114,26 @@ Image lacks `alt` attribute, violating WCAG accessibility guidelines.
 - **DOR-159** (branch: `DOR-159/query-parser-microservice`): ...
 ```
 
-Both tickets are now archived but still listed as "active" in the quiz answers.
+Both tickets are now archived but still listed as "active" in the quiz answers. This issue recurred after every PR merge.
 
 **Impact:**
 - Misleads new agents during onboarding
 - Quiz grading will mark correct answers as wrong
 - Documentation inconsistency
 
-**Recommendation:**
+**Solution Implemented:**
+Changed A18 from a hardcoded ticket list to a dynamic instruction:
 ```markdown
-**A18.** Check `tasks/README.md` — Active Tasks table for current active tickets.
+**A18.** Check `tasks/README.md` and list all tickets in the **Active Tasks** 
+table with their ticket key, branch name, and summary. If the table shows 
+"*(none yet)*", state that there are no currently active tickets.
 
-*(As of May 6, 2026, both DOR-158 and DOR-159 have been completed and archived)*
+**Note:** This answer changes as tickets are completed and archived. Always 
+read the actual file to get the current state rather than relying on this 
+answer file for specific ticket numbers.
 ```
+
+This prevents the answer from becoming outdated after PR merges and teaches agents the correct behavior of always checking the source file.
 
 ---
 
@@ -228,12 +236,16 @@ Commented-out debug code left in production.
 
 ## Summary Statistics
 
-| Category            | Count |
-|---------------------|-------|
-| High Priority       | 2     |
-| Medium Priority     | 3     |
-| Low Priority        | 2     |
-| **Total Issues**    | **7** |
+| Category            | Count | Resolved |
+|---------------------|-------|----------|
+| High Priority       | 2     | 1 ✅     |
+| Medium Priority     | 3     | 1 ✅     |
+| Low Priority        | 2     | 0        |
+| **Total Issues**    | **7** | **2 ✅** |
+
+**Resolved Issues:**
+- ✅ Issue #2: HTML typo `<dib>` → `<div>` (commit 49a8e59)
+- ✅ Issue #4: Outdated quiz answers (commit 7bad34a)
 
 ---
 
@@ -250,12 +262,12 @@ Commented-out debug code left in production.
 ## Recommended Next Steps
 
 1. **Immediate (High Priority):**
-   - Fix `<dib>` typo (5 min fix)
-   - Remove or clarify `XXX_dc_de` field (10 min)
+   - ✅ ~~Fix `<dib>` typo (5 min fix)~~ DONE (commit 49a8e59)
+   - ⏸️ Remove or clarify `XXX_dc_de` field (deferred - will be handled during next reindexing)
 
 2. **Short Term (This Week):**
    - Add alt text to image (5 min)
-   - Update AGENT_QUIZ_ANSWERS.md (5 min)
+   - ✅ ~~Update AGENT_QUIZ_ANSWERS.md (5 min)~~ DONE (commit 7bad34a)
    - Review @appbaseio/reactivesearch for updates (30 min)
 
 3. **Medium Term (This Sprint):**
