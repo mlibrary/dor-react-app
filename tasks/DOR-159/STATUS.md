@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - Documentation fix: Updated INTEGRATION.md to reflect actual dual-format output
+2026-05-06 - Documentation improvements: Fixed contradictions and clarified zero-config setup
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -252,6 +252,16 @@
     * Added note that parsed_query is Solr-format string (backward compatible)
   - Documentation now accurately represents current implementation
   - Committed (commit afeb169)
+- **✅ README zero-config clarification (2026-05-06):**
+  - **Issue**: README could be misread as requiring env vars for bundle install
+  - **Clarification needed**: Make it obvious that Gemfile has defaults via ENV.fetch()
+  - **Changes**:
+    * Added bold "No configuration required" headers to both local and Docker sections
+    * Explicitly stated "No env vars needed - Gemfile has defaults" in bundle install comment
+    * Added explanatory text listing the automatic defaults (GitHub URL + branch)
+    * Emphasized that Dockerfile passes through Gemfile defaults
+  - Prevents confusion about whether environment variables are mandatory
+  - Committed (commit 93cbc67)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
