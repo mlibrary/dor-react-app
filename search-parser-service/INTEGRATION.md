@@ -8,7 +8,9 @@ The RsDorDcApp now integrates with the search-parser microservice to transform r
 
 1. **User enters a search query** in the SearchBox component
 2. **Query is sent to the parser service** via `POST /parse` endpoint
-3. **Parser service returns a transformed query** (currently just echoes back the input)
+3. **Parser service parses and transforms the query** into:
+   - `parsed_query`: Solr-format string (backward compatible)
+   - `parsed_query_dsl`: OpenSearch Query DSL object (for future use)
 4. **Transformed query is used** in the OpenSearch query via ReactiveSearch
 5. **Fallback behavior**: If the parser service is unavailable, the raw query is used directly
 
@@ -19,9 +21,9 @@ User Input → SearchBox → searchParserService.parseSearchQuery()
                               ↓
                     POST http://search-parser:4567/parse
                               ↓
-                    { raw_query, parsed_query }
+                    { raw_query, parsed_query, parsed_query_dsl }
                               ↓
-                    parsedQueryRef.current = parsed_query
+                    parsedQueryRef.current = parsed_query (Solr-format string)
                               ↓
                     customQuery() uses parsed_query
                               ↓
