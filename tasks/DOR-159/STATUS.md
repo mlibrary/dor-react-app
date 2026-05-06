@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - SECURITY FIX: Improved error handling to prevent information disclosure
+2026-05-06 - CRITICAL DEPLOYMENT FIX: Added defaults to make service buildable without env vars
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -209,6 +209,37 @@
   - Follows security best practices for error handling
   - Maintains debugging capability with request ID correlation
   - Committed (commit 00ca88f)
+- **✅ CRITICAL DEPLOYMENT FIX: Environment variable defaults (2026-05-06):**
+  - **Problem**: Reviewer's ENV.fetch() without defaults makes service unbuildable
+  - **Impact**: Broke all deployment paths:
+    * Local: bundle install fails immediately
+    * Docker: Dockerfile RUN bundle install fails at line 7
+    * Compose: docker compose up --build fails
+    * CI/CD: Would fail without manual env var configuration
+    * README instructions don't work out of the box
+  - **Root cause**: ENV.fetch(key) throws if key not set (vs ENV.fetch(key, default))
+  - **Solution**: Provide sensible defaults with override capability
+  - **Gemfile changes**:
+    * Changed to ENV.fetch(key, default) pattern
+    * Default GIT: https://github.com/mlibrary/mlibrary_search_parser.git
+    * Default REF: DOR-159/opensearch-query-dsl
+    * Still allows environment variable overrides
+  - **Dockerfile changes**:
+    * Added ARG declarations with defaults
+    * Pass ARGs as ENV during bundle install
+    * Supports --build-arg overrides
+  - **compose.yaml changes**:
+    * Added build args with shell-style defaults (${VAR:-default})
+    * Added QUERY_FIELDS environment default
+    * Supports .env file and inline variable exports
+  - **README.md updates**:
+    * Changed "required" to "optional" for both variables
+    * Documented default values explicitly
+    * Rewrote Development section showing out-of-the-box usage
+    * Added customization examples for all environments
+  - Now works without configuration in all environments
+  - Follows principle: sensible defaults + escape hatches
+  - Committed (commit 3082916)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
