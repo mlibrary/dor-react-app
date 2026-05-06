@@ -14,6 +14,25 @@ Completed comprehensive codebase review after archiving DOR-158 and DOR-159. Ide
 
 ---
 
+## Application Context
+
+**Purpose:** This is a **backoffice search evaluation tool** for library staff to evaluate and compare search results between Solr and OpenSearch implementations.
+
+**Use Case:** Internal evaluation only - not public-facing
+- Used by evaluators to assess search quality
+- Helps inform decision on migrating from Solr to OpenSearch
+- Images are supplementary ("nice to have") for evaluators
+
+**Public Application (Separate Project):**
+- The public-facing discovery application is a different codebase
+- Currently uses Solr
+- Evaluating OpenSearch as a potential replacement
+- Accessibility compliance (WCAG) is critical for that application
+
+**Review Scope:** This review focuses on code quality, maintainability, and functionality appropriate for an internal evaluation tool.
+
+---
+
 ## 🔴 High Priority Issues
 
 ### Issue 1: Debug Field Reference in Production Code
@@ -73,31 +92,29 @@ Typo: `<dib>` should be `<div>`. This
 
 ## 🟡 Medium Priority Issues
 
-### Issue 3: Missing Alt Text on Images
+### Issue 3: Missing Alt Text on Images - NOT APPLICABLE
 **File:** `src/apps/RsDorDcApp/index.jsx`  
 **Lines:** 448-452  
-**Severity:** Medium (Accessibility)
+**Severity:** N/A (Not applicable to this use case)  
+**Status:** ⏸️ Not applicable
 
-**Problem:**
+**Context:**
 ```javascript
 <img
     src={`https://quod.lib.umich.edu/cgi/i/image/api/image/${item.collection_id}:${item.item_id}:${item.media_id}/full/140,/0/native.jpg`}/>
 ```
 
-Image lacks `alt` attribute, violating WCAG accessibility guidelines.
+Image lacks `alt` attribute.
 
-**Impact:**
-- Screen readers cannot describe the image
-- Fails WCAG 2.1 Level A compliance
-- Poor experience for visually impaired users
+**Why Not Applicable:**
+This is a **backoffice evaluation tool** used by staff to evaluate search results, not a public-facing application. The images are "nice to have" for evaluators but not essential for the tool's primary purpose of search evaluation.
+
+**Accessibility Focus:**
+Accessibility is the focus of the public-facing discovery application (currently using Solr, evaluating OpenSearch as replacement), which is a separate project. That application should follow WCAG guidelines.
 
 **Recommendation:**
-```javascript
-<img
-    src={`https://quod.lib.umich.edu/cgi/i/image/api/image/${item.collection_id}:${item.item_id}:${item.media_id}/full/140,/0/native.jpg`}
-    alt={item.dc_ti ? (Array.isArray(item.dc_ti) ? item.dc_ti[0] : item.dc_ti).replace(/<[^>]*>/g, '') : 'Collection item'}
-/>
-```
+- No action needed for this backoffice tool
+- Ensure the public-facing discovery application has proper alt text when it's migrated/updated
 
 ---
 
@@ -236,16 +253,22 @@ Commented-out debug code left in production.
 
 ## Summary Statistics
 
-| Category            | Count | Resolved |
-|---------------------|-------|----------|
-| High Priority       | 2     | 1 ✅     |
-| Medium Priority     | 3     | 1 ✅     |
-| Low Priority        | 2     | 0        |
-| **Total Issues**    | **7** | **2 ✅** |
+| Category            | Count | Resolved | Not Applicable |
+|---------------------|-------|----------|----------------|
+| High Priority       | 2     | 1 ✅     | 1 ⏸️          |
+| Medium Priority     | 3     | 1 ✅     | 1 ⏸️          |
+| Low Priority        | 2     | 0        | 0              |
+| **Total Issues**    | **7** | **2 ✅** | **2 ⏸️**      |
 
 **Resolved Issues:**
 - ✅ Issue #2: HTML typo `<dib>` → `<div>` (commit 49a8e59)
 - ✅ Issue #4: Outdated quiz answers (commit 7bad34a)
+
+**Not Applicable / Deferred:**
+- ⏸️ Issue #1: XXX_dc_de field (will be handled during next reindexing)
+- ⏸️ Issue #3: Alt text (not applicable for backoffice evaluation tool)
+
+**Remaining Active Issues:** 3 (Issue #5, #6, #7)
 
 ---
 
@@ -266,7 +289,6 @@ Commented-out debug code left in production.
    - ⏸️ Remove or clarify `XXX_dc_de` field (deferred - will be handled during next reindexing)
 
 2. **Short Term (This Week):**
-   - Add alt text to image (5 min)
    - ✅ ~~Update AGENT_QUIZ_ANSWERS.md (5 min)~~ DONE (commit 7bad34a)
    - Review @appbaseio/reactivesearch for updates (30 min)
 
@@ -276,9 +298,11 @@ Commented-out debug code left in production.
    - Remove commented code (15 min)
 
 4. **Long Term (Backlog):**
-   - Add comprehensive accessibility audit
+   - ⏸️ ~~Accessibility audit~~ - Not applicable (backoffice tool)
    - Implement error boundary components
    - Add unit tests for React components
+
+**Note on Accessibility:** This is a backoffice search evaluation tool, not public-facing. Accessibility focus should be on the separate public-facing discovery application (currently Solr, evaluating OpenSearch as replacement).
 
 ---
 
