@@ -32,16 +32,16 @@ Write comprehensive tests before implementing the OpenSearch formatter (TDD appr
 ## Task 3: Implement OpenSearch Output Formatter
 Implement the OpenSearch output formatter to make the tests pass.
 
-- [ ] Design the output formatter architecture (interface, classes)
-- [ ] Add configuration option to switch between Solr and OpenSearch output
-- [ ] Implement OpenSearch formatter for basic query nodes
-- [ ] Implement OpenSearch formatter for Boolean operators
-- [ ] Implement OpenSearch formatter for field-specific queries
-- [ ] Implement OpenSearch formatter for phrase queries
-- [ ] Implement OpenSearch formatter for wildcards and fuzzy searches
-- [ ] Implement OpenSearch formatter for range queries (if applicable)
-- [ ] Handle edge cases and complex nested query structures
-- [ ] Verify all tests pass
+- [x] Design the output formatter architecture (interface, classes)
+- [x] Add configuration option to switch between Solr and OpenSearch output
+- [x] Implement OpenSearch formatter for basic query nodes
+- [x] Implement OpenSearch formatter for Boolean operators
+- [x] Implement OpenSearch formatter for field-specific queries
+- [x] Implement OpenSearch formatter for phrase queries
+- [x] Implement OpenSearch formatter for wildcards and fuzzy searches
+- [x] Implement OpenSearch formatter for range queries (if applicable)
+- [x] Handle edge cases and complex nested query structures
+- [x] Verify all tests pass
 - [ ] Verify the current state of the project achieves the task goal
 - [ ] Verify with the developer that the task is complete
 
