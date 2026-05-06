@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - CRITICAL DEPLOYMENT FIX: Added defaults to make service buildable without env vars
+2026-05-06 - Documentation fix: Updated INTEGRATION.md to reflect actual dual-format output
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -240,6 +240,18 @@
   - Now works without configuration in all environments
   - Follows principle: sensible defaults + escape hatches
   - Committed (commit 3082916)
+- **✅ Documentation consistency fix (2026-05-06):**
+  - **Problem**: INTEGRATION.md had contradictory descriptions
+    * "How It Works" said parser "currently just echoes back the input"
+    * Later sections documented actual OpenSearch Query DSL output
+    * Would mislead integrators about service capabilities
+  - **Solution**: Updated early sections to reflect actual behavior
+  - **Changes**:
+    * Updated "How It Works" step 3 to document dual-format output
+    * Updated Architecture diagram to show { raw_query, parsed_query, parsed_query_dsl }
+    * Added note that parsed_query is Solr-format string (backward compatible)
+  - Documentation now accurately represents current implementation
+  - Committed (commit afeb169)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
