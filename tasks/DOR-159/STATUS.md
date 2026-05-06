@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - Critical error handling fix: guarded logging and added payload validation
+2026-05-06 - Critical build fix: install git in Dockerfile for gem fetching
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -296,6 +296,20 @@
     * Guard logging with `if raw_query` to prevent NameError
   - Prevents exception masking and improves error diagnostics
   - Committed (commit e2c1673)
+- **✅ CRITICAL FIX: Dockerfile missing git dependency (2026-05-06):**
+  - **Problem**: Docker build would fail during bundle install
+    * ruby:3.3-slim base image doesn't include git
+    * Gemfile has git-sourced dependency (mlibrary_search_parser from GitHub)
+    * bundle install needs git to fetch git:// dependencies
+    * Build would fail: "Git is not installed"
+  - **Solution**: Install git and ca-certificates before bundle install
+  - **Changes**:
+    * Added apt-get install for git and ca-certificates
+    * Used --no-install-recommends for smaller image size
+    * Cleanup apt cache to minimize layer size
+    * Clear comments explaining system dependencies
+  - Docker builds now work correctly with git-sourced gems
+  - Committed (commit 52793b8)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
