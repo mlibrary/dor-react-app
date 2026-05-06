@@ -1,7 +1,7 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-06 - Field documentation corrected to match actual OpenSearch mappings
+2026-05-06 - CRITICAL FIX: Added dual-format response for backward compatibility with React client
 
 ## Current Branch
 `DOR-159/query-parser-microservice`
@@ -170,6 +170,26 @@
   - Separated default (ic_all) and multi-field configuration examples
   - Addresses inconsistency between placeholder examples and actual mappings
   - Committed (commit 985c3cf)
+- **✅ CRITICAL FIX: Backward compatibility (2026-05-06):**
+  - **Problem discovered**: Service was returning parsed_query as OpenSearch DSL object
+  - **Impact**: Existing React client (RsDorDcApp) expects STRING, not object
+  - **Would cause runtime errors**:
+    * Regex test on line 329: `/\b(AND|OR|NOT)\b/i.test(parsedQuery)` fails on object
+    * Query interpolation on lines 336, 350, 360, 368: becomes "[object Object]"
+    * Search functionality completely broken
+  - **Solution**: Changed to dual-format response
+    * `parsed_query`: Solr-format string (backward compatible with existing client)
+    * `parsed_query_dsl`: OpenSearch Query DSL object (new capability for future)
+  - **app.rb changes**:
+    * Added fallback to raw_query if Solr transformer unavailable
+    * Maintains compatibility while enabling future DSL-based clients
+  - **README.md updates**:
+    * Documented both response fields
+    * Added Response Fields section
+    * Updated Implementation Details with backward compatibility notes
+  - **test.sh updated**: Reflects dual-format response
+  - Prevents breaking changes to existing React application
+  - Committed (commit d03fd70)
 
 ## Key Context
 - The search-parser microservice at `search-parser-service/` is now fully integrated with mlibrary_search_parser gem
