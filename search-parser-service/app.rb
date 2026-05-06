@@ -34,9 +34,16 @@ end
 # Parse search query endpoint - returns both string and DSL formats
 post '/parse' do
   content_type :json
+  raw_query = nil  # Initialize to avoid NameError in rescue logging
 
   request.body.rewind
   payload = JSON.parse(request.body.read)
+
+  # Validate payload structure
+  unless payload.is_a?(Hash)
+    status 400
+    return { error: 'Request body must be a JSON object' }.to_json
+  end
 
   raw_query = payload['query'] || ''
 
@@ -76,7 +83,7 @@ rescue => e
   # Log detailed error server-side for debugging
   request_id = SecureRandom.hex(8)
   logger.error "[#{request_id}] Parser error: #{e.class} - #{e.message}"
-  logger.error "[#{request_id}] Query: #{raw_query.inspect}"
+  logger.error "[#{request_id}] Query: #{raw_query.inspect}" if raw_query  # Guard against nil
   logger.error "[#{request_id}] Backtrace:\n#{e.backtrace.first(10).join("\n")}" if e.backtrace
 
   # Return generic error to client with request ID for correlation
