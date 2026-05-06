@@ -451,7 +451,7 @@ function RsDorDcApp() {
                                                                 src={`https://quod.lib.umich.edu/cgi/i/image/api/image/${item.collection_id}:${item.item_id}:${item.media_id}/full/140,/0/native.jpg`}/>
                                                         </div>
                                                     )}
-                                                    {item.collection_name && <dib>{item.collection_name}</dib>}
+                                                    {item.collection_name && <div>{item.collection_name}</div>}
                                                     {item.web_directory && item.item_id && (
                                                         <div>
                                                             <a
