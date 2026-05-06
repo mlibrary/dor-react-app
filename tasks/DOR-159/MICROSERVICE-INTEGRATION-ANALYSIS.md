@@ -161,6 +161,46 @@ rescue => e
 end
 ```
 
+**Option D: Clean Slate - OpenSearch Default (Recommended for internal stub)**
+```ruby
+post '/parse' do
+  content_type :json
+  request.body.rewind
+  payload = JSON.parse(request.body.read)
+  
+  raw_query = payload['query'] || ''
+  format = payload['format'] || 'opensearch'  # Default to OpenSearch
+  
+  config = PARSER_CONFIG.merge(output_format: format.to_sym)
+  search = MLibrarySearchParser::Search.new(raw_query, config)
+  
+  # Get output based on format
+  parsed_query = case format
+                 when 'opensearch'
+                   search.to_opensearch_query
+                 when 'solr'
+                   search.to_solr_query
+                 else
+                   # Unknown format - return OpenSearch anyway
+                   search.to_opensearch_query
+                 end
+  
+  {
+    raw_query: raw_query,
+    format: format,
+    parsed_query: parsed_query
+  }.to_json
+rescue => e
+  status 500
+  { error: e.message }.to_json
+end
+```
+**Why Option D for internal stub:**
+- No legacy 'echo' behavior to maintain
+- Defaults to OpenSearch (what this project needs)
+- Still accepts format parameter for flexibility
+- Simplest path forward with no technical debt
+
 ---
 
 ### 4. Update Client Service (React App)
@@ -291,14 +331,27 @@ end
 ## Deployment Considerations
 
 ### Gem Version Management
-- **Development**: Use GitHub branch reference
+- **Development**: Use GitHub branch reference or local path
 - **Staging**: Use published gem version from RubyGems
 - **Production**: Pin to specific gem version for stability
 
 ### Backward Compatibility
-- **Option A (Format parameter)**: Maintains single endpoint, adds optional parameter
-- **Option B (Separate endpoint)**: Preserves existing `/parse` behavior completely
-- **Recommendation**: Option A with default to 'opensearch' for new implementations
+**Not a concern for this project** - the search-parser-service is currently just an echo stub with no production usage. All code is internal to the dor-react-app project, so there are no external consumers to worry about.
+
+**This means:**
+- ✅ Can implement any of the three options without breaking changes
+- ✅ Can change the `/parse` endpoint freely
+- ✅ Only need to coordinate changes within this project
+- ✅ No need to maintain legacy behavior
+
+**Recommended approach given no compatibility constraints:**
+- **Option B (Format parameter)**: Most flexible for future needs
+  - Single endpoint with optional format parameter
+  - Easy to add new formats later (e.g., Elasticsearch DSL)
+  - Default to 'opensearch' for this project's needs
+- **Option A (Fixed OpenSearch)**: Simplest if only OpenSearch is needed
+  - Least code, straightforward implementation
+  - Can always add format parameter later if needed
 
 ### Configuration Management
 - Query fields should be configurable per environment
@@ -371,15 +424,19 @@ end
 
 ## Decision Points for Developer
 
+**Note**: Since search-parser-service is an internal stub with no production usage, backward compatibility is not a constraint. Choose the approach that best fits the project's future needs.
+
 ### 1. Gem Source
 - [ ] Use GitHub branch reference (for immediate testing)
 - [ ] Use local path (for development)
 - [ ] Wait for gem release (for production stability)
 
-### 2. API Design
-- [ ] **Option A**: Add format parameter to existing `/parse` endpoint
-- [ ] **Option B**: Keep `/parse` as-is, add `/parse/opensearch` endpoint
-- [ ] **Option C**: Replace `/parse` completely with OpenSearch output
+### 2. API Design (No compatibility constraints)
+- [ ] **Option A**: Fixed OpenSearch output - Simplest, least code
+- [ ] **Option B**: Format parameter - Most flexible (recommended)
+  - Can default to 'opensearch' since no legacy clients
+  - Easy to add more formats later if needed
+- [ ] **Option C**: Separate endpoint - Over-engineered for internal stub
 
 ### 3. Scope
 - [ ] Implement basic integration now (parser gem only)
@@ -387,10 +444,14 @@ end
 - [ ] Add monitoring and logging
 - [ ] Wait for requirements clarification
 
+**Recommendation for internal stub:**
+Start with **Option B** (format parameter) but default to 'opensearch'. This provides flexibility without added complexity, and there's no backward compatibility penalty since the stub isn't used yet.
+
 ---
 
 **Analysis Completed By**: AI Agent  
 **Analysis Date**: 2026-05-06  
 **Status**: Ready for developer decision on implementation approach  
-**Recommendation**: Start with Option A (format parameter) with local gem path for testing
+**Updated**: Analysis clarified - no backward compatibility concerns since service is internal stub  
+**Recommendation**: Option B (format parameter with 'opensearch' default) for flexibility, or Option A (fixed OpenSearch) for simplicity
 
