@@ -40,12 +40,12 @@ post '/parse' do
   payload = JSON.parse(request.body.read)
 
   # Validate payload structure
-  unless payload.is_a?(Hash)
+  unless payload.is_a?(Hash) && payload.key?('query') && payload['query'].is_a?(String)
     status 400
-    return { error: 'Request body must be a JSON object' }.to_json
+    return { error: 'Request body must be a JSON object with a query key' }.to_json
   end
 
-  raw_query = payload['query'] || ''
+  raw_query = payload['query']
 
   # Generate OpenSearch Query DSL (new capability)
   opensearch_search = MLibrarySearchParser::Search.new(raw_query, PARSER_CONFIG)

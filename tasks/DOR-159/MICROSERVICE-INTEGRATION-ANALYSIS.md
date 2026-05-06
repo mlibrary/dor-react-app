@@ -424,15 +424,15 @@ end
 ### Required Changes (for basic integration):
 1. ✏️ `search-parser-service/Gemfile` - Add gem dependency
 2. ✏️ `search-parser-service/app.rb` - Update `/parse` endpoint
-3. ✏️ `search-parser-service/test.sh` - Add integration tests (optional but recommended)
+3. ✏️ `search-parser-service/Dockerfile` - Verify/update image packages needed for git-sourced gem installation (for example, `git`)
+4. ✏️ `search-parser-service/test.sh` - Add integration tests (optional but recommended)
 
 ### Optional Changes (for enhanced functionality):
-4. ✏️ `src/apps/RsDorDcApp/services/searchParserService.js` - Add format parameter
-5. ✏️ `compose.yaml` - Add environment variables
-6. ✏️ `search-parser-service/README.md` - Document OpenSearch support
+5. ✏️ `src/apps/RsDorDcApp/services/searchParserService.js` - Add format parameter
+6. ✏️ `compose.yaml` - Add environment variables
+7. ✏️ `search-parser-service/README.md` - Document OpenSearch support and any Docker/runtime requirements
 
 ### No Changes Needed:
-- ✅ `search-parser-service/Dockerfile` - Works as-is
 - ✅ Parser gem - Complete and ready to use
 - ✅ Tests - All passing in parser gem
 
