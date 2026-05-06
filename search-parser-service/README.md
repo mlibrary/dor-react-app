@@ -68,11 +68,19 @@ Parse a search query string and return OpenSearch Query DSL.
 ### Environment Variables
 
 **`QUERY_FIELDS`** (optional)  
-Comma-separated list of fields to search. Default: `ic_all`
+Comma-separated list of OpenSearch field names to search. Must match your OpenSearch index mappings.
+
+Default: `ic_all` (the catch-all field used by this project's OpenSearch indexes)
 
 ```bash
+# Default (searches ic_all field)
+QUERY_FIELDS=ic_all
+
+# Multiple fields (must exist in your OpenSearch mapping)
 QUERY_FIELDS=ic_all,title,author,subject
 ```
+
+**Note**: The field names in `QUERY_FIELDS` must match the actual field names in your OpenSearch index mappings. This project's indexes use `ic_all` as the primary searchable field. See `src/apps/*/utils/constants.js` for the field configuration used by the React application.
 
 **`MLIBRARY_SEARCH_PARSER_GIT`** (required for Docker)  
 Git repository URL for the mlibrary_search_parser gem.
@@ -116,11 +124,17 @@ curl -X POST http://localhost:4567/parse \
 ```
 
 ### Field-Specific
+**Note**: Field names in queries must match your OpenSearch index mappings. The examples below use generic field names for illustration.
+
 ```bash
 curl -X POST http://localhost:4567/parse \
   -H "Content-Type: application/json" \
   -d '{"query":"title:hamlet author:shakespeare"}'
 ```
+
+For this project's OpenSearch indexes, searchable fields are configured via `QUERY_FIELDS` (default: `ic_all`). Field-specific queries like `title:hamlet` require those fields to be both:
+1. Listed in the `QUERY_FIELDS` environment variable
+2. Defined in your OpenSearch index mappings
 
 ### Phrase Query
 ```bash
