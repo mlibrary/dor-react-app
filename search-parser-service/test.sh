@@ -62,5 +62,7 @@ echo
 echo
 
 echo "Tests complete!"
-echo "All responses should contain OpenSearch Query DSL in 'parsed_query'"
+echo "All responses contain:"
+echo "  - parsed_query: Solr-format string (backward compatible)"
+echo "  - parsed_query_dsl: OpenSearch Query DSL object (new capability)"
 

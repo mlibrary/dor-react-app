@@ -30,7 +30,7 @@ get '/health' do
   { status: 'ok' }.to_json
 end
 
-# Parse search query endpoint - returns OpenSearch Query DSL
+# Parse search query endpoint - returns both string and DSL formats
 post '/parse' do
   content_type :json
 
@@ -39,13 +39,29 @@ post '/parse' do
 
   raw_query = payload['query'] || ''
 
-  # Parse to OpenSearch Query DSL
-  search = MLibrarySearchParser::Search.new(raw_query, PARSER_CONFIG)
-  opensearch_query = search.to_opensearch_query
+  # Generate OpenSearch Query DSL (new capability)
+  opensearch_search = MLibrarySearchParser::Search.new(raw_query, PARSER_CONFIG)
+  opensearch_dsl = opensearch_search.to_opensearch_query
+
+  # For backward compatibility with existing React client (RsDorDcApp)
+  # which expects parsed_query to be a STRING that can be:
+  # 1. Tested with regex: /\b(AND|OR|NOT)\b/i.test(parsedQuery)
+  # 2. Interpolated into query_string and match queries
+  #
+  # Generate Solr-format string if available, otherwise use raw query
+  parsed_string = begin
+    solr_config = PARSER_CONFIG.merge(output_format: :solr)
+    solr_search = MLibrarySearchParser::Search.new(raw_query, solr_config)
+    solr_search.to_solr
+  rescue NoMethodError, NotImplementedError
+    # Fallback: if Solr transformer not available, return raw query
+    raw_query
+  end
 
   {
     raw_query: raw_query,
-    parsed_query: opensearch_query
+    parsed_query: parsed_string,  # String for backward compatibility with existing client
+    parsed_query_dsl: opensearch_dsl  # Object for future direct DSL consumption
   }.to_json
 rescue JSON::ParserError => e
   status 400

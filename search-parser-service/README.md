@@ -38,7 +38,8 @@ Parse a search query string and return OpenSearch Query DSL.
 ```json
 {
   "raw_query": "cats AND dogs",
-  "parsed_query": {
+  "parsed_query": "cats AND dogs",
+  "parsed_query_dsl": {
     "query": {
       "bool": {
         "must": [
@@ -62,6 +63,11 @@ Parse a search query string and return OpenSearch Query DSL.
   }
 }
 ```
+
+**Response Fields:**
+- `raw_query` (string): The original query as submitted
+- `parsed_query` (string): Solr-format query string (backward compatible with existing clients)
+- `parsed_query_dsl` (object): OpenSearch Query DSL object (for direct DSL consumption)
 
 ## Configuration
 
@@ -182,7 +188,12 @@ This runs a series of test queries demonstrating various OpenSearch Query DSL ou
 
 - **Gem**: `mlibrary_search_parser` (git-based dependency via environment variables)
 - **Parser Branch**: `DOR-159/opensearch-query-dsl`
-- **Output Format**: OpenSearch Query DSL (JSON)
+- **Output Format**: Dual-format response for compatibility
+  - `parsed_query`: Solr-format string (backward compatible with existing React client)
+  - `parsed_query_dsl`: OpenSearch Query DSL object (for future direct DSL consumption)
 - **Error Handling**: Returns 400 for invalid JSON, 500 for parser errors
 - **Docker Ready**: Uses environment variables for reproducible builds
+- **Backward Compatibility**: Existing React clients (`RsDorDcApp`) expect a string query that can be tested with regex and interpolated into OpenSearch queries. The dual-format response maintains compatibility while enabling future DSL-based integrations.
+
+**Note**: If Solr support is not available in the parser gem, set `parsed_query` to `raw_query` as a fallback to maintain backward compatibility with existing clients.
 
