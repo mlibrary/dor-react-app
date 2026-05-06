@@ -15,10 +15,11 @@ RUN apt-get update && \
 
 # Install Ruby dependencies
 # Pass build args as environment variables for bundle install
+# Exclude development/test gems to minimize production image size
 COPY Gemfile Gemfile.lock* ./
 RUN MLIBRARY_SEARCH_PARSER_GIT=${MLIBRARY_SEARCH_PARSER_GIT} \
     MLIBRARY_SEARCH_PARSER_REF=${MLIBRARY_SEARCH_PARSER_REF} \
-    bundle install
+    bundle install --without development test
 
 # Copy application code
 COPY . .

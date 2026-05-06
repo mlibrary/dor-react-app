@@ -12,7 +12,14 @@ gem 'mlibrary_search_parser',
   git: ENV.fetch('MLIBRARY_SEARCH_PARSER_GIT', 'https://github.com/mlibrary/mlibrary_search_parser.git'),
   ref: ENV.fetch('MLIBRARY_SEARCH_PARSER_REF', 'DOR-159/opensearch-query-dsl')
 
-# Required by mlibrary_search_parser
+# Note: parslet is a dependency of mlibrary_search_parser and will be installed
+# automatically by bundler. Explicitly listed here for clarity, but could be
+# removed if the parser gem's gemspec declares it properly.
 gem 'parslet'
-gem 'pry'
+
+group :development, :test do
+  # Debugging REPL - not needed in production
+  gem 'pry'
+end
+
 
