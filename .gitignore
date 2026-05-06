@@ -16,6 +16,7 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
+.claude
 .DS_Store
 *.suo
 *.ntvs*
@@ -28,4 +29,7 @@ dist-ssr
 # Agent-generated files
 dotpy/commit_msg.txt
 pr-summary.md
+
+# External parser for reference
+mlibrary_search_parser/
 

@@ -19,6 +19,11 @@ services:
     build:
       context: ./search-parser-service
       dockerfile: Dockerfile
+      args:
+        - MLIBRARY_SEARCH_PARSER_GIT=${MLIBRARY_SEARCH_PARSER_GIT:-https://github.com/mlibrary/mlibrary_search_parser.git}
+        - MLIBRARY_SEARCH_PARSER_REF=${MLIBRARY_SEARCH_PARSER_REF:-DOR-159/opensearch-query-dsl}
+    environment:
+      - QUERY_FIELDS=${QUERY_FIELDS:-ic_all}
     ports:
       - "4567:4567"
     volumes:

@@ -9,9 +9,9 @@
 
 ## Section 1 — Ground Rules (AGENTS.md)
 
-**A1.** Record the plan in `tasks/DOR-nnn/TODO.md` first before beginning execution, so that work is always resumable.
+**A1.** Record the plan in `tasks/DOR-nnn/TODO.md` first before beginning execution, so that work is always resumable. After recording the plan, ask the developer to review it and wait for explicit approval before starting any work.
 
-*(Source: `AGENTS.md` § Task Tracking — "Before executing any multi-step plan, record it in `TODO.md` first. Do not begin execution until the plan is recorded so work is always resumable.")*
+*(Source: `AGENTS.md` § Task Tracking — "Before executing any multi-step plan, record it in `TODO.md` first. Do not begin execution until the plan is recorded so work is always resumable." and "After recording a plan, ask the developer to review it before starting any work. Wait for explicit approval before proceeding with implementation.")*
 
 ---
 
@@ -117,8 +117,9 @@
 
 ## Section 4 — Active Work and Task Management
 
-**A18.** There is one currently active ticket:
+**A18.** There are two currently active tickets:
 - **DOR-158** (branch: `DOR-158/ui-bug-fixes`): Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode
+- **DOR-159** (branch: `DOR-159/query-parser-microservice`): Query parser microservice: Convert Solr output to OpenSearch compatible
 
 *(Source: `tasks/README.md` — Active Tasks table)*
 

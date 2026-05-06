@@ -1,6 +1,25 @@
 source 'https://rubygems.org'
 
 gem 'sinatra'
+gem 'rackup'
 gem 'puma'
 gem 'json'
+
+# Query parser with OpenSearch Query DSL support
+# Use a reproducible source instead of a local path outside the Docker build context.
+# Defaults to the OpenSearch Query DSL branch; override via environment variables.
+gem 'mlibrary_search_parser',
+  git: ENV.fetch('MLIBRARY_SEARCH_PARSER_GIT', 'https://github.com/mlibrary/mlibrary_search_parser.git'),
+  ref: ENV.fetch('MLIBRARY_SEARCH_PARSER_REF', 'DOR-159/opensearch-query-dsl')
+
+# Note: parslet is a dependency of mlibrary_search_parser and will be installed
+# automatically by bundler. Explicitly listed here for clarity, but could be
+# removed if the parser gem's gemspec declares it properly.
+gem 'parslet'
+
+group :development, :test do
+  # Debugging REPL - not needed in production
+  gem 'pry'
+end
+
 

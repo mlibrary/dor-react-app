@@ -1,10 +1,25 @@
 FROM ruby:3.3-slim
 
+# Accept build arguments for parser gem configuration
+ARG MLIBRARY_SEARCH_PARSER_GIT=https://github.com/mlibrary/mlibrary_search_parser.git
+ARG MLIBRARY_SEARCH_PARSER_REF=DOR-159/opensearch-query-dsl
+
 WORKDIR /app
 
-# Install dependencies
+# Install system dependencies required for git-sourced gems
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      git \
+      ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Ruby dependencies
+# Pass build args as environment variables for bundle install
+# Exclude development/test gems to minimize production image size
 COPY Gemfile Gemfile.lock* ./
-RUN bundle install
+RUN MLIBRARY_SEARCH_PARSER_GIT=${MLIBRARY_SEARCH_PARSER_GIT} \
+    MLIBRARY_SEARCH_PARSER_REF=${MLIBRARY_SEARCH_PARSER_REF} \
+    bundle install --without development test
 
 # Copy application code
 COPY . .

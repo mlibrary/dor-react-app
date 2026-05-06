@@ -116,6 +116,8 @@ Short description of the overall goal.
 
 - **Before executing any multi-step plan**, record it in `TODO.md` first. Do not
   begin execution until the plan is recorded so work is always resumable.
+- **After recording a plan**, ask the developer to review it before starting any work.
+  Wait for explicit approval before proceeding with implementation.
 - **Check off subtasks** (`- [x]`) as they are completed.
 - **Every task must end with a developer-verification subtask** as its final item.
   When reached, ask: *"Are there any additional subtasks needed before this task is complete?"*
@@ -140,6 +142,19 @@ header, tasks = parts[0], parts[1:]
 tasks.append(tasks.pop(2))  # example: move index 2 to end
 open('tasks/DOR-nnn/TODO.md', 'w').write(header + ''.join(tasks))
 ```
+
+## Test-Driven Development (TDD)
+
+- **Write tests before implementation**: When developing new features or fixing bugs, write tests first that define the expected behavior, then implement the code to make the tests pass.
+- **Task order**: Structure work as **Test → Implementation → Documentation**:
+  1. **Test**: Write unit tests, integration tests, or test cases that specify what the code should do
+  2. **Implementation**: Write the actual code to make the tests pass
+  3. **Documentation**: Update README, inline comments, and other docs to reflect the implementation
+- **Benefits**: TDD ensures code is testable, catches regressions early, and serves as living documentation of intended behavior.
+- **Test frameworks**: Use the appropriate testing framework for the language/stack:
+  - JavaScript/React: Jest, React Testing Library, Vitest
+  - Ruby: RSpec, Minitest
+  - Python: pytest, unittest
 
 ## Python Utility Scripts (`dotpy/`)
 
