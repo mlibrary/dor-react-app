@@ -261,7 +261,7 @@ function RsDorDcApp() {
                 />
             )}
             <ReactiveBase
-                app="dor-dc"
+                app="dor-dc-20260509"
                 credentials={REACTIVESEARCH_CONFIG.credentials}
                 url={REACTIVESEARCH_CONFIG.url}
                 reactivesearchAPIConfig={{
@@ -283,9 +283,9 @@ function RsDorDcApp() {
                                 placeholder="Search collections"
                                 value={filters.collection}
                                 react={{
-                                    and: ["search", "subject", "coverage", "date", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "coverage", "date", "group", "type", "HLB"]
                                 }}
-                                onValueChange={handleCollectionChange}
+                                onChange={handleCollectionChange}
                             />
                         </Card>
                         <Card>
@@ -299,9 +299,9 @@ function RsDorDcApp() {
                                 placeholder="Search subjects"
                                 value={filters.subject}
                                 react={{
-                                    and: ["search", "collection", "coverage", "date", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "coverage", "date", "group", "type", "HLB"]
                                 }}
-                                onValueChange={handleSubjectChange}
+                                onChange={handleSubjectChange}
                             />
                         </Card>
                         <Card>
@@ -315,9 +315,9 @@ function RsDorDcApp() {
                                 placeholder="Search dates"
                                 value={filters.date}
                                 react={{
-                                    and: ["search", "collection", "subject", "coverage", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "coverage", "date", "group", "type", "HLB"]
                                 }}
-                                onValueChange={handleDateChange}
+                                onChange={handleDateChange}
                             />
                         </Card>
                         <Card>
@@ -331,9 +331,9 @@ function RsDorDcApp() {
                                 placeholder="Search coverage"
                                 value={filters.coverage}
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "coverage", "date", "group", "type", "HLB"]
                                 }}
-                                onValueChange={handleCoverageChange}
+                                onChange={handleCoverageChange}
                             />
                         </Card>
                         <Card>
@@ -347,9 +347,9 @@ function RsDorDcApp() {
                                 placeholder="Search groups"
                                 value={filters.group}
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "group", "coverage", "type", "HLB"]
                                 }}
-                                onValueChange={handleGroupChange}
+                                onChange={handleGroupChange}
                             />
                         </Card>
                         <Card>
@@ -362,9 +362,9 @@ function RsDorDcApp() {
                                 showSearch={false}
                                 value={filters.type}
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "group", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
                                 }}
-                                onValueChange={handleTypeChange}
+                                onChange={handleTypeChange}
                             />
                         </Card>
                         <Card>
@@ -378,21 +378,21 @@ function RsDorDcApp() {
                                 placeholder="Search subject areas"
                                 value={filters.HLB}
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
                                 }}
-                                onValueChange={handleHLBChange}
+                                onChange={handleHLBChange}
                             />
                         </Card>
                     </Col>
                     <Col span={18}>
                         <SearchBox
                             componentId="search"
-                            dataField={["ic_all"]}
+                            // dataField={["ic_all"]}
                             placeholder="Search All (Use AND, OR, NOT for Boolean logic)"
                             queryFormat="and"
                             fuzziness={0}
                             enableRecentSuggestions={false}
-                            onValueChange={handleSearchChange}
+                            onChange={handleSearchChange}
                             customQuery={(value, props) => {
                                 if (!value) return null;
 
@@ -546,6 +546,24 @@ function RsDorDcApp() {
                                                         gap: '8px 16px',
                                                         alignItems: 'start'
                                                     }}>
+                                                        {item.collection_name && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>collection_name:</div>
+                                                                <div>{Array.isArray(item.collection_name) ? item.collection_name.join(', ') : item.collection_name}</div>
+                                                            </>
+                                                        )}
+                                                        {item.hlb && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>hlb:</div>
+                                                                <div>{Array.isArray(item.hlb) ? item.hlb.join(', ') : item.hlb}</div>
+                                                            </>
+                                                        )}
+                                                        {item.groupName && (
+                                                            <>
+                                                                <div style={{fontWeight: 'bold'}}>groupName:</div>
+                                                                <div>{Array.isArray(item.groupName) ? item.groupName.join(', ') : item.groupName}</div>
+                                                            </>
+                                                        )}
                                                         {item.dc_contributor && (
                                                             <>
                                                                 <div style={{fontWeight: 'bold'}}>dc_contributor:</div>
