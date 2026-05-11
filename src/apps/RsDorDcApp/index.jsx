@@ -52,7 +52,10 @@ function RsDorDcApp() {
         collection: [],
         subject: [],
         date: [],
-        coverage: []
+        coverage: [],
+        group: [],
+        type: [],
+        HLB: [],
     });
     const latestDataRef = useRef([]);
     const searchQueryRef = useRef('');
@@ -121,6 +124,15 @@ function RsDorDcApp() {
         if (filters.coverage.length > 0) {
             filterParts.push(`Coverage: ${filters.coverage.join(', ')}`);
         }
+        if (filters.group.length > 0) {
+            filterParts.push(`Group: ${filters.group.join(', ')}`);
+        }
+        if (filters.type.length > 0) {
+            filterParts.push(`Type: ${filters.type.join(', ')}`);
+        }
+        if (filters.HLB.length > 0) {
+            filterParts.push(`Subject Area: ${filters.HLB.join(', ')}`);
+        }
 
         if (filterParts.length > 0) {
             if (fullQuery) {
@@ -138,10 +150,10 @@ function RsDorDcApp() {
         const resultsData = latestDataRef.current;
         if (resultsData && resultsData.length > 0) {
             const top5Results = resultsData.slice(0, 5).map((item, index) => {
-                // Handle dc_ti as either string or array
+                // Handle dc_title as either string or array
                 let title = 'Untitled';
-                if (item.dc_ti) {
-                    const titleRaw = Array.isArray(item.dc_ti) ? item.dc_ti.join(', ') : item.dc_ti;
+                if (item.dc_title) {
+                    const titleRaw = Array.isArray(item.dc_title) ? item.dc_title.join(', ') : item.dc_title;
                     title = titleRaw.replace(/<[^>]*>/g, '');
                 }
                 return `${index + 1}. ${title}`;
@@ -168,6 +180,18 @@ function RsDorDcApp() {
 
     const handleCoverageChange = useCallback((value) => {
         setFilters(prev => ({ ...prev, coverage: value || [] }));
+    }, []);
+
+    const handleGroupChange = useCallback((value) => {
+        setFilters(prev => ({ ...prev, group: value || [] }));
+    }, []);
+
+    const handleTypeChange = useCallback((value) => {
+        setFilters(prev => ({ ...prev, type: value || [] }));
+    }, []);
+
+    const handleHLBChange = useCallback((value) => {
+        setFilters(prev => ({ ...prev, HLB: value || [] }));
     }, []);
 
     const handleSearchChange = useCallback(async (value) => {
@@ -206,7 +230,10 @@ function RsDorDcApp() {
             collection: [],
             subject: [],
             date: [],
-            coverage: []
+            coverage: [],
+            group: [],
+            type: [],
+            HLB: [],
         });
     }, []);
 
@@ -248,7 +275,7 @@ function RsDorDcApp() {
                         <Card>
                             <MultiList
                                 componentId="collection"
-                                dataField="collection_name.keyword"
+                                dataField="collection_name.facet"
                                 title="Collection"
                                 aggregationSize={2000}
                                 sortBy="count"
@@ -256,7 +283,7 @@ function RsDorDcApp() {
                                 placeholder="Search collections"
                                 value={filters.collection}
                                 react={{
-                                    and: ["search", "subject", "coverage", "date"]
+                                    and: ["search", "subject", "coverage", "date", "group", "type", "HLB"]
                                 }}
                                 onValueChange={handleCollectionChange}
                             />
@@ -264,7 +291,7 @@ function RsDorDcApp() {
                         <Card>
                             <MultiList
                                 componentId="subject"
-                                dataField="dc_su.keyword"
+                                dataField="dc_subject.facet"
                                 title="Subject"
                                 aggregationSize={2000}
                                 sortBy="count"
@@ -272,7 +299,7 @@ function RsDorDcApp() {
                                 placeholder="Search subjects"
                                 value={filters.subject}
                                 react={{
-                                    and: ["search", "collection", "coverage", "date"]
+                                    and: ["search", "collection", "coverage", "date", "group", "type", "HLB"]
                                 }}
                                 onValueChange={handleSubjectChange}
                             />
@@ -280,7 +307,7 @@ function RsDorDcApp() {
                         <Card>
                             <MultiList
                                 componentId="date"
-                                dataField="dc_da.keyword"
+                                dataField="dc_date.facet"
                                 title="Date"
                                 aggregationSize={2000}
                                 sortBy="count"
@@ -288,7 +315,7 @@ function RsDorDcApp() {
                                 placeholder="Search dates"
                                 value={filters.date}
                                 react={{
-                                    and: ["search", "collection", "subject", "coverage"]
+                                    and: ["search", "collection", "subject", "coverage", "group", "type", "HLB"]
                                 }}
                                 onValueChange={handleDateChange}
                             />
@@ -296,7 +323,7 @@ function RsDorDcApp() {
                         <Card>
                             <MultiList
                                 componentId="coverage"
-                                dataField="dc_cov.keyword"
+                                dataField="dc_coverage.facet"
                                 title="Coverage"
                                 aggregationSize={2000}
                                 sortBy="count"
@@ -304,9 +331,56 @@ function RsDorDcApp() {
                                 placeholder="Search coverage"
                                 value={filters.coverage}
                                 react={{
-                                    and: ["search", "collection", "subject", "date"]
+                                    and: ["search", "collection", "subject", "date", "group", "type", "HLB"]
                                 }}
                                 onValueChange={handleCoverageChange}
+                            />
+                        </Card>
+                        <Card>
+                            <MultiList
+                                componentId="group"
+                                dataField="groupName.facet"
+                                title="Group"
+                                aggregationSize={2000}
+                                sortBy="count"
+                                showSearch={true}
+                                placeholder="Search groups"
+                                value={filters.group}
+                                react={{
+                                    and: ["search", "collection", "subject", "date", "coverage", "type", "HLB"]
+                                }}
+                                onValueChange={handleGroupChange}
+                            />
+                        </Card>
+                        <Card>
+                            <MultiList
+                                componentId="type"
+                                dataField="collection_type.facet"
+                                title="Type"
+                                aggregationSize={2000}
+                                sortBy="count"
+                                showSearch={false}
+                                value={filters.type}
+                                react={{
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "HLB"]
+                                }}
+                                onValueChange={handleTypeChange}
+                            />
+                        </Card>
+                        <Card>
+                            <MultiList
+                                componentId="HLB"
+                                dataField="hlb.facet"
+                                title="Subject Area"
+                                aggregationSize={2000}
+                                sortBy="count"
+                                showSearch={true}
+                                placeholder="Search subject areas"
+                                value={filters.HLB}
+                                react={{
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type"]
+                                }}
+                                onValueChange={handleHLBChange}
                             />
                         </Card>
                     </Col>
@@ -367,14 +441,16 @@ function RsDorDcApp() {
                                                         "multi_match": {
                                                             "query": queryToUse,
                                                             "fields": [
-                                                                "dc_ti^5",
-                                                                "dc_ti.strict^7",
-                                                                "dc_cr^3",
-                                                                "dc_de^2",
-                                                                "dc_su^3",
-                                                                "dc_ge",
-                                                                "dc_pu",
-                                                                "dc_so"
+                                                                "dc_title^5",
+                                                                "dc_title.strict^7",
+                                                                "dc_creator^3",
+                                                                "dc_description^2",
+                                                                "dc_subject^3",
+                                                                "dc_genre",
+                                                                "dc_publisher",
+                                                                "dc_source",
+                                                                "hlb^3",
+                                                                "groupName^2"
                                                             ],
                                                             "type": "best_fields",
                                                             "tie_breaker": 0.3
@@ -385,11 +461,11 @@ function RsDorDcApp() {
                                                             "query": queryToUse,
                                                             "type": "phrase",
                                                             "fields": [
-                                                                "dc_ti^8",
-                                                                "dc_ti.strict^10",
-                                                                "dc_cr^5",
-                                                                "dc_de^3",
-                                                                "dc_su^5"
+                                                                "dc_title^8",
+                                                                "dc_title.strict^10",
+                                                                "dc_creator^5",
+                                                                "dc_description^3",
+                                                                "dc_subject^5"
                                                             ],
                                                             "tie_breaker": 0.3
                                                         }
@@ -428,7 +504,7 @@ function RsDorDcApp() {
                                 size={9}
                                 pagination={true}
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage"],
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"],
                                 }}
                                 render={({data}) => {
                                     // Store latest data in ref for feedback form
@@ -439,12 +515,12 @@ function RsDorDcApp() {
                                         {data.map((item) => (
                                             <ResultList key={item._id} className="result-list-container">
                                                 <ResultList.Content>
-                                                    <ResultList.Title dangerouslySetInnerHTML={{__html: sanitizeHtml(item.dc_ti)}}/>
-                                                    <ResultList.Description
-                                                        dangerouslySetInnerHTML={{__html: sanitizeHtml(item.dc_de)}}/>
-                                                    <br/>
-                                                    {item.dc_cr && (
-                                                        <div dangerouslySetInnerHTML={{__html: sanitizeHtml(item.dc_cr)}}/>)}
+                                                     <ResultList.Title dangerouslySetInnerHTML={{__html: sanitizeHtml(item.dc_title)}}/>
+                                                     <ResultList.Description
+                                                         dangerouslySetInnerHTML={{__html: sanitizeHtml(item.dc_description)}}/>
+                                                     <br/>
+                                                     {item.dc_creator && (
+                                                         <div dangerouslySetInnerHTML={{__html: sanitizeHtml(item.dc_creator)}}/>)}
                                                     {item.collection_id && item.item_id && item.media_id && item.media_id !== "NOFILE" && (
                                                         <div>
                                                             <img
@@ -470,136 +546,94 @@ function RsDorDcApp() {
                                                         gap: '8px 16px',
                                                         alignItems: 'start'
                                                     }}>
-                                                        {item.XXX_dc_de && (
+                                                        {item.dc_contributor && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>XXX_dc_de:</div>
-                                                                <div>{Array.isArray(item.XXX_dc_de) ? item.XXX_dc_de.join(', ') : item.XXX_dc_de}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_contributor:</div>
+                                                                <div>{Array.isArray(item.dc_contributor) ? item.dc_contributor.join(', ') : item.dc_contributor}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_co && (
+                                                        {item.dc_coverage && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_co:</div>
-                                                                <div>{Array.isArray(item.dc_co) ? item.dc_co.join(', ') : item.dc_co}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_coverage:</div>
+                                                                <div>{Array.isArray(item.dc_coverage) ? item.dc_coverage.join(', ') : item.dc_coverage}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_cov && (
+                                                        {item.dc_creator && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_cov:</div>
-                                                                <div>{Array.isArray(item.dc_cov) ? item.dc_cov.join(', ') : item.dc_cov}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_creator:</div>
+                                                                <div>{Array.isArray(item.dc_creator) ? item.dc_creator.join(', ') : item.dc_creator}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_cr && (
+                                                        {item.dc_date && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_cr:</div>
-                                                                <div>{Array.isArray(item.dc_cr) ? item.dc_cr.join(', ') : item.dc_cr}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_date:</div>
+                                                                <div>{Array.isArray(item.dc_date) ? item.dc_date.join(', ') : item.dc_date}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_da && (
+                                                        {item.dc_description && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_da:</div>
-                                                                <div>{Array.isArray(item.dc_da) ? item.dc_da.join(', ') : item.dc_da}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_description:</div>
+                                                                <div>{Array.isArray(item.dc_description) ? item.dc_description.join(', ') : item.dc_description}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_de && (
+                                                        {item.dc_format && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_de:</div>
-                                                                <div>{Array.isArray(item.dc_de) ? item.dc_de.join(', ') : item.dc_de}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_format:</div>
+                                                                <div>{Array.isArray(item.dc_format) ? item.dc_format.join(', ') : item.dc_format}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_fo && (
+                                                        {item.dc_genre && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_fo:</div>
-                                                                <div>{Array.isArray(item.dc_fo) ? item.dc_fo.join(', ') : item.dc_fo}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_genre:</div>
+                                                                <div>{Array.isArray(item.dc_genre) ? item.dc_genre.join(', ') : item.dc_genre}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_ge && (
+                                                        {item.dc_language && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_ge:</div>
-                                                                <div>{Array.isArray(item.dc_ge) ? item.dc_ge.join(', ') : item.dc_ge}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_language:</div>
+                                                                <div>{Array.isArray(item.dc_language) ? item.dc_language.join(', ') : item.dc_language}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_la && (
+                                                        {item.dc_location && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_la:</div>
-                                                                <div>{Array.isArray(item.dc_la) ? item.dc_la.join(', ') : item.dc_la}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_location:</div>
+                                                                <div>{Array.isArray(item.dc_location) ? item.dc_location.join(', ') : item.dc_location}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_lo && (
+                                                        {item.dc_publisher && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_lo:</div>
-                                                                <div>{Array.isArray(item.dc_lo) ? item.dc_lo.join(', ') : item.dc_lo}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_publisher:</div>
+                                                                <div>{Array.isArray(item.dc_publisher) ? item.dc_publisher.join(', ') : item.dc_publisher}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_pu && (
+                                                        {item.dc_rights && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_pu:</div>
-                                                                <div>{Array.isArray(item.dc_pu) ? item.dc_pu.join(', ') : item.dc_pu}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_rights:</div>
+                                                                <div>{Array.isArray(item.dc_rights) ? item.dc_rights.join(', ') : item.dc_rights}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_re && (
+                                                        {item.dc_relation && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_re:</div>
-                                                                <div>{Array.isArray(item.dc_re) ? item.dc_re.join(', ') : item.dc_re}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_relation:</div>
+                                                                <div>{Array.isArray(item.dc_relation) ? item.dc_relation.join(', ') : item.dc_relation}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_rel && (
+                                                        {item.dc_source && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_rel:</div>
-                                                                <div>{Array.isArray(item.dc_rel) ? item.dc_rel.join(', ') : item.dc_rel}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_source:</div>
+                                                                <div>{Array.isArray(item.dc_source) ? item.dc_source.join(', ') : item.dc_source}</div>
                                                             </>
                                                         )}
-                                                        {item.dc_so && (
+                                                        {item.dc_subject && (
                                                             <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_so:</div>
-                                                                <div>{Array.isArray(item.dc_so) ? item.dc_so.join(', ') : item.dc_so}</div>
-                                                            </>
-                                                        )}
-                                                        {item.dc_su && (
-                                                            <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_su:</div>
-                                                                <div>{Array.isArray(item.dc_su) ? item.dc_su.join(', ') : item.dc_su}</div>
-                                                            </>
-                                                        )}
-                                                        {item.dc_ty && (
-                                                            <>
-                                                                <div style={{fontWeight: 'bold'}}>dc_ty:</div>
-                                                                <div>{Array.isArray(item.dc_ty) ? item.dc_ty.join(', ') : item.dc_ty}</div>
+                                                                <div style={{fontWeight: 'bold'}}>dc_subject:</div>
+                                                                <div>{Array.isArray(item.dc_subject) ? item.dc_subject.join(', ') : item.dc_subject}</div>
                                                             </>
                                                         )}
                                                         {item.dc_type && (
                                                             <>
                                                                 <div style={{fontWeight: 'bold'}}>dc_type:</div>
                                                                 <div>{Array.isArray(item.dc_type) ? item.dc_type.join(', ') : item.dc_type}</div>
-                                                            </>
-                                                        )}
-                                                        {item.xx_dc_co && (
-                                                            <>
-                                                                <div style={{fontWeight: 'bold'}}>xx_dc_co:</div>
-                                                                <div>{Array.isArray(item.xx_dc_co) ? item.xx_dc_co.join(', ') : item.xx_dc_co}</div>
-                                                            </>
-                                                        )}
-                                                        {item.xx_dc_cr && (
-                                                            <>
-                                                                <div style={{fontWeight: 'bold'}}>xx_dc_cr:</div>
-                                                                <div>{Array.isArray(item.xx_dc_cr) ? item.xx_dc_cr.join(', ') : item.xx_dc_cr}</div>
-                                                            </>
-                                                        )}
-                                                        {item.xx_dc_cv && (
-                                                            <>
-                                                                <div style={{fontWeight: 'bold'}}>xx_dc_cv:</div>
-                                                                <div>{Array.isArray(item.xx_dc_cv) ? item.xx_dc_cv.join(', ') : item.xx_dc_cv}</div>
-                                                            </>
-                                                        )}
-                                                        {item.xx_dc_fo && (
-                                                            <>
-                                                                <div style={{fontWeight: 'bold'}}>xx_dc_fo:</div>
-                                                                <div>{Array.isArray(item.xx_dc_fo) ? item.xx_dc_fo.join(', ') : item.xx_dc_fo}</div>
-                                                            </>
-                                                        )}
-                                                        {item.xx_dc_so && (
-                                                            <>
-                                                                <div style={{fontWeight: 'bold'}}>xx_dc_so:</div>
-                                                                <div>{Array.isArray(item.xx_dc_so) ? item.xx_dc_so.join(', ') : item.xx_dc_so}</div>
                                                             </>
                                                         )}
 
