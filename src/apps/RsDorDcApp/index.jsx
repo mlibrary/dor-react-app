@@ -7,6 +7,7 @@ import {
     ResultList,
     SearchBox,
     SelectedFilters,
+    StateProvider,
 } from '@appbaseio/reactivesearch';
 
 // console.log(Object.keys(ReactiveSearch));
@@ -60,6 +61,7 @@ function RsDorDcApp() {
     const latestDataRef = useRef([]);
     const searchQueryRef = useRef('');
     const parsedQueryRef = useRef('');
+    const setSearchStateRef = useRef(null);
 
     useEffect(() => {
         // Test connections to ReactiveSearch and Search Parser
@@ -235,6 +237,9 @@ function RsDorDcApp() {
             type: [],
             HLB: [],
         });
+        if (setSearchStateRef.current) {
+            setSearchStateRef.current({});
+        }
     }, []);
 
     return (
@@ -270,6 +275,12 @@ function RsDorDcApp() {
                     enableQueryRules: false,
                 }}
             >
+                <StateProvider
+                    render={({ setSearchState }) => {
+                        setSearchStateRef.current = setSearchState;
+                        return null;
+                    }}
+                />
                 <Row gutter={16} style={{padding: 20}}>
                     <Col span={6}>
                         <Card>
@@ -281,11 +292,10 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search collections"
-                                value={filters.collection}
                                 react={{
-                                    and: ["search", "collection", "subject", "coverage", "date", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
                                 }}
-                                onChange={handleCollectionChange}
+                                onValueChange={handleCollectionChange}
                             />
                         </Card>
                         <Card>
@@ -297,11 +307,10 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search subjects"
-                                value={filters.subject}
                                 react={{
-                                    and: ["search", "collection", "subject", "coverage", "date", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
                                 }}
-                                onChange={handleSubjectChange}
+                                onValueChange={handleSubjectChange}
                             />
                         </Card>
                         <Card>
@@ -313,11 +322,10 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search dates"
-                                value={filters.date}
                                 react={{
-                                    and: ["search", "collection", "subject", "coverage", "date", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
                                 }}
-                                onChange={handleDateChange}
+                                onValueChange={handleDateChange}
                             />
                         </Card>
                         <Card>
@@ -329,11 +337,10 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search coverage"
-                                value={filters.coverage}
                                 react={{
-                                    and: ["search", "collection", "subject", "coverage", "date", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
                                 }}
-                                onChange={handleCoverageChange}
+                                onValueChange={handleCoverageChange}
                             />
                         </Card>
                         <Card>
@@ -345,11 +352,10 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search groups"
-                                value={filters.group}
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "group", "coverage", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
                                 }}
-                                onChange={handleGroupChange}
+                                onValueChange={handleGroupChange}
                             />
                         </Card>
                         <Card>
@@ -360,11 +366,10 @@ function RsDorDcApp() {
                                 aggregationSize={2000}
                                 sortBy="count"
                                 showSearch={false}
-                                value={filters.type}
                                 react={{
                                     and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
                                 }}
-                                onChange={handleTypeChange}
+                                onValueChange={handleTypeChange}
                             />
                         </Card>
                         <Card>
@@ -376,11 +381,10 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={true}
                                 placeholder="Search subject areas"
-                                value={filters.HLB}
                                 react={{
                                     and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
                                 }}
-                                onChange={handleHLBChange}
+                                onValueChange={handleHLBChange}
                             />
                         </Card>
                     </Col>
