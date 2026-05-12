@@ -8,14 +8,20 @@ import { MultiList } from '@appbaseio/reactivesearch';
  *    are shown (ReactiveSearch v4 silently strips self from react.and, so the
  *    built-in self-filter never fires — we replicate it in the render layer).
  *
- * 2. SEARCH: when no items are selected, an optional search box filters the
- *    displayed list client-side (replacing the built-in showSearch, which is
- *    unavailable once we take over rendering with the render prop).
- *    The box is hidden while the list is collapsed — there is nothing to search.
+ * 2. SCROLL WINDOW: when no items are selected, the list is shown inside a
+ *    fixed-height scrollable container (default 10 rows visible). The optional
+ *    search box filters the scrolled list client-side.
  */
+
+// Approximate height per item: 3px top + 20px line + 3px bottom = 26px
+const ITEM_HEIGHT_PX = 26;
+const DEFAULT_VISIBLE_ROWS = 10;
+
 function CollapsibleMultiList(props) {
-    const { showSearch, placeholder = 'Search…', size = 10, ...multiListProps } = props;
+    const { showSearch, placeholder = 'Search…', visibleRows = DEFAULT_VISIBLE_ROWS, ...multiListProps } = props;
     const [searchTerm, setSearchTerm] = useState('');
+
+    const scrollHeight = visibleRows * ITEM_HEIGHT_PX;
 
     return (
         <MultiList
@@ -31,15 +37,14 @@ function CollapsibleMultiList(props) {
                     : [];
                 const hasSelection = selected.length > 0;
 
-                // Collapsed: show only selected items.
-                // Expanded + searching: show matching items up to size.
-                // Expanded + no search: show first `size` items (matches built-in default).
+                // Collapsed: show only selected items (no scroll needed).
+                // Expanded + searching: show all matching items in scroll window.
+                // Expanded + no search: show all items in scroll window.
                 const displayItems = hasSelection
                     ? data.filter(item => selected.includes(item.key))
                     : (searchTerm
-                        ? data.filter(item =>
-                            item.key.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, size)
-                        : data.slice(0, size));
+                        ? data.filter(item => item.key.toLowerCase().includes(searchTerm.toLowerCase()))
+                        : data);
 
                 return (
                     <div>
@@ -59,7 +64,13 @@ function CollapsibleMultiList(props) {
                                 }}
                             />
                         )}
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                        <ul style={{
+                            listStyle: 'none',
+                            padding: 0,
+                            margin: 0,
+                            maxHeight: hasSelection ? 'none' : `${scrollHeight}px`,
+                            overflowY: hasSelection ? 'visible' : 'auto',
+                        }}>
                             {displayItems.map(item => (
                                 <li
                                     key={item.key}
