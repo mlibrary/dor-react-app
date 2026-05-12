@@ -18,6 +18,37 @@ import DOMPurify from 'dompurify';
 import {REACTIVESEARCH_CONFIG} from './utils/constants.js';
 import {parseSearchQuery, checkParserHealth} from './services/searchParserService.js';
 
+/**
+ * Attempt to repair mojibake: UTF-8 bytes stored as individual Latin-1 code points.
+ * This affects text from several Chinese/Japanese collections in the index where the
+ * original UTF-8 byte stream was misinterpreted as Latin-1 at ingest time.
+ *
+ * Algorithm:
+ *  1. If every code point in the string is ≤ U+00FF (i.e. fits in one byte), reinterpret
+ *     those code points as raw bytes and try to decode them as UTF-8.
+ *  2. If the decode succeeds (valid UTF-8 that changed the string), return the fixed text.
+ *  3. Otherwise return the original string unchanged.
+ *
+ * Real Unicode text (e.g. 虫 = U+866B) has code points > 0xFF and is never modified.
+ */
+const fixMojibake = (str) => {
+    if (!str) return str;
+    // Fast path: purely ASCII strings need no fix.
+    if (!/[\u0080-\u00FF]/.test(str)) return str;
+    try {
+        const bytes = new Uint8Array(str.length);
+        for (let i = 0; i < str.length; i++) {
+            const code = str.charCodeAt(i);
+            if (code > 0xFF) return str; // Already real Unicode — leave as-is
+            bytes[i] = code;
+        }
+        const fixed = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+        return fixed !== str ? fixed : str;
+    } catch {
+        return str; // Not valid UTF-8 — leave as-is
+    }
+};
+
 // Helper function to sanitize HTML and properly decode HTML entities
 // This ensures Unicode characters are displayed correctly
 const sanitizeHtml = (html) => {
@@ -26,9 +57,10 @@ const sanitizeHtml = (html) => {
     // Normalize input: handle arrays by joining, then coerce to string
     let htmlString = html;
     if (Array.isArray(html)) {
-        htmlString = html.join(', ');
+        // Fix mojibake on each element before joining
+        htmlString = html.map(s => fixMojibake(String(s))).join(', ');
     } else {
-        htmlString = String(html);
+        htmlString = fixMojibake(String(html));
     }
 
     // DOMPurify sanitizes the HTML to prevent XSS attacks
