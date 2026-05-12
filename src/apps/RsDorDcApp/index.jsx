@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import {
-    MultiList,
     ReactiveBase,
     ReactiveList,
     ResultList,
@@ -9,6 +8,7 @@ import {
     SelectedFilters,
     StateProvider,
 } from '@appbaseio/reactivesearch';
+import CollapsibleMultiList from './components/CollapsibleMultiList.jsx';
 
 // console.log(Object.keys(ReactiveSearch));
 import {Alert, Button, Card, Col, Row,} from 'antd';
@@ -284,7 +284,7 @@ function RsDorDcApp() {
                 <Row gutter={16} style={{padding: 20}}>
                     <Col span={6}>
                         <Card>
-                            <MultiList
+                            <CollapsibleMultiList
                                 componentId="collection"
                                 dataField="collection_name.facet"
                                 title="Collection"
@@ -299,7 +299,7 @@ function RsDorDcApp() {
                             />
                         </Card>
                         <Card>
-                            <MultiList
+                            <CollapsibleMultiList
                                 componentId="subject"
                                 dataField="dc_subject.facet"
                                 title="Subject"
@@ -314,7 +314,7 @@ function RsDorDcApp() {
                             />
                         </Card>
                         <Card>
-                            <MultiList
+                            <CollapsibleMultiList
                                 componentId="date"
                                 dataField="dc_date.facet"
                                 title="Date"
@@ -329,7 +329,7 @@ function RsDorDcApp() {
                             />
                         </Card>
                         <Card>
-                            <MultiList
+                            <CollapsibleMultiList
                                 componentId="coverage"
                                 dataField="dc_coverage.facet"
                                 title="Coverage"
@@ -344,7 +344,7 @@ function RsDorDcApp() {
                             />
                         </Card>
                         <Card>
-                            <MultiList
+                            <CollapsibleMultiList
                                 componentId="group"
                                 dataField="groupName.facet"
                                 title="Group"
@@ -359,7 +359,7 @@ function RsDorDcApp() {
                             />
                         </Card>
                         <Card>
-                            <MultiList
+                            <CollapsibleMultiList
                                 componentId="type"
                                 dataField="collection_type.facet"
                                 title="Type"
@@ -373,7 +373,7 @@ function RsDorDcApp() {
                             />
                         </Card>
                         <Card>
-                            <MultiList
+                            <CollapsibleMultiList
                                 componentId="HLB"
                                 dataField="hlb.facet"
                                 title="Subject Area"
