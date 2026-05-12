@@ -19,9 +19,13 @@ function OsDorDcApp() {
     const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [collectionFilter, setCollectionFilter] = useState(COLLECTION_OPTIONS.ALL);
+    // eslint-disable-next-line no-unused-vars
     const [minPrice, setMinPrice] = useState(PRICE_RANGE.DEFAULT_MIN);
+    // eslint-disable-next-line no-unused-vars
     const [maxPrice, setMaxPrice] = useState(PRICE_RANGE.DEFAULT_MAX);
+    // eslint-disable-next-line no-unused-vars
     const [actualMinPrice, setActualMinPrice] = useState(PRICE_RANGE.DEFAULT_MIN);
+    // eslint-disable-next-line no-unused-vars
     const [actualMaxPrice, setActualMaxPrice] = useState(PRICE_RANGE.DEFAULT_MAX);
     const [error, setError] = useState(null);
     const [connectionStatus, setConnectionStatus] = useState('checking');
@@ -86,7 +90,8 @@ function OsDorDcApp() {
         if (actualMaxPrice > 0) {
             fetchThings("", COLLECTION_OPTIONS.ALL, {min: actualMinPrice, max: actualMaxPrice});
         }
-    }, [actualMaxPrice]); // Fetch things once we have price stats
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [actualMaxPrice]); // Fetch things once we have price stats (actualMinPrice intentionally omitted)
 
     const handleSearch = () => {
         fetchThings(searchQuery, collectionFilter, {min: minPrice, max: maxPrice});
