@@ -18,7 +18,9 @@ function CollapsibleMultiList(props) {
                 if (loading) return <div style={{ padding: '8px', color: '#999' }}>Loading…</div>;
                 if (!data || data.length === 0) return <div style={{ padding: '8px', color: '#999' }}>No options</div>;
 
-                const selected = value || [];
+                const selected = Array.isArray(value) ? value
+                    : (value && typeof value === 'object') ? Object.keys(value).filter(k => value[k])
+                    : [];
                 const displayItems = selected.length > 0
                     ? data.filter(item => selected.includes(item.key))
                     : data;

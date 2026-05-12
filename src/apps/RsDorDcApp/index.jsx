@@ -391,7 +391,7 @@ function RsDorDcApp() {
                     <Col span={18}>
                         <SearchBox
                             componentId="search"
-                            // dataField={["ic_all"]}
+                            dataField={["ic_all"]}
                             placeholder="Search All (Use AND, OR, NOT for Boolean logic)"
                             queryFormat="and"
                             fuzziness={0}
