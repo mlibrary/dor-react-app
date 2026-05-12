@@ -120,6 +120,7 @@ export const getCollections = async () => {
 //   };
 // };
 
+// eslint-disable-next-line no-unused-vars
 export const searchThings = async (query, collection, priceRange = null, size = 50) => {
     // Build the base query
     let queryObj;

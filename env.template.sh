@@ -1,5 +1,5 @@
-VITE_OPENSEARCH_URL="http://opensearch:9200"
-VITE_OPENSEARCH_CREDENTIALS="admin:password"
+VITE_OPENSEARCH_URL="https://opensearch.discovery.dor.lib.umich.edu"
+VITE_OPENSEARCH_CREDENTIALS="admin:CHANGEME"
 VITE_REACTIVESEARCH_URL="http://reactivesearch:8000"
 VITE_REACTIVESEARCH_CREDENTIALS="admin:password"
 VITE_SEARCH_PARSER_URL="http://search-parser:4567"
