@@ -14,7 +14,7 @@ import { MultiList } from '@appbaseio/reactivesearch';
  *    The box is hidden while the list is collapsed — there is nothing to search.
  */
 function CollapsibleMultiList(props) {
-    const { showSearch, placeholder = 'Search…', size = 100, ...multiListProps } = props;
+    const { showSearch, placeholder = 'Search…', size = 10, ...multiListProps } = props;
     const [searchTerm, setSearchTerm] = useState('');
 
     return (
