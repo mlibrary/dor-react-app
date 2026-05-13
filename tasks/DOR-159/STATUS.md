@@ -28,7 +28,15 @@ Key files:
 - `src/apps/RsDorDcApp/services/searchParserService.js`
 - `src/apps/RsDorDcApp/index.jsx`
 
-### Task 4: End-to-End Verification and Documentation
+### Task 4: Create GitHub Actions Workflow to Build the Docker Image
+**Status**: Not started
+Key files (to be created):
+- `.github/workflows/search-parser-service-build.yml`
+Key files to read first:
+- `search-parser-service/Dockerfile`
+- `compose.yaml`
+
+### Task 5: End-to-End Verification and Documentation
 **Status**: Not started
 Key files:
 - `search-parser-service/INTEGRATION.md`
@@ -43,7 +51,7 @@ Key files:
 - 2026-05-13: Ticket reopened on new branch `DOR-159/react-opensearch-integration`
 - 2026-05-13: Moved `archive/DOR-159` → `tasks/DOR-159`
 - 2026-05-13: Replaced Phase 1 TODO.md with Phase 2 tasks
-- 2026-05-13: Created this STATUS.md for the new session
+- 2026-05-13: Added Task 4 — GitHub Actions workflow to build search-parser-service image
 
 ## Key Context
 - **Phase 1 delivered** (branch `DOR-159/query-parser-microservice`, now merged):

@@ -42,7 +42,22 @@ Update the React app to use `parsed_query_dsl` from the parser service.
 - [ ] Verify the current state of the project achieves the task goal
 - [ ] Verify with the developer that the task is complete
 
-## Task 4: End-to-End Verification and Documentation
+## Task 4: Create GitHub Actions Workflow to Build the Docker Image
+Add a CI workflow that builds the `search-parser-service` Docker image on every
+push / pull request so broken builds are caught automatically.
+
+- [ ] Examine `search-parser-service/Dockerfile` and `compose.yaml` to understand build args needed
+- [ ] Create `.github/workflows/search-parser-service-build.yml`
+  - Trigger on push and pull_request for paths under `search-parser-service/**`
+  - Use `docker/build-push-action` (or plain `docker build`) to build the image
+  - Pass `MLIBRARY_SEARCH_PARSER_GIT` and `MLIBRARY_SEARCH_PARSER_REF` build args (use defaults from Dockerfile)
+  - Do not push to a registry — build-only is sufficient for CI
+- [ ] Verify the workflow file is valid YAML and the job name / step names are clear
+- [ ] Run `npm run lint | cat` to confirm no JS lint regressions
+- [ ] Verify the current state of the project achieves the task goal
+- [ ] Verify with the developer that the task is complete
+
+## Task 5: End-to-End Verification and Documentation
 Verify the full stack works and update documentation.
 
 - [ ] Test the integration locally (dev server + search-parser-service)
