@@ -8,6 +8,23 @@ services:
     command: sleep infinity
     depends_on:
       - opensearch
+      - search-parser
+    networks:
+      - opensearch-net
+
+  search-parser:
+    build:
+      context: ../search-parser-service
+      dockerfile: Dockerfile
+      # Build args use Dockerfile ARG defaults — no env vars needed locally
+    container_name: search-parser
+    restart: unless-stopped
+    environment:
+      - QUERY_FIELDS=ic_all
+    ports:
+      - "4567:4567"
+    volumes:
+      - ../search-parser-service:/app
     networks:
       - opensearch-net
 
