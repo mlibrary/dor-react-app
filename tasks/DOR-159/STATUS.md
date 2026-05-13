@@ -1,46 +1,25 @@
 # DOR-159 Status
 
 ## Last Updated
-2026-05-13 — Ticket reopened for Phase 2: React OpenSearch DSL integration
+2026-05-13 — Tasks 1–4 complete; 26/26 tests passing, lint clean; awaiting Task 5 (E2E verification)
 
 ## Current Branch
 `DOR-159/react-opensearch-integration` (new branch from `main`)
 
-Phase 1 work lives on the merged branch `DOR-159/query-parser-microservice`.
-
 ## Open Tasks
-
-### Task 1: Audit Current RsDorDcApp Search Parser Integration
-**Status**: Not started
-Key files:
-- `src/apps/RsDorDcApp/services/searchParserService.js`
-- `src/apps/RsDorDcApp/index.jsx` (customQuery callback, parsedQueryRef)
-
-### Task 2: Write Tests for OpenSearch DSL Integration (TDD)
-**Status**: Not started
-Key files (to be created):
-- `src/apps/RsDorDcApp/services/__tests__/searchParserService.test.js`
-- Test harness for `customQuery` logic
-
-### Task 3: Implement DSL-Based customQuery in RsDorDcApp
-**Status**: Not started
-Key files:
-- `src/apps/RsDorDcApp/services/searchParserService.js`
-- `src/apps/RsDorDcApp/index.jsx`
-
-### Task 4: Create GitHub Actions Workflow to Build the Docker Image
-**Status**: Not started
-Key files (to be created):
-- `.github/workflows/search-parser-service-build.yml`
-Key files to read first:
-- `search-parser-service/Dockerfile`
-- `compose.yaml`
 
 ### Task 5: End-to-End Verification and Documentation
 **Status**: Not started
 Key files:
 - `search-parser-service/INTEGRATION.md`
-- Inline comments in src files
+- `src/apps/RsDorDcApp/index.jsx`
+- `src/apps/RsDorDcApp/services/searchParserService.js`
+
+## Completed Tasks
+- ✅ Task 1: Audited search parser integration in RsDorDcApp
+- ✅ Task 2: Vitest suite — 26 tests (12 service + 14 queryBuilder)
+- ✅ Task 3: Implemented DSL-based customQuery (queryBuilder.js + index.jsx)
+- ✅ Task 4: GitHub Actions CI workflow for search-parser-service Docker build
 
 ## Open Plans
 | File                          | Purpose                                              | Status   |
@@ -49,25 +28,35 @@ Key files:
 
 ## Recent Activity
 - 2026-05-13: Ticket reopened on new branch `DOR-159/react-opensearch-integration`
-- 2026-05-13: Moved `archive/DOR-159` → `tasks/DOR-159`
-- 2026-05-13: Replaced Phase 1 TODO.md with Phase 2 tasks
-- 2026-05-13: Added Task 4 — GitHub Actions workflow to build search-parser-service image
+- 2026-05-13: Task 1 — Audited `searchParserService.js` and `index.jsx` customQuery flow
+- 2026-05-13: Task 2 — Set up Vitest; wrote 26 tests (Red phase)
+- 2026-05-13: Task 3 — Implemented:
+  - `searchParserService.js`: added `parsedQueryDsl` field (from `parsed_query_dsl ?? null`)
+  - `src/apps/RsDorDcApp/utils/queryBuilder.js`: new helper, uses DSL when available else manual fallback
+  - `src/apps/RsDorDcApp/index.jsx`: `parsedQueryDslRef`, updated `handleSearchChange`, replaced 80-line inline customQuery with `buildOpenSearchQuery()`
+  - ESLint config updated with test-file overrides
+- 2026-05-13: Task 4 — Created `.github/workflows/build-search-parser-service-image.yaml`
+- 2026-05-13: All work committed (c953b87), 26/26 tests, 0 lint errors
 
 ## Key Context
 - **Phase 1 delivered** (branch `DOR-159/query-parser-microservice`, now merged):
   - mlibrary_search_parser gem: OpenSearch transformer at `transform/opensearch/query_dsl.rb`
   - search-parser-service `/parse` returns dual-format JSON:
     - `parsed_query`: Solr-format string (backward compat with existing React client)
-    - `parsed_query_dsl`: OpenSearch Query DSL object (new, for Phase 2 consumption)
-- **Current React state**: `RsDorDcApp` uses `parsedQueryRef.current` (a string) in
-  `customQuery` to build its own `query_string` / `bool` OpenSearch query manually.
-- **Phase 2 goal**: Replace that manual DSL construction with the `parsed_query_dsl`
-  object returned directly by the parser service.
-- Service runs on port 4567 in Docker (`http://search-parser:4567`).
-- `searchParserService.js` currently reads `parsed_query` (string) from the response.
+    - `parsed_query_dsl`: OpenSearch Query DSL object (now consumed in Phase 2)
+- **Phase 2 key design decisions:**
+  - `buildOpenSearchQuery(queryString, parsedQueryDsl, dataFields)` — DSL takes priority
+    over manual construction only when it is a non-empty object
+  - Empty object `{}` treated as "no DSL" and falls through to manual construction
+  - All fallback paths set `parsedQueryDslRef.current = null`
+  - `parsedQueryRef.current` (Solr string) kept as the fallback query value passed to
+    `buildOpenSearchQuery` so the manual DSL path still works correctly
+- **CI workflow** uses `vars.MLIBRARY_SEARCH_PARSER_GIT` / `vars.MLIBRARY_SEARCH_PARSER_REF`
+  repository variables with hardcoded defaults (same as Dockerfile ARGs) so it works
+  out-of-the-box with no GitHub configuration required.
 
 ## Next Steps
-1. **Start Task 1**: Read `searchParserService.js` and trace `parsedQueryRef` usage
-   in `index.jsx` to build a clear picture of what needs to change.
-2. Plan the test structure for Task 2 before writing any code.
-3. Ask developer to approve TODO.md plan before starting Task 2 / 3 work.
+1. **Task 5**: Spin up the full stack (docker compose up) and test search queries end-to-end.
+2. Update `search-parser-service/INTEGRATION.md` to document the `parsedQueryDsl` client-side
+   consumption pattern if useful for future integrators.
+3. Ask developer to verify Task 5 and confirm all tasks complete.
