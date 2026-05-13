@@ -62,7 +62,7 @@ Verify the full stack works and update documentation.
 
 - [x] Test the integration locally (dev server + search-parser-service)
 - [x] Verify search results are correct for simple, Boolean, field-specific queries
-- [ ] Update `search-parser-service/INTEGRATION.md` if client-side notes are needed
+- [x] Update `search-parser-service/INTEGRATION.md` if client-side notes are needed
 - [ ] Update any inline comments in `RsDorDcApp/index.jsx` / `searchParserService.js`
 - [ ] Verify the current state of the project achieves the task goal
 - [ ] Verify with the developer that the task is complete
