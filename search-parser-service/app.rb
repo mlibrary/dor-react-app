@@ -82,7 +82,7 @@ post '/parse' do
   {
     raw_query: raw_query,
     parsed_query: parsed_string,  # String for backward compatibility with existing client
-    parsed_query_dsl: opensearch_dsl  # Object for future direct DSL consumption
+    parsed_query_dsl: opensearch_dsl  # OpenSearch Query DSL — consumed by RsDorDcApp customQuery via buildOpenSearchQuery
   }.to_json
 rescue JSON::ParserError => e
   # Log detailed error server-side for debugging

@@ -10,7 +10,6 @@ import {
 } from '@appbaseio/reactivesearch';
 import CollapsibleMultiList from './components/CollapsibleMultiList.jsx';
 
-// console.log(Object.keys(ReactiveSearch));
 import {Alert, Button, Card, Col, Row,} from 'antd';
 import {FormOutlined, ClearOutlined} from '@ant-design/icons';
 import DOMPurify from 'dompurify';
