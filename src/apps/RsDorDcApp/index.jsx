@@ -401,7 +401,7 @@ function RsDorDcApp() {
                             queryFormat="and"
                             fuzziness={0}
                             enableRecentSuggestions={false}
-                            onChange={handleSearchChange}
+                            onValueChange={handleSearchChange}
                             customQuery={(value, props) => {
                                 if (!value) return null;
 
