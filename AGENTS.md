@@ -225,6 +225,8 @@ git commit -m "chore: single line message" | cat
 
 ## Pull Request Summaries
 
+- **At developer sign-off** (when the final "Verify with the developer" subtask is
+  checked off), proactively create the PR summary without waiting to be asked.
 - **When the developer asks for a PR summary**, write it to `pr-summary.md` in
   the project root and open the file so they can select-all and copy from the
   editor. `pr-summary.md` is listed in `.gitignore` and will never be
