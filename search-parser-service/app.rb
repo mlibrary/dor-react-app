@@ -7,6 +7,19 @@ require 'mlibrary_search_parser'
 set :bind, '0.0.0.0'
 set :port, 4567
 
+# CORS — allow the Vite dev server (and any other front-end origin) to call
+# this service directly from the browser.
+before do
+  headers \
+    'Access-Control-Allow-Origin'  => '*',
+    'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers' => 'Content-Type'
+end
+
+options '*' do
+  200
+end
+
 # Parser configuration
 # search_fields required by parser for field-specific queries (string keys)
 # query_fields used by OpenSearch transformer for multi_match (symbol keys)
