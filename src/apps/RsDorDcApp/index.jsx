@@ -16,6 +16,7 @@ import {FormOutlined, ClearOutlined} from '@ant-design/icons';
 import DOMPurify from 'dompurify';
 
 import {REACTIVESEARCH_CONFIG} from './utils/constants.js';
+import {buildOpenSearchQuery} from './utils/queryBuilder.js';
 import {parseSearchQuery, checkParserHealth} from './services/searchParserService.js';
 
 // Helper function to sanitize HTML and properly decode HTML entities
@@ -61,6 +62,7 @@ function RsDorDcApp() {
     const latestDataRef = useRef([]);
     const searchQueryRef = useRef('');
     const parsedQueryRef = useRef('');
+    const parsedQueryDslRef = useRef(null);
     const setSearchStateRef = useRef(null);
 
     useEffect(() => {
@@ -200,11 +202,12 @@ function RsDorDcApp() {
         // Store raw query in ref
         searchQueryRef.current = value || '';
 
-        // Call parser service to get parsed query
+        // Call parser service to get parsed query and OpenSearch DSL
         if (parserAvailable && value) {
             try {
                 const result = await parseSearchQuery(value);
                 parsedQueryRef.current = result.parsedQuery;
+                parsedQueryDslRef.current = result.parsedQueryDsl;
 
                 // Clear any previous parser errors
                 if (parserError && !result.error) {
@@ -219,11 +222,13 @@ function RsDorDcApp() {
                 console.error('Error parsing query:', error);
                 // Fallback to raw query
                 parsedQueryRef.current = value;
+                parsedQueryDslRef.current = null;
                 setParserError('Parser service error: using raw query');
             }
         } else {
             // If parser not available, use raw query
             parsedQueryRef.current = value || '';
+            parsedQueryDslRef.current = null;
         }
     }, [parserAvailable, parserError]);
 
@@ -400,86 +405,13 @@ function RsDorDcApp() {
                             customQuery={(value, props) => {
                                 if (!value) return null;
 
-                                // Use parsed query if available, otherwise fall back to raw value
-                                const queryToUse = parsedQueryRef.current || value;
-
-                                // Check if the query contains Boolean operators
-                                const hasBooleanOperators = /\b(AND|OR|NOT)\b/i.test(queryToUse);
-
-                                if (hasBooleanOperators) {
-                                    // Use query_string for Boolean logic support
-                                    return {
-                                        query: {
-                                            query_string: {
-                                                query: queryToUse,
-                                                fields: props.dataField,
-                                                default_operator: "AND"
-                                            }
-                                        }
-                                    };
-                                } else {
-                                    // Use standard match query for simple searches
-                                    return {
-                                        query: {
-                                            "bool": {
-                                                "should": [
-                                                    {
-                                                        "match": {
-                                                            "ic_all": {
-                                                                "query": queryToUse,
-                                                                "operator": "and",
-                                                                "boost": 3
-                                                            }
-                                                        }
-                                                    },
-                                                    {
-                                                        "match": {
-                                                            "ic_all": {
-                                                                "query": queryToUse,
-                                                                "operator": "or",
-                                                                "minimum_should_match": "75%"
-                                                            }
-                                                        }
-                                                    },
-                                                    {
-                                                        "multi_match": {
-                                                            "query": queryToUse,
-                                                            "fields": [
-                                                                "dc_title^5",
-                                                                "dc_title.strict^7",
-                                                                "dc_creator^3",
-                                                                "dc_description^2",
-                                                                "dc_subject^3",
-                                                                "dc_genre",
-                                                                "dc_publisher",
-                                                                "dc_source",
-                                                                "hlb^3",
-                                                                "groupName^2"
-                                                            ],
-                                                            "type": "best_fields",
-                                                            "tie_breaker": 0.3
-                                                        }
-                                                    },
-                                                    {
-                                                        "multi_match": {
-                                                            "query": queryToUse,
-                                                            "type": "phrase",
-                                                            "fields": [
-                                                                "dc_title^8",
-                                                                "dc_title.strict^10",
-                                                                "dc_creator^5",
-                                                                "dc_description^3",
-                                                                "dc_subject^5"
-                                                            ],
-                                                            "tie_breaker": 0.3
-                                                        }
-                                                    }
-                                                ],
-                                                "minimum_should_match": 1
-                                            }
-                                        }
-                                    };
-                                }
+                                // Use parsed DSL from parser service when available,
+                                // falling back to the Solr-format string for manual DSL construction.
+                                return buildOpenSearchQuery(
+                                    parsedQueryRef.current || value,
+                                    parsedQueryDslRef.current,
+                                    props.dataField
+                                );
                             }}
                         />
                         <div style={{marginTop: '16px', marginBottom: '16px', display: 'flex', gap: '8px'}}>

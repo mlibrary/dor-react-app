@@ -8,9 +8,20 @@
 const SEARCH_PARSER_URL = import.meta.env.VITE_SEARCH_PARSER_URL || 'http://localhost:4567';
 
 /**
- * Parse a search query using the microservice
+ * Parse a search query using the microservice.
+ *
  * @param {string} rawQuery - The raw search query entered by the user
- * @returns {Promise<{rawQuery: string, parsedQuery: string}>}
+ * @returns {Promise<{
+ *   rawQuery: string,
+ *   parsedQuery: string,
+ *   parsedQueryDsl: object|null,
+ *   error?: string
+ * }>}
+ *
+ * Response fields:
+ *  - rawQuery        — the original query string echoed back by the service
+ *  - parsedQuery     — Solr-format string (backward compatible with existing usage)
+ *  - parsedQueryDsl  — OpenSearch Query DSL object, or null if unavailable
  */
 export async function parseSearchQuery(rawQuery) {
     try {
@@ -30,6 +41,7 @@ export async function parseSearchQuery(rawQuery) {
         return {
             rawQuery: result.raw_query,
             parsedQuery: result.parsed_query,
+            parsedQueryDsl: result.parsed_query_dsl ?? null,
         };
     } catch (error) {
         console.error('Error calling search parser service:', error);
@@ -37,6 +49,7 @@ export async function parseSearchQuery(rawQuery) {
         return {
             rawQuery,
             parsedQuery: rawQuery,
+            parsedQueryDsl: null,
             error: error.message,
         };
     }
