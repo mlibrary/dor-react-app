@@ -7,9 +7,9 @@ rules, see [`AGENTS.md`](../AGENTS.md).
 
 ## Active Tasks
 
-| Ticket       | Branch | Summary |
-|--------------|--------|---------|
-| *(none yet)* |        |         |
+| Ticket  | Branch                               | Summary                                                                  |
+|---------|--------------------------------------|--------------------------------------------------------------------------|
+| DOR-159 | DOR-159/react-opensearch-integration | Phase 2: Wire RsDorDcApp to consume parsed_query_dsl from parser service |
 
 ---
 
@@ -18,7 +18,6 @@ rules, see [`AGENTS.md`](../AGENTS.md).
 | Ticket  | Archive path    | Summary                                                                       |
 |---------|-----------------|-------------------------------------------------------------------------------|
 | DOR-158 | archive/DOR-158 | Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode |
-| DOR-159 | archive/DOR-159 | Query parser microservice: Convert Solr output to OpenSearch compatible       |
 
 ---
 
