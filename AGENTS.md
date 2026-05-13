@@ -12,8 +12,36 @@
 
 - **Never read `AGENT_QUIZ_ANSWERS.md` before completing the quiz.** When taking the
   `AGENT_QUIZ.md` onboarding quiz, do not open or read `AGENT_QUIZ_ANSWERS.md` until
-  you have written out answers to all 20 questions **and** the developer has explicitly
+  you have written out answers to all 21 questions **and** the developer has explicitly
   told you to compare. Reading the answer file in advance defeats the purpose of the quiz.
+
+## Environment Check (New Session)
+
+At the start of every new session, run the following command to confirm whether you are
+inside a devcontainer and identify its type:
+
+```shell
+printenv | grep -i "container\|remote\|codespace" | cat
+```
+
+**What to look for:**
+
+| Signal                                 | Meaning                                                            |
+|----------------------------------------|--------------------------------------------------------------------|
+| `DEVCONTAINER_CONFIG_PATH` is set      | You are inside a devcontainer (most definitive indicator)          |
+| Value contains `/.jbdevcontainer`      | It is a **JetBrains** remote dev devcontainer                      |
+| `REMOTE_CONTAINERS=true`               | It is a **VS Code** devcontainer (this variable absent here)       |
+| `CODESPACES=true`                      | It is a **GitHub Codespace** (this variable absent here)           |
+| `REMOTE_DEV_*` variables present       | JetBrains remote dev server is managing the session                |
+| Working directory under `/workspaces/` | Standard devcontainer mount point                                  |
+| Hostname is a 12-char hex hash         | Typical Docker container ID — corroborates containerised execution |
+
+**In this repository** the environment is a JetBrains devcontainer:
+`DEVCONTAINER_CONFIG_PATH=/.jbdevcontainer/config/JetBrains/host-config.json`
+
+This matters because ports, file paths, and the dev server URL (`http://localhost:5173`)
+are all relative to the container — the JetBrains IDE handles port-forwarding to the host
+automatically.
 
 ## Session State (`tasks/DOR-nnn/STATUS.md`)
 
