@@ -7,17 +7,18 @@ rules, see [`AGENTS.md`](../AGENTS.md).
 
 ## Active Tasks
 
-| Ticket  | Branch                               | Summary                                                                  |
-|---------|--------------------------------------|--------------------------------------------------------------------------|
-| DOR-159 | DOR-159/react-opensearch-integration | Phase 2: Wire RsDorDcApp to consume parsed_query_dsl from parser service |
+| Ticket   | Branch | Summary |
+|----------|--------|---------|
+| *(none)* | —      | —       |
 
 ---
 
 ## Archived Tasks
 
-| Ticket  | Archive path    | Summary                                                                       |
-|---------|-----------------|-------------------------------------------------------------------------------|
-| DOR-158 | archive/DOR-158 | Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode |
+| Ticket  | Archive path    | Summary                                                                                      |
+|---------|-----------------|----------------------------------------------------------------------------------------------|
+| DOR-159 | archive/DOR-159 | Phase 2: Wire RsDorDcApp to consume parsed_query_dsl from parser service (merged 2026-05-14) |
+| DOR-158 | archive/DOR-158 | Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode                |
 
 ---
 
