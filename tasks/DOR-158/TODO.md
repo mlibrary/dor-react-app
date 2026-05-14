@@ -38,3 +38,23 @@ Investigate and fix Unicode character display issues in search results.
 
 **Status**: Complete - Fixed by adding DOMPurify sanitization that properly decodes HTML entities into Unicode characters.
 
+## Task 4: Add parsed_query to Google Form Feedback
+Add the parser service's `parsed_query` (the Solr-format normalized string) as a
+prepopulated field in the Google Form feedback URL, so evaluators can see how the
+search engine interpreted the user's raw query alongside the top-5 results.
+
+Background: the parser service already returns `parsed_query` (e.g. `"greg AND bill"`)
+and it is stored in `parsedQueryRef.current` in `RsDorDcApp/index.jsx`. The value
+is distinct from the raw user input when boolean operators, field queries, or other
+transformations are applied by the parser. Bill Dueber confirmed `ic_all` is the
+correct catch-all field.
+
+- [ ] Add a new "Parsed Query" field to the Google Form (needs a new `entry.*` ID)
+- [ ] Update `generateFeedbackFormUrl` in `src/apps/RsDorDcApp/index.jsx` to append
+      `parsedQueryRef.current` to the form URL using the new entry ID
+- [ ] Handle the case where the parser is unavailable (fall back gracefully — omit the
+      field or send the raw query as the parsed query)
+- [ ] Verify the prepopulated field appears correctly in the Google Form for both
+      simple queries and boolean/transformed queries
+- [ ] Verify with the developer that the task is complete
+
