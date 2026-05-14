@@ -167,6 +167,13 @@ function RsDorDcApp() {
             params.append('entry.1552271952', top5Results);
         }
 
+        // Parsed query - the parser service's normalized Solr-format string.
+        // Falls back to the raw query when the parser is unavailable.
+        const parsedQuery = parsedQueryRef.current || queryValue || '';
+        if (parsedQuery) {
+            params.append('entry.1929209268', parsedQuery);
+        }
+
         return `${baseUrl}&${params.toString()}`;
     }, [filters]);
 

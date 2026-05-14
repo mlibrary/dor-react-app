@@ -49,10 +49,10 @@ is distinct from the raw user input when boolean operators, field queries, or ot
 transformations are applied by the parser. Bill Dueber confirmed `ic_all` is the
 correct catch-all field.
 
-- [ ] Add a new "Parsed Query" field to the Google Form (needs a new `entry.*` ID)
-- [ ] Update `generateFeedbackFormUrl` in `src/apps/RsDorDcApp/index.jsx` to append
+- [x] Add a new "Parsed Query" field to the Google Form (needs a new `entry.*` ID)
+- [x] Update `generateFeedbackFormUrl` in `src/apps/RsDorDcApp/index.jsx` to append
       `parsedQueryRef.current` to the form URL using the new entry ID
-- [ ] Handle the case where the parser is unavailable (fall back gracefully — omit the
+- [x] Handle the case where the parser is unavailable (fall back gracefully — omit the
       field or send the raw query as the parsed query)
 - [ ] Verify the prepopulated field appears correctly in the Google Form for both
       simple queries and boolean/transformed queries

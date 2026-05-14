@@ -1,20 +1,17 @@
 # DOR-158 Status
 
 ## Last Updated
-2026-05-14 — Added Task 4: Add parsed_query to Google Form feedback
+2026-05-14 — Implemented Task 4: parsed_query now prepopulated in Google Form (entry.1929209268)
 
 ## Current Branch
 `DOR-158/add-parsed-query-to-form`
 
 ## Open Tasks
 ### Task 4: Add parsed_query to Google Form Feedback
-Key files:
-- `src/apps/RsDorDcApp/index.jsx` — `generateFeedbackFormUrl` (lines ~99–171), `parsedQueryRef` (line 63)
-
-- [ ] Add a new "Parsed Query" field to the Google Form (needs a new `entry.*` ID)
-- [ ] Update `generateFeedbackFormUrl` to append `parsedQueryRef.current` using the new entry ID
-- [ ] Handle parser-unavailable fallback gracefully
-- [ ] Verify prepopulated field appears correctly in the form
+- [x] Add a new "Parsed Query" field to the Google Form — entry ID: `entry.1929209268`
+- [x] Update `generateFeedbackFormUrl` to append `parsedQueryRef.current` using `entry.1929209268`
+- [x] Handle parser-unavailable fallback gracefully (falls back to raw query value)
+- [ ] Verify prepopulated field appears correctly in the form for simple and boolean queries
 - [ ] Verify with the developer that the task is complete
 
 ## Open Plans
@@ -26,16 +23,15 @@ Key files:
 - 2026-05-14: Ticket reopened; restored from archive/DOR-158 to tasks/DOR-158
 - 2026-05-14: Added Task 4 — Add parsed_query to Google Form feedback
 - 2026-05-14: Created working branch `DOR-158/add-parsed-query-to-form`
+- 2026-05-14: Implemented — added `entry.1929209268` (Parsed Query) to `generateFeedbackFormUrl`; falls back to raw query when parser unavailable; all 29 tests pass
 
 ## Key Context
-- Original three tasks (timestamp removal, sticky filter fix, Unicode fix) were all completed and merged
-- `parsedQueryRef.current` is already maintained in `RsDorDcApp/index.jsx` (line 63) — it stores the Solr-format parsed string returned by the parser service
-- `generateFeedbackFormUrl` (lines ~99–171) currently prepopulates: UUID identifier, index version, raw query + active filters, top-5 result titles
-- A new Google Form field must be created first to get its `entry.*` ID before the code can be updated
-- Bill Dueber confirmed `ic_all` is the correct catch-all search field
+- `entry.1929209268` is the Google Form field ID for the new "Parsed Query" paragraph field
+- `parsedQueryRef.current` holds the parser service's Solr-format normalized string (set in `handleSearchChange`)
+- Fallback: if parser is unavailable, `parsedQueryRef.current` equals the raw query string, so the field always has a value
+- Code change is in `generateFeedbackFormUrl` in `src/apps/RsDorDcApp/index.jsx` — added 5 lines after the top-5 results block
 
 ## Next Steps
-1. Developer creates a new "Parsed Query" field in the Google Form and provides the `entry.*` ID
-2. Update `generateFeedbackFormUrl` to append `parsedQueryRef.current` with the new entry ID
-3. Handle graceful fallback when parser is unavailable
-4. Test and verify with developer
+1. Developer tests the live form: run a search (simple + boolean), click the feedback button, verify "Parsed Query" field is prepopulated correctly
+2. Check off the verification subtask in TODO.md
+3. Merge to main
