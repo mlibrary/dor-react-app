@@ -85,7 +85,7 @@ export function buildOpenSearchQuery(value, parsedQueryDsl, dataFields) {
                                 'dc_publisher',
                                 'dc_source',
                                 'hlb^3',
-                                'groupName^2',
+                                'group_name^2',
                             ],
                             type: 'best_fields',
                             tie_breaker: 0.3,

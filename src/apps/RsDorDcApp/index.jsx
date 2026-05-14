@@ -376,7 +376,7 @@ function RsDorDcApp() {
                         <Card>
                             <CollapsibleMultiList
                                 componentId="group"
-                                dataField="groupName.facet"
+                                dataField="group_name.facet"
                                 title="Group"
                                 aggregationSize={2000}
                                 sortBy="count"
@@ -519,12 +519,12 @@ function RsDorDcApp() {
                                                                 <div>{Array.isArray(item.hlb) ? item.hlb.join(', ') : item.hlb}</div>
                                                             </>
                                                         )}
-                                                        {item.groupName && (
-                                                            <>
-                                                                <div style={{fontWeight: 'bold'}}>groupName:</div>
-                                                                <div>{Array.isArray(item.groupName) ? item.groupName.join(', ') : item.groupName}</div>
-                                                            </>
-                                                        )}
+                                                    {item.group_name && (
+                                                        <>
+                                                            <div style={{fontWeight: 'bold'}}>group_name:</div>
+                                                            <div>{Array.isArray(item.group_name) ? item.group_name.join(', ') : item.group_name}</div>
+                                                        </>
+                                                    )}
                                                         {item.dc_contributor && (
                                                             <>
                                                                 <div style={{fontWeight: 'bold'}}>dc_contributor:</div>
