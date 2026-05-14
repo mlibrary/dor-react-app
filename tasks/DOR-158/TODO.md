@@ -55,7 +55,7 @@ correct catch-all field.
       (note: item ID 1929209268 ≠ field entry ID 579946332)
 - [x] Handle the case where the parser is unavailable (fall back gracefully — omit the
       field or send the raw query as the parsed query)
-- [ ] Verify the prepopulated field appears correctly in the Google Form for both
+- [x] Verify the prepopulated field appears correctly in the Google Form for both
       simple queries and boolean/transformed queries
-- [ ] Verify with the developer that the task is complete
+- [x] Verify with the developer that the task is complete
 
