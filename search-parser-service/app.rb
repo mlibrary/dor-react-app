@@ -7,6 +7,16 @@ require 'mlibrary_search_parser'
 set :bind, '0.0.0.0'
 set :port, 4567
 
+# Allow the production hostname and local development hosts
+set :protection, host_authorization: {
+  permitted_hosts: [
+    'search-parser.discovery.dor.lib.umich.edu',
+    'localhost',
+    'search-parser',         # K8s internal service name
+    '127.0.0.1',
+  ]
+}
+
 # CORS — restrict cross-origin browser access to an explicit allowlist.
 #
 # Configure via the ALLOWED_ORIGINS environment variable as a
