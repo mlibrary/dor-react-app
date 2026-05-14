@@ -7,7 +7,7 @@
  * Contract:
  *  - When parsedQueryDsl is a non-null object → return it directly (parser owns the DSL)
  *  - When parsedQueryDsl is null/undefined    → fall back to manual DSL construction
- *    using the queryString (Solr-format string, same as current behaviour)
+ *    using the queryString (normalized query string, same as current behaviour)
  */
 
 import { describe, it, expect } from 'vitest';

@@ -39,7 +39,7 @@ Investigate and fix Unicode character display issues in search results.
 **Status**: Complete - Fixed by adding DOMPurify sanitization that properly decodes HTML entities into Unicode characters.
 
 ## Task 4: Add parsed_query to Google Form Feedback
-Add the parser service's `parsed_query` (the Solr-format normalized string) as a
+Add the parser service's `parsed_query` (normalized query string) as a
 prepopulated field in the Google Form feedback URL, so evaluators can see how the
 search engine interpreted the user's raw query alongside the top-5 results.
 

@@ -167,7 +167,7 @@ function RsDorDcApp() {
             params.append('entry.1552271952', top5Results);
         }
 
-        // Parsed query - the parser service's normalized Solr-format string.
+        // Parsed query - the parser service's normalized query string.
         // Falls back to the raw query when the parser is unavailable.
         const parsedQuery = parsedQueryRef.current || queryValue || '';
         if (parsedQuery) {
@@ -430,7 +430,7 @@ function RsDorDcApp() {
                                 if (!value) return null;
 
                                 // Use parsed DSL from parser service when available,
-                                // falling back to the Solr-format string for manual DSL construction.
+                                // falling back to the raw query string for manual DSL construction.
                                 return buildOpenSearchQuery(
                                     parsedQueryRef.current || value,
                                     parsedQueryDslRef.current,

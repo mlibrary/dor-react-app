@@ -54,7 +54,7 @@ describe('parseSearchQuery — existing fields', () => {
         expect(result.rawQuery).toBe('cats');
     });
 
-    it('returns parsedQuery (Solr string) from result.parsed_query', async () => {
+    it('returns parsedQuery (normalized query string) from result.parsed_query', async () => {
         mockFetchOk({
             raw_query: 'cats AND dogs',
             parsed_query: 'cats AND dogs',

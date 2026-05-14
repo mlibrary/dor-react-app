@@ -27,7 +27,7 @@
 
 ## Key Context
 - `entry.1929209268` is the Google Form field ID for the new "Parsed Query" paragraph field
-- `parsedQueryRef.current` holds the parser service's Solr-format normalized string (set in `handleSearchChange`)
+- `parsedQueryRef.current` holds the parser service's normalized query string (set in `handleSearchChange`)
 - Fallback: if parser is unavailable, `parsedQueryRef.current` equals the raw query string, so the field always has a value
 - Code change is in `generateFeedbackFormUrl` in `src/apps/RsDorDcApp/index.jsx` — added 5 lines after the top-5 results block
 

@@ -66,7 +66,7 @@ Parse a search query string and return OpenSearch Query DSL.
 
 **Response Fields:**
 - `raw_query` (string): The original query as submitted
-- `parsed_query` (string): Solr-format query string (backward compatible with existing clients)
+- `parsed_query` (string): Normalized query string (the parser's canonical form of the input)
 - `parsed_query_dsl` (object): OpenSearch Query DSL object (for direct DSL consumption)
 
 **Error Responses:**
@@ -257,16 +257,15 @@ This runs a series of test queries demonstrating various OpenSearch Query DSL ou
   - Default: `https://github.com/mlibrary/mlibrary_search_parser.git` @ `DOR-159/opensearch-query-dsl`
   - Override via `MLIBRARY_SEARCH_PARSER_GIT` and `MLIBRARY_SEARCH_PARSER_REF` environment variables
 - **Parser Branch**: `DOR-159/opensearch-query-dsl`
-- **Output Format**: Dual-format response for compatibility
-  - `parsed_query`: Solr-format string (backward compatible with existing React client)
-  - `parsed_query_dsl`: OpenSearch Query DSL object (for future direct DSL consumption)
-- **Error Handling**: 
+- **Output Format**: Dual-format response:
+  - `parsed_query`: Normalized query string (the parser's canonical form of the input)
+  - `parsed_query_dsl`: OpenSearch Query DSL object (used directly for search)
+- **Backward Compatibility**: The `parsed_query` field ensures clients that need a
+  plain string representation always have one available.
+- **Error Handling**:
   - Returns 400 for invalid JSON, 500 for parser errors
   - Generic error messages to clients (avoids leaking internal details)
   - Detailed errors logged server-side with request IDs for debugging
 - **Security**: Exception messages not exposed to clients; full details in server logs
 - **Docker Ready**: Uses environment variables for reproducible builds
-- **Backward Compatibility**: Existing React clients (`RsDorDcApp`) expect a string query that can be tested with regex and interpolated into OpenSearch queries. The dual-format response maintains compatibility while enabling future DSL-based integrations.
-
-**Note**: If Solr support is not available in the parser gem, set `parsed_query` to `raw_query` as a fallback to maintain backward compatibility with existing clients.
 

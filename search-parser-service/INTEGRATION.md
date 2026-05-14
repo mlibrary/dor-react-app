@@ -13,11 +13,11 @@ syntax handling in the Ruby microservice.
 2. **`onValueChange` fires on every keystroke** → `handleSearchChange` is called
 3. **Query is sent to the parser service** via `POST /parse`
 4. **Parser service returns** a dual-format response:
-   - `parsed_query`: Solr-format string (kept for backward-compatibility fallback)
+   - `parsed_query`: normalized query string (the parser's canonical form of the input)
    - `parsed_query_dsl`: OpenSearch Query DSL object (used directly as `customQuery`)
 5. **`customQuery` callback** calls `buildOpenSearchQuery()`, which uses `parsed_query_dsl`
    when it is a non-empty object, falling back to manual DSL construction from the
-   Solr-format string otherwise
+   raw query string otherwise
 6. **ReactiveSearch** sends the resulting DSL to OpenSearch
 7. **Fallback**: if the parser service is unreachable, the raw query is used directly
    and a dismissible warning alert is shown
@@ -35,7 +35,7 @@ POST http://search-parser:4567/parse
     ↓
 { raw_query, parsed_query, parsed_query_dsl }
     ↓
-parsedQueryRef.current     = parsed_query     (Solr string, fallback)
+parsedQueryRef.current     = parsed_query     (normalized query string, fallback)
 parsedQueryDslRef.current  = parsed_query_dsl (OpenSearch DSL object)
     ↓
 customQuery(value, props) → buildOpenSearchQuery(parsedQuery, parsedQueryDsl, dataFields)
@@ -128,7 +128,7 @@ curl -s -X POST http://localhost:4567/parse \
   raw query is used → yellow warning alert shown (dismissible)
 - **Parse call fails mid-session**: fallback to raw query; warning alert shown
 - **`parsed_query_dsl` is `{}` or `null`**: `buildOpenSearchQuery` falls through to
-  manual DSL construction from the Solr-format `parsed_query` string
+  manual DSL construction from the raw query string
 
 ## Implementation Files
 
