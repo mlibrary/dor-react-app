@@ -57,6 +57,8 @@ function RsDorDcApp() {
         group: [],
         type: [],
         HLB: [],
+        format: [],
+        subclass: [],
     });
     const latestDataRef = useRef([]);
     const searchQueryRef = useRef('');
@@ -139,6 +141,12 @@ function RsDorDcApp() {
         if (filters.HLB.length > 0) {
             filterParts.push(`Subject Area: ${filters.HLB.join(', ')}`);
         }
+        if (filters.format.length > 0) {
+            filterParts.push(`Format: ${filters.format.join(', ')}`);
+        }
+        if (filters.subclass.length > 0) {
+            filterParts.push(`Subclass: ${filters.subclass.join(', ')}`);
+        }
 
         if (filterParts.length > 0) {
             if (fullQuery) {
@@ -207,6 +215,14 @@ function RsDorDcApp() {
         setFilters(prev => ({ ...prev, HLB: value || [] }));
     }, []);
 
+    const handleFormatChange = useCallback((value) => {
+        setFilters(prev => ({ ...prev, format: value || [] }));
+    }, []);
+
+    const handleSubclassChange = useCallback((value) => {
+        setFilters(prev => ({ ...prev, subclass: value || [] }));
+    }, []);
+
     const handleSearchChange = useCallback((value) => {
         // Update the raw query ref immediately (used by feedback form etc.)
         searchQueryRef.current = value || '';
@@ -266,6 +282,8 @@ function RsDorDcApp() {
             group: [],
             type: [],
             HLB: [],
+            format: [],
+            subclass: [],
         });
         if (setSearchStateRef.current) {
             setSearchStateRef.current({});
@@ -323,7 +341,7 @@ function RsDorDcApp() {
                                 showSearch={true}
                                 placeholder="Search collections"
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB", "format", "subclass"]
                                 }}
                                 onValueChange={handleCollectionChange}
                             />
@@ -338,7 +356,7 @@ function RsDorDcApp() {
                                 showSearch={true}
                                 placeholder="Search subjects"
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB", "format", "subclass"]
                                 }}
                                 onValueChange={handleSubjectChange}
                             />
@@ -353,7 +371,7 @@ function RsDorDcApp() {
                                 showSearch={true}
                                 placeholder="Search dates"
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB", "format", "subclass"]
                                 }}
                                 onValueChange={handleDateChange}
                             />
@@ -368,7 +386,7 @@ function RsDorDcApp() {
                                 showSearch={true}
                                 placeholder="Search coverage"
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB", "format", "subclass"]
                                 }}
                                 onValueChange={handleCoverageChange}
                             />
@@ -383,7 +401,7 @@ function RsDorDcApp() {
                                 showSearch={true}
                                 placeholder="Search groups"
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB", "format", "subclass"]
                                 }}
                                 onValueChange={handleGroupChange}
                             />
@@ -397,7 +415,7 @@ function RsDorDcApp() {
                                 sortBy="count"
                                 showSearch={false}
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB", "format", "subclass"]
                                 }}
                                 onValueChange={handleTypeChange}
                             />
@@ -412,9 +430,38 @@ function RsDorDcApp() {
                                 showSearch={true}
                                 placeholder="Search subject areas"
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"]
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB", "format", "subclass"]
                                 }}
                                 onValueChange={handleHLBChange}
+                            />
+                        </Card>
+                        <Card>
+                            <CollapsibleMultiList
+                                componentId="format"
+                                dataField="dc_format.facet"
+                                title="Format"
+                                aggregationSize={2000}
+                                sortBy="count"
+                                showSearch={false}
+                                react={{
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB", "format", "subclass"]
+                                }}
+                                onValueChange={handleFormatChange}
+                            />
+                        </Card>
+                        <Card>
+                            <CollapsibleMultiList
+                                componentId="subclass"
+                                dataField="subclass"
+                                title="Subclass"
+                                aggregationSize={2000}
+                                sortBy="count"
+                                showSearch={true}
+                                placeholder="Search subclasses"
+                                react={{
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB", "format", "subclass"]
+                                }}
+                                onValueChange={handleSubclassChange}
                             />
                         </Card>
                     </Col>
@@ -465,7 +512,7 @@ function RsDorDcApp() {
                                 size={9}
                                 pagination={true}
                                 react={{
-                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB"],
+                                    and: ["search", "collection", "subject", "date", "coverage", "group", "type", "HLB", "format", "subclass"],
                                 }}
                                 render={({data}) => {
                                     // Store latest data in ref for feedback form

@@ -7,9 +7,9 @@ rules, see [`AGENTS.md`](../AGENTS.md).
 
 ## Active Tasks
 
-| Ticket   | Branch | Summary |
-|----------|--------|---------|
-| *(none)* | —      | —       |
+| Ticket  | Branch                             | Summary                                           |
+|---------|------------------------------------|---------------------------------------------------|
+| DOR-160 | DOR-160/add-format-subclass-facets | Add Format (dc_format) and Subclass facet filters |
 
 ---
 
