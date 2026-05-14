@@ -105,8 +105,9 @@ function RsDorDcApp() {
         const identifier = crypto.randomUUID();
         params.append('entry.886322516', identifier);
 
-        // Index Version
-        params.append('entry.1352964690', '1');
+        // Index Version — use the configured index name so this field
+        // tracks the active index automatically without a code change.
+        params.append('entry.1352964690', REACTIVESEARCH_CONFIG.index);
 
 
         // Search query - use override if provided, otherwise use ref
