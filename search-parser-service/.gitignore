@@ -17,5 +17,9 @@
 /lib/bundler/man/
 
 # RubyGems
-Gemfile.lock
+# Gemfile.lock is intentionally tracked so that the lock file is present
+# on the host when the search-parser-service source directory is volume-mounted
+# into the container at runtime. Without it, `bundle exec` re-resolves against
+# Gemfile alone and can pick different gem versions (or fail for git-sourced
+# gems) instead of using the gems baked into the image.
 
