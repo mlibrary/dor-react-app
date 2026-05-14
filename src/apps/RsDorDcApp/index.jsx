@@ -452,7 +452,7 @@ function RsDorDcApp() {
                         <Card>
                             <CollapsibleMultiList
                                 componentId="subclass"
-                                dataField="subclass.facet"
+                                dataField="subclass"
                                 title="Subclass"
                                 aggregationSize={2000}
                                 sortBy="count"
