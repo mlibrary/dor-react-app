@@ -17,6 +17,9 @@ Index fields confirmed present in `dor-dc-20260513`:
 - [x] Add both filters to the clearAllFilters reset
 - [x] Add both to the generateFeedbackFormUrl active-filter summary
 - [x] Run lint and tests
-- [ ] Verify the current state of the project achieves the task goal
-- [ ] Verify with the developer that the task is complete
+- [x] Verify the current state of the project achieves the task goal
+      Note: Subclass facet shows "No options" because no documents in dor-dc-20260513
+      have subclass values yet — confirmed via direct OpenSearch aggregation query.
+      Code is correct; data will populate on next reindex.
+- [x] Verify with the developer that the task is complete
 
