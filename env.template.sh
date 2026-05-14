@@ -1,6 +1,6 @@
 VITE_OPENSEARCH_URL="https://opensearch.discovery.dor.lib.umich.edu"
 VITE_OPENSEARCH_CREDENTIALS="admin:CHANGEME"
-VITE_REACTIVESEARCH_URL="http://reactivesearch:8000"
+VITE_REACTIVESEARCH_URL="https://reactivesearch.discovery.dor.lib.umich.edu"
 VITE_REACTIVESEARCH_CREDENTIALS="admin:password"
 VITE_SEARCH_PARSER_URL="https://search-parser.discovery.dor.lib.umich.edu"
 
