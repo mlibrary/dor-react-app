@@ -11,6 +11,10 @@ const SEARCH_PARSER_URL = import.meta.env.VITE_SEARCH_PARSER_URL || 'http://loca
  * Parse a search query using the microservice.
  *
  * @param {string} rawQuery - The raw search query entered by the user
+ * @param {object} [options]
+ * @param {AbortSignal} [options.signal] - Optional AbortSignal to cancel the request.
+ *   If the signal fires, the returned promise rejects with a DOMException whose
+ *   name is 'AbortError'. The caller is responsible for handling that case.
  * @returns {Promise<{
  *   rawQuery: string,
  *   parsedQuery: string,
@@ -23,7 +27,7 @@ const SEARCH_PARSER_URL = import.meta.env.VITE_SEARCH_PARSER_URL || 'http://loca
  *  - parsedQuery     — Solr-format string (backward compatible with existing usage)
  *  - parsedQueryDsl  — OpenSearch Query DSL object, or null if unavailable
  */
-export async function parseSearchQuery(rawQuery) {
+export async function parseSearchQuery(rawQuery, { signal } = {}) {
     try {
         const response = await fetch(`${SEARCH_PARSER_URL}/parse`, {
             method: 'POST',
@@ -31,6 +35,7 @@ export async function parseSearchQuery(rawQuery) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ query: rawQuery }),
+            signal,
         });
 
         if (!response.ok) {
@@ -44,6 +49,12 @@ export async function parseSearchQuery(rawQuery) {
             parsedQueryDsl: result.parsed_query_dsl ?? null,
         };
     } catch (error) {
+        // AbortError means the caller cancelled this request intentionally
+        // (a newer keystroke superseded it). Re-throw so the caller can
+        // ignore it without treating it as a service failure.
+        if (error.name === 'AbortError') {
+            throw error;
+        }
         console.error('Error calling search parser service:', error);
         // Fallback: return the raw query as-is if the service fails
         return {

@@ -63,6 +63,8 @@ function RsDorDcApp() {
     const parsedQueryRef = useRef('');
     const parsedQueryDslRef = useRef(null);
     const setSearchStateRef = useRef(null);
+    const parseDebounceRef = useRef(null);        // setTimeout handle
+    const parseAbortControllerRef = useRef(null); // AbortController for in-flight /parse request
 
     useEffect(() => {
         // Test connections to ReactiveSearch and Search Parser
@@ -197,38 +199,54 @@ function RsDorDcApp() {
         setFilters(prev => ({ ...prev, HLB: value || [] }));
     }, []);
 
-    const handleSearchChange = useCallback(async (value) => {
-        // Store raw query in ref
+    const handleSearchChange = useCallback((value) => {
+        // Update the raw query ref immediately (used by feedback form etc.)
         searchQueryRef.current = value || '';
 
-        // Call parser service to get parsed query and OpenSearch DSL
-        if (parserAvailable && value) {
+        // Cancel any pending debounce timer and any in-flight parse request.
+        // This prevents both a burst of requests on fast typing and stale
+        // responses from an earlier (slower) request overwriting parsedQueryDslRef
+        // after a newer keystroke has already been processed.
+        clearTimeout(parseDebounceRef.current);
+        if (parseAbortControllerRef.current) {
+            parseAbortControllerRef.current.abort();
+            parseAbortControllerRef.current = null;
+        }
+
+        // Reset DSL immediately so customQuery uses the fallback path while
+        // the debounce is pending — avoids serving stale DSL to ReactiveSearch.
+        parsedQueryRef.current = value || '';
+        parsedQueryDslRef.current = null;
+
+        if (!parserAvailable || !value) return;
+
+        // Debounce: only fire the parse request 300 ms after the last keystroke.
+        parseDebounceRef.current = setTimeout(async () => {
+            const controller = new AbortController();
+            parseAbortControllerRef.current = controller;
+
             try {
-                const result = await parseSearchQuery(value);
+                const result = await parseSearchQuery(value, { signal: controller.signal });
                 parsedQueryRef.current = result.parsedQuery;
                 parsedQueryDslRef.current = result.parsedQueryDsl;
 
-                // Clear any previous parser errors
                 if (parserError && !result.error) {
                     setParserError(null);
                 }
-
-                // Show warning if parser service failed but we're continuing
                 if (result.error && !parserError) {
                     setParserError('Search parser service error: using raw query');
                 }
             } catch (error) {
+                if (error.name === 'AbortError') {
+                    // Request was superseded by a newer keystroke — do nothing.
+                    return;
+                }
                 console.error('Error parsing query:', error);
-                // Fallback to raw query
                 parsedQueryRef.current = value;
                 parsedQueryDslRef.current = null;
                 setParserError('Parser service error: using raw query');
             }
-        } else {
-            // If parser not available, use raw query
-            parsedQueryRef.current = value || '';
-            parsedQueryDslRef.current = null;
-        }
+        }, 300);
     }, [parserAvailable, parserError]);
 
     const clearAllFilters = useCallback(() => {

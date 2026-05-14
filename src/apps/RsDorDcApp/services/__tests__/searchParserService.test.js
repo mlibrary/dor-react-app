@@ -149,6 +149,43 @@ describe('parseSearchQuery — parsedQueryDsl (Phase 2)', () => {
 });
 
 // ---------------------------------------------------------------------------
+// parseSearchQuery — AbortSignal / cancellation
+// ---------------------------------------------------------------------------
+
+describe('parseSearchQuery — AbortSignal', () => {
+    it('passes the signal option through to fetch', async () => {
+        mockFetchOk({ raw_query: 'cats', parsed_query: 'cats', parsed_query_dsl: null });
+        const controller = new AbortController();
+
+        await parseSearchQuery('cats', { signal: controller.signal });
+
+        expect(global.fetch).toHaveBeenCalledWith(
+            expect.stringContaining('/parse'),
+            expect.objectContaining({ signal: controller.signal })
+        );
+    });
+
+    it('re-throws AbortError without wrapping it in a fallback result', async () => {
+        const abortError = new DOMException('Aborted', 'AbortError');
+        global.fetch = vi.fn().mockRejectedValue(abortError);
+        const controller = new AbortController();
+
+        await expect(
+            parseSearchQuery('cats', { signal: controller.signal })
+        ).rejects.toThrow(abortError);
+    });
+
+    it('does not call console.error for AbortError (not a service failure)', async () => {
+        const abortError = new DOMException('Aborted', 'AbortError');
+        global.fetch = vi.fn().mockRejectedValue(abortError);
+        const consoleSpy = vi.spyOn(console, 'error');
+
+        await expect(parseSearchQuery('cats')).rejects.toThrow(abortError);
+        expect(consoleSpy).not.toHaveBeenCalled();
+    });
+});
+
+// ---------------------------------------------------------------------------
 // checkParserHealth
 // ---------------------------------------------------------------------------
 
