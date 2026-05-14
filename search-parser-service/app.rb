@@ -7,7 +7,6 @@ require 'mlibrary_search_parser'
 set :bind, '0.0.0.0'
 set :port, 4567
 
-set :protection, false
 
 # CORS — restrict cross-origin browser access to an explicit allowlist.
 #
