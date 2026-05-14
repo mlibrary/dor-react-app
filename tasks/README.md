@@ -7,9 +7,9 @@ rules, see [`AGENTS.md`](../AGENTS.md).
 
 ## Active Tasks
 
-| Ticket  | Branch                             | Summary                                           |
-|---------|------------------------------------|---------------------------------------------------|
-| DOR-160 | DOR-160/add-format-subclass-facets | Add Format (dc_format) and Subclass facet filters |
+| Ticket       | Branch | Summary |
+|--------------|--------|---------|
+| *(none yet)* | —      | —       |
 
 ---
 
@@ -19,6 +19,7 @@ rules, see [`AGENTS.md`](../AGENTS.md).
 |---------|-----------------|--------------------------------------------------------------------------------------------------------|
 | DOR-158 | archive/DOR-158 | Add parsed_query to feedback form; configurable index; groupName→group_name rename (merged 2026-05-14) |
 | DOR-159 | archive/DOR-159 | Phase 2: Wire RsDorDcApp to consume parsed_query_dsl from parser service (merged 2026-05-14)           |
+| DOR-160 | archive/DOR-160 | Add Format (dc_format.facet) and Subclass (root keyword) facet filters (merged 2026-05-14)             |
 
 ---
 
