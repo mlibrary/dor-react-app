@@ -7,13 +7,33 @@ require 'mlibrary_search_parser'
 set :bind, '0.0.0.0'
 set :port, 4567
 
-# CORS — allow the Vite dev server (and any other front-end origin) to call
-# this service directly from the browser.
+# CORS — restrict cross-origin browser access to an explicit allowlist.
+#
+# Configure via the ALLOWED_ORIGINS environment variable as a
+# comma-separated list of fully-qualified origins, e.g.:
+#   ALLOWED_ORIGINS=https://app.example.com,https://admin.example.com
+#
+# Defaults to the Vite dev server origin so local development works
+# out-of-the-box without any configuration.
+#
+# The request Origin header is checked against the allowlist and, if
+# matched, reflected back in Access-Control-Allow-Origin (never a
+# wildcard in production).  Requests from unlisted origins receive no
+# CORS headers and the browser will block them.
+ALLOWED_ORIGINS = begin
+  raw = ENV.fetch('ALLOWED_ORIGINS', 'http://localhost:5173')
+  raw.split(',').map(&:strip).reject(&:empty?).to_set
+end
+
 before do
-  headers \
-    'Access-Control-Allow-Origin'  => '*',
-    'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers' => 'Content-Type'
+  origin = request.env['HTTP_ORIGIN']
+  if origin && ALLOWED_ORIGINS.include?(origin)
+    headers \
+      'Access-Control-Allow-Origin'  => origin,
+      'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers' => 'Content-Type',
+      'Vary'                         => 'Origin'
+  end
 end
 
 options '*' do

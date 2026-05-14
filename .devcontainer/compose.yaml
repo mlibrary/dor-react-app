@@ -21,6 +21,7 @@ services:
     restart: unless-stopped
     environment:
       - QUERY_FIELDS=ic_all
+      - ALLOWED_ORIGINS=http://localhost:5173
     ports:
       - "4567:4567"
     volumes:

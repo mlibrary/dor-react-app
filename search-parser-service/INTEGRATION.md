@@ -161,9 +161,23 @@ search-as-you-type behaviour:
 ### CORS
 
 The parser service must return CORS headers so the browser can call it directly.
-`app.rb` sets `Access-Control-Allow-Origin: *` in a `before` filter and handles
-`OPTIONS` preflight requests. Any reverse-proxy in front of the service must
-preserve (or re-set) these headers.
+`app.rb` checks the request `Origin` header against an explicit allowlist and
+reflects the matched origin in `Access-Control-Allow-Origin` (never a wildcard).
+Requests from unlisted origins receive no CORS headers and are blocked by the browser.
+
+Configure the allowlist via the `ALLOWED_ORIGINS` environment variable
+(comma-separated, fully-qualified origins). Defaults to `http://localhost:5173`
+for local development:
+
+```bash
+# production
+ALLOWED_ORIGINS=https://discovery.dor.lib.umich.edu
+
+# multiple origins
+ALLOWED_ORIGINS=https://app.example.com,https://admin.example.com
+```
+
+Any reverse-proxy in front of the service must preserve (or re-set) CORS headers.
 
 ## Testing
 
