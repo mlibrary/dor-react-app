@@ -2,139 +2,210 @@
 
 ## Overview
 
-The RsDorDcApp now integrates with the search-parser microservice to transform raw search queries before sending them to OpenSearch. This allows for query expansion, synonym handling, and other preprocessing logic to be centralized in the Ruby microservice.
+The RsDorDcApp integrates with the search-parser microservice to transform raw
+search queries into OpenSearch Query DSL before sending them to OpenSearch via
+ReactiveSearch. This centralises query parsing, Boolean logic, and field-specific
+syntax handling in the Ruby microservice.
 
 ## How It Works
 
-1. **User enters a search query** in the SearchBox component
-2. **Query is sent to the parser service** via `POST /parse` endpoint
-3. **Parser service parses and transforms the query** into:
-   - `parsed_query`: Solr-format string (backward compatible)
-   - `parsed_query_dsl`: OpenSearch Query DSL object (for future use)
-4. **Transformed query is used** in the OpenSearch query via ReactiveSearch
-5. **Fallback behavior**: If the parser service is unavailable, the raw query is used directly
+1. **User types a search query** in the SearchBox component
+2. **`onValueChange` fires on every keystroke** → `handleSearchChange` is called
+3. **Query is sent to the parser service** via `POST /parse`
+4. **Parser service returns** a dual-format response:
+   - `parsed_query`: Solr-format string (kept for backward-compatibility fallback)
+   - `parsed_query_dsl`: OpenSearch Query DSL object (used directly as `customQuery`)
+5. **`customQuery` callback** calls `buildOpenSearchQuery()`, which uses `parsed_query_dsl`
+   when it is a non-empty object, falling back to manual DSL construction from the
+   Solr-format string otherwise
+6. **ReactiveSearch** sends the resulting DSL to OpenSearch
+7. **Fallback**: if the parser service is unreachable, the raw query is used directly
+   and a dismissible warning alert is shown
 
 ## Architecture
 
 ```
-User Input → SearchBox → searchParserService.parseSearchQuery()
-                              ↓
-                    POST http://search-parser:4567/parse
-                              ↓
-                    { raw_query, parsed_query, parsed_query_dsl }
-                              ↓
-                    parsedQueryRef.current = parsed_query (Solr-format string)
-                              ↓
-                    customQuery() uses parsed_query
-                              ↓
-                    OpenSearch Query
+User types
+    ↓
+SearchBox onValueChange → handleSearchChange(value)
+    ↓
+parseSearchQuery(value)  [searchParserService.js]
+    ↓
+POST http://search-parser:4567/parse
+    ↓
+{ raw_query, parsed_query, parsed_query_dsl }
+    ↓
+parsedQueryRef.current     = parsed_query     (Solr string, fallback)
+parsedQueryDslRef.current  = parsed_query_dsl (OpenSearch DSL object)
+    ↓
+customQuery(value, props) → buildOpenSearchQuery(parsedQuery, parsedQueryDsl, dataFields)
+    ↓
+OpenSearch Query DSL → ReactiveSearch → OpenSearch
 ```
+
+## Query Examples
+
+Boolean operators are **case-sensitive** — use uppercase `AND`, `OR`, `NOT`:
+
+| User input      | DSL produced                                                  |
+|-----------------|---------------------------------------------------------------|
+| `michigan`      | `multi_match` on `ic_all`                                     |
+| `"great lakes"` | `match_phrase` on `ic_all`                                    |
+| `greg AND bill` | `bool/must` with two `multi_match` terms                      |
+| `cats OR dogs`  | `bool/should` with two `multi_match` terms                    |
+| `cats NOT dogs` | `bool/must_not`                                               |
+| `greg and bill` | `multi_match` — lowercase `and` is a search term, not Boolean |
 
 ## Configuration
 
-Set the parser service URL in your environment variables:
+### Environment variable
 
 ```bash
-# In .env file or env.sh
 VITE_SEARCH_PARSER_URL="http://search-parser:4567"
 ```
 
-Default: `http://localhost:4567`
+Default (when variable is unset): `http://localhost:4567`
 
-### OpenSearch Query DSL Output
+In Docker Compose the service name `search-parser` resolves automatically.
+For local development outside Docker, override the URL without modifying the
+committed `.env` file:
 
-The parser service's underlying gem (`mlibrary_search_parser`) now supports outputting OpenSearch Query DSL format directly, in addition to the original Solr format.
-
-**Output format configuration**:
-```ruby
-# In the parser service configuration
-config = {
-  query_fields: ['title', 'author', 'subject'],
-  output_format: :opensearch  # or :solr
-}
-
-search = MLibrarySearchParser::Search.new(query_string, config)
-query_dsl = search.to_opensearch_query
-# Returns OpenSearch Query DSL hash ready to send to OpenSearch
+```bash
+# .env.local  (gitignored — never committed)
+VITE_SEARCH_PARSER_URL=http://localhost:4567
 ```
 
-**Supported OpenSearch query types**:
-- `match` - Simple term matching
-- `match_phrase` - Exact phrase matching (for quoted strings)
-- `multi_match` - Cross-field searching
-- `bool` with `must` - AND operations
-- `bool` with `should` - OR operations
-- `bool` with `must_not` - NOT operations
-- `query_string` - Wildcard patterns (`*`, `?`)
-- `wildcard` - Field-specific wildcards
+Vite loads `.env.local` automatically and it takes priority over `.env`.
 
-**Example transformation**:
-```
-Input:  "title:hamlet AND (shakespeare OR marlowe)"
-Output: {
-  query: {
-    bool: {
-      must: [
-        { match: { title: "hamlet" } },
-        {
-          bool: {
-            should: [
-              { multi_match: { query: "shakespeare", fields: [...] } },
-              { multi_match: { query: "marlowe", fields: [...] } }
-            ],
-            minimum_should_match: 1
-          }
-        }
-      ]
-    }
-  }
-}
+### Parser fields
+
+The fields searched by the parser are controlled by the `QUERY_FIELDS`
+environment variable on the parser service (default: `ic_all`):
+
+```yaml
+# compose.yaml
+environment:
+  - QUERY_FIELDS=${QUERY_FIELDS:-ic_all}
 ```
 
-For detailed documentation, see `mlibrary_search_parser/README.md`.
+## Local Development Setup
 
+```bash
+# Terminal 1 — start the parser service
+docker compose up -d search-parser
+
+# Terminal 2 — start the Vite dev server
+# (ensure .env.local exists with VITE_SEARCH_PARSER_URL=http://localhost:4567)
+npm run dev
+```
+
+Verify the parser is healthy:
+```bash
+curl http://localhost:4567/health
+# → {"status":"ok"}
+```
+
+Test a query directly:
+```bash
+curl -s -X POST http://localhost:4567/parse \
+  -H 'Content-Type: application/json' \
+  -d '{"query":"michigan AND history"}' | python3 -m json.tool
+```
+
+## Supported OpenSearch Query Types
+
+- `multi_match` — single term or lowercase-and phrase
+- `match_phrase` — quoted strings (e.g. `"great lakes"`)
+- `bool/must` — `AND` (uppercase)
+- `bool/should` — `OR` (uppercase)
+- `bool/must_not` — `NOT` (uppercase)
+- Nested Boolean combinations
 
 ## Error Handling
 
-- **Parser service unavailable**: Shows a warning alert but continues using raw queries
-- **Parser service errors**: Catches exceptions and falls back to raw queries
-- **Health check on startup**: Tests parser availability and sets `parserAvailable` flag
-
-## User Feedback
-
-The app displays alerts for parser service status:
-
-- **Warning (yellow)**: Parser service unavailable or error, using raw queries
-- **Dismissible**: User can close the warning and continue searching
+- **Parser service unreachable**: `checkParserHealth()` returns `false` on startup →
+  `parserAvailable` is set to `false` → `handleSearchChange` skips the parse call →
+  raw query is used → yellow warning alert shown (dismissible)
+- **Parse call fails mid-session**: fallback to raw query; warning alert shown
+- **`parsed_query_dsl` is `{}` or `null`**: `buildOpenSearchQuery` falls through to
+  manual DSL construction from the Solr-format `parsed_query` string
 
 ## Implementation Files
 
-- `src/apps/RsDorDcApp/services/searchParserService.js` - Service client
-- `src/apps/RsDorDcApp/index.jsx` - Integration in main component
-- `search-parser-service/` - Ruby microservice
-- `compose.yaml` - Docker service configuration
+| File                                                  | Purpose                                                         |
+|-------------------------------------------------------|-----------------------------------------------------------------|
+| `src/apps/RsDorDcApp/services/searchParserService.js` | HTTP client — `parseSearchQuery`, `checkParserHealth`           |
+| `src/apps/RsDorDcApp/utils/queryBuilder.js`           | `buildOpenSearchQuery` — DSL-first with fallback                |
+| `src/apps/RsDorDcApp/index.jsx`                       | `handleSearchChange`, `parsedQueryDslRef`, `customQuery` wiring |
+| `search-parser-service/app.rb`                        | Sinatra service — `/health`, `/parse`, CORS headers             |
+| `search-parser-service/Dockerfile`                    | Builds the service image; uses `bundle exec ruby app.rb`        |
+| `compose.yaml`                                        | Orchestrates `app` + `search-parser` services                   |
+
+## Known Gotchas
+
+### `onValueChange` vs `onChange` on ReactiveSearch SearchBox
+
+ReactiveSearch's `SearchBox` calls `onChange` **only in controlled mode** (when you also
+pass a `value` prop). In uncontrolled mode (no `value` prop) typing fires the internal
+`setValue` path, which calls `onValueChange`. Always use `onValueChange` to hook into
+search-as-you-type behaviour:
+
+```jsx
+// ✅ correct — fires on every keystroke in uncontrolled mode
+<SearchBox onValueChange={handleSearchChange} ... />
+
+// ❌ wrong — never fires without a `value` prop
+<SearchBox onChange={handleSearchChange} ... />
+```
+
+### CORS
+
+The parser service must return CORS headers so the browser can call it directly.
+`app.rb` checks the request `Origin` header against an explicit allowlist and
+reflects the matched origin in `Access-Control-Allow-Origin` (never a wildcard).
+Requests from unlisted origins receive no CORS headers and are blocked by the browser.
+
+Configure the allowlist via the `ALLOWED_ORIGINS` environment variable
+(comma-separated, fully-qualified origins). Defaults to `http://localhost:5173`
+for local development:
+
+```bash
+# production
+ALLOWED_ORIGINS=https://discovery.dor.lib.umich.edu
+
+# multiple origins
+ALLOWED_ORIGINS=https://app.example.com,https://admin.example.com
+```
+
+Any reverse-proxy in front of the service must preserve (or re-set) CORS headers.
 
 ## Testing
 
-1. **With parser service running**:
-   ```bash
-   docker compose up -d search-parser
-   npm run dev
-   # Search should work normally with parsing
-   ```
+**With parser service running:**
+```bash
+docker compose up -d search-parser
+npm run dev
+# Search should work with DSL queries; no warning banner
+```
 
-2. **Without parser service**:
-   ```bash
-   docker compose stop search-parser
-   npm run dev
-   # Search should still work with raw queries + warning
-   ```
+**Without parser service:**
+```bash
+docker compose stop search-parser
+npm run dev
+# Search still works with raw queries; yellow warning banner appears
+```
 
-3. **Test parser directly**:
-   ```bash
-   cd search-parser-service
-   ./test.sh
-   ```
+**Parser unit tests (Ruby):**
+```bash
+cd search-parser-service
+./test.sh
+```
+
+**React unit tests:**
+```bash
+npm run test
+# 26 tests — searchParserService + queryBuilder
+```
 
 ## Future Enhancements
 
@@ -146,4 +217,3 @@ The parser service can be enhanced to:
 - Add query validation and sanitization
 - Support custom query templates
 - Apply institution-specific transformations
-

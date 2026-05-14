@@ -1,0 +1,39 @@
+---
+name: "Build Search Parser Service Image"
+
+on:
+  push:
+    paths:
+      - "search-parser-service/**"
+      - ".github/workflows/build-search-parser-service-image.yaml"
+  pull_request:
+    paths:
+      - "search-parser-service/**"
+      - ".github/workflows/build-search-parser-service-image.yaml"
+  workflow_dispatch:  # Allow manual trigger from GitHub Actions UI
+
+jobs:
+  build:
+    name: "Build Docker image"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image (CI — no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./search-parser-service
+          file: ./search-parser-service/Dockerfile
+          push: false
+          # Pass the same build args that the Dockerfile accepts.
+          # Defaults match the Dockerfile ARG defaults so the build works
+          # out-of-the-box; override via repository/environment secrets if needed.
+          build-args: |
+            MLIBRARY_SEARCH_PARSER_GIT=${{ vars.MLIBRARY_SEARCH_PARSER_GIT || 'https://github.com/mlibrary/mlibrary_search_parser.git' }}
+            MLIBRARY_SEARCH_PARSER_REF=${{ vars.MLIBRARY_SEARCH_PARSER_REF || 'DOR-159/opensearch-query-dsl' }}
+

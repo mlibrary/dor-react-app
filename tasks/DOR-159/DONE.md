@@ -1,6 +1,8 @@
-# DOR-159: Query Parser Microservice for OpenSearch — COMPLETE
+# DOR-159: React OpenSearch Integration — COMPLETE
 
-**Completed:** 2026-05-06
+**Phase 1 completed:** 2026-05-06 (branch `DOR-159/query-parser-microservice`)
+**Phase 2 completed:** 2026-05-13 (branch `DOR-159/react-opensearch-integration`)
+**Developer sign-off:** ✅ 2026-05-13
 
 ## Summary
 
@@ -110,13 +112,39 @@ The search-parser-service now accepts natural language queries via the /parse en
 
 ## Next Steps (Post-PR)
 
-1. Test search-parser-service in Docker environment
-2. Update RsDorDcApp to consume OpenSearch Query DSL from parser service
-3. Consider merging parser gem branch for team-wide access
-4. Deploy and verify end-to-end integration
+~~1. Test search-parser-service in Docker environment~~  ✅ Done (Task 5)
+~~2. Update RsDorDcApp to consume OpenSearch Query DSL from parser service~~  ✅ Done (Phase 2)
+~~3. Consider merging parser gem branch for team-wide access~~
+~~4. Deploy and verify end-to-end integration~~  ✅ Done (Task 5)
+
+## Phase 2 Summary (branch `DOR-159/react-opensearch-integration`)
+
+Wired `RsDorDcApp` to consume `parsed_query_dsl` from the search-parser-service,
+replacing the Solr-string fallback path with a proper DSL-first `customQuery`.
+
+### Phase 2 Key Deliverables
+
+- `src/apps/RsDorDcApp/utils/queryBuilder.js` — DSL-first query builder with fallback
+- `src/apps/RsDorDcApp/services/searchParserService.js` — exposes `parsedQueryDsl` field
+- `src/apps/RsDorDcApp/index.jsx` — `parsedQueryDslRef`, `onValueChange`, `buildOpenSearchQuery`
+- `search-parser-service/app.rb` — CORS headers added
+- `search-parser-service/Dockerfile` — fixed CMD to `bundle exec ruby app.rb`
+- `search-parser-service/INTEGRATION.md` — fully rewritten for Phase 2
+- `.github/workflows/build-search-parser-service-image.yaml` — CI build workflow
+- 26 Vitest tests (12 service + 14 queryBuilder), all passing
+
+### Phase 2 Bugs Fixed During E2E
+
+| Bug | Fix | Commit |
+|-----|-----|--------|
+| Dockerfile CMD missing `bundle exec` | `CMD ["bundle", "exec", "ruby", "app.rb"]` | d635f65 |
+| `require "pry"` LoadError in production | Wrapped in `begin/rescue LoadError` in gem | 3355251 (gem repo) |
+| `package-lock.json` wrong platform | Regenerated on darwin-arm64 | d635f65 |
+| No CORS headers on parser service | Added `before` filter + OPTIONS route in `app.rb` | 441b6e4 |
+| `onChange` never fires (uncontrolled SearchBox) | Switched to `onValueChange` | 437e8ea |
 
 ---
 
-**Branch:** `DOR-159/query-parser-microservice`  
-**Parser Branch:** `DOR-159/opensearch-query-dsl` (in mlibrary_search_parser)
-
+**Phase 1 Branch:** `DOR-159/query-parser-microservice`
+**Phase 2 Branch:** `DOR-159/react-opensearch-integration`
+**Parser Gem Branch:** `DOR-159/opensearch-query-dsl` (in mlibrary_search_parser)

@@ -9,6 +9,7 @@ WORKDIR /app
 # Install system dependencies required for git-sourced gems
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+      build-essential \
       git \
       ca-certificates \
     && rm -rf /var/lib/apt/lists/*
@@ -28,5 +29,5 @@ COPY . .
 EXPOSE 4567
 
 # Run the application
-CMD ["ruby", "app.rb"]
+CMD ["bundle", "exec", "ruby", "app.rb"]
 

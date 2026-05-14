@@ -7,6 +7,39 @@ require 'mlibrary_search_parser'
 set :bind, '0.0.0.0'
 set :port, 4567
 
+# CORS — restrict cross-origin browser access to an explicit allowlist.
+#
+# Configure via the ALLOWED_ORIGINS environment variable as a
+# comma-separated list of fully-qualified origins, e.g.:
+#   ALLOWED_ORIGINS=https://app.example.com,https://admin.example.com
+#
+# Defaults to the Vite dev server origin so local development works
+# out-of-the-box without any configuration.
+#
+# The request Origin header is checked against the allowlist and, if
+# matched, reflected back in Access-Control-Allow-Origin (never a
+# wildcard in production).  Requests from unlisted origins receive no
+# CORS headers and the browser will block them.
+ALLOWED_ORIGINS = begin
+  raw = ENV.fetch('ALLOWED_ORIGINS', 'http://localhost:5173')
+  raw.split(',').map(&:strip).reject(&:empty?).to_set
+end
+
+before do
+  origin = request.env['HTTP_ORIGIN']
+  if origin && ALLOWED_ORIGINS.include?(origin)
+    headers \
+      'Access-Control-Allow-Origin'  => origin,
+      'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers' => 'Content-Type',
+      'Vary'                         => 'Origin'
+  end
+end
+
+options '*' do
+  200
+end
+
 # Parser configuration
 # search_fields required by parser for field-specific queries (string keys)
 # query_fields used by OpenSearch transformer for multi_match (symbol keys)
@@ -69,7 +102,7 @@ post '/parse' do
   {
     raw_query: raw_query,
     parsed_query: parsed_string,  # String for backward compatibility with existing client
-    parsed_query_dsl: opensearch_dsl  # Object for future direct DSL consumption
+    parsed_query_dsl: opensearch_dsl  # OpenSearch Query DSL — consumed by RsDorDcApp customQuery via buildOpenSearchQuery
   }.to_json
 rescue JSON::ParserError => e
   # Log detailed error server-side for debugging

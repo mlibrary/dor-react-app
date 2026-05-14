@@ -4,7 +4,7 @@
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
-  "forwardPorts": [5173, 9200],
+  "forwardPorts": [5173, 9200, 4567],
   "portsAttributes": {
     "5173": {
       "label": "Vite Dev Server",
@@ -12,6 +12,10 @@
     },
     "9200": {
       "label": "OpenSearch",
+      "onAutoForward": "notify"
+    },
+    "4567": {
+      "label": "Search Parser Service",
       "onAutoForward": "notify"
     }
   },

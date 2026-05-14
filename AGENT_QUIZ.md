@@ -1,7 +1,7 @@
 # Agent Onboarding Quiz — dor-react-app
 
 > 🚫 **DO NOT read `AGENT_QUIZ_ANSWERS.md`** until you have written out answers to all
-> questions below and the developer has told you to compare. Reading the answer file
+> 21 questions below and the developer has told you to compare. Reading the answer file
 > first defeats the purpose of the quiz.
 >
 > **Instructions for the quiz-taker (agent):**
@@ -165,13 +165,24 @@ Name the file and list all sections that should be updated either during or at t
 
 ---
 
-## When You Have Answered All 20 Questions
+## Section 5 — Environment
+
+**Q21.** At the start of a new session, how do you confirm whether you are inside a
+devcontainer? Write the exact shell command to run, name the single most definitive
+environment variable to look for, and explain what its value tells you about the *type*
+of devcontainer in use in this repository.
+
+*(Hint: `AGENTS.md` § Environment Check)*
+
+---
+
+## When You Have Answered All 21 Questions
 
 Stop here. Do **not** open `AGENT_QUIZ_ANSWERS.md`.
 
 Tell the developer:
 
-> "I have answered all 20 quiz questions. Please open `AGENT_QUIZ_ANSWERS.md` to grade
+> "I have answered all 21 quiz questions. Please open `AGENT_QUIZ_ANSWERS.md` to grade
 > my answers, or let me know when I may read it to self-grade."
 
 Wait for the developer's instruction before proceeding.

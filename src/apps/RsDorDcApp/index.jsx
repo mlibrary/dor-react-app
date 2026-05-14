@@ -10,12 +10,12 @@ import {
 } from '@appbaseio/reactivesearch';
 import CollapsibleMultiList from './components/CollapsibleMultiList.jsx';
 
-// console.log(Object.keys(ReactiveSearch));
 import {Alert, Button, Card, Col, Row,} from 'antd';
 import {FormOutlined, ClearOutlined} from '@ant-design/icons';
 import DOMPurify from 'dompurify';
 
 import {REACTIVESEARCH_CONFIG} from './utils/constants.js';
+import {buildOpenSearchQuery} from './utils/queryBuilder.js';
 import {parseSearchQuery, checkParserHealth} from './services/searchParserService.js';
 
 // Helper function to sanitize HTML and properly decode HTML entities
@@ -61,7 +61,10 @@ function RsDorDcApp() {
     const latestDataRef = useRef([]);
     const searchQueryRef = useRef('');
     const parsedQueryRef = useRef('');
+    const parsedQueryDslRef = useRef(null);
     const setSearchStateRef = useRef(null);
+    const parseDebounceRef = useRef(null);        // setTimeout handle
+    const parseAbortControllerRef = useRef(null); // AbortController for in-flight /parse request
 
     useEffect(() => {
         // Test connections to ReactiveSearch and Search Parser
@@ -196,35 +199,54 @@ function RsDorDcApp() {
         setFilters(prev => ({ ...prev, HLB: value || [] }));
     }, []);
 
-    const handleSearchChange = useCallback(async (value) => {
-        // Store raw query in ref
+    const handleSearchChange = useCallback((value) => {
+        // Update the raw query ref immediately (used by feedback form etc.)
         searchQueryRef.current = value || '';
 
-        // Call parser service to get parsed query
-        if (parserAvailable && value) {
-            try {
-                const result = await parseSearchQuery(value);
-                parsedQueryRef.current = result.parsedQuery;
+        // Cancel any pending debounce timer and any in-flight parse request.
+        // This prevents both a burst of requests on fast typing and stale
+        // responses from an earlier (slower) request overwriting parsedQueryDslRef
+        // after a newer keystroke has already been processed.
+        clearTimeout(parseDebounceRef.current);
+        if (parseAbortControllerRef.current) {
+            parseAbortControllerRef.current.abort();
+            parseAbortControllerRef.current = null;
+        }
 
-                // Clear any previous parser errors
+        // Reset DSL immediately so customQuery uses the fallback path while
+        // the debounce is pending — avoids serving stale DSL to ReactiveSearch.
+        parsedQueryRef.current = value || '';
+        parsedQueryDslRef.current = null;
+
+        if (!parserAvailable || !value) return;
+
+        // Debounce: only fire the parse request 300 ms after the last keystroke.
+        parseDebounceRef.current = setTimeout(async () => {
+            const controller = new AbortController();
+            parseAbortControllerRef.current = controller;
+
+            try {
+                const result = await parseSearchQuery(value, { signal: controller.signal });
+                parsedQueryRef.current = result.parsedQuery;
+                parsedQueryDslRef.current = result.parsedQueryDsl;
+
                 if (parserError && !result.error) {
                     setParserError(null);
                 }
-
-                // Show warning if parser service failed but we're continuing
                 if (result.error && !parserError) {
                     setParserError('Search parser service error: using raw query');
                 }
             } catch (error) {
+                if (error.name === 'AbortError') {
+                    // Request was superseded by a newer keystroke — do nothing.
+                    return;
+                }
                 console.error('Error parsing query:', error);
-                // Fallback to raw query
                 parsedQueryRef.current = value;
+                parsedQueryDslRef.current = null;
                 setParserError('Parser service error: using raw query');
             }
-        } else {
-            // If parser not available, use raw query
-            parsedQueryRef.current = value || '';
-        }
+        }, 300);
     }, [parserAvailable, parserError]);
 
     const clearAllFilters = useCallback(() => {
@@ -396,90 +418,17 @@ function RsDorDcApp() {
                             queryFormat="and"
                             fuzziness={0}
                             enableRecentSuggestions={false}
-                            onChange={handleSearchChange}
+                            onValueChange={handleSearchChange}
                             customQuery={(value, props) => {
                                 if (!value) return null;
 
-                                // Use parsed query if available, otherwise fall back to raw value
-                                const queryToUse = parsedQueryRef.current || value;
-
-                                // Check if the query contains Boolean operators
-                                const hasBooleanOperators = /\b(AND|OR|NOT)\b/i.test(queryToUse);
-
-                                if (hasBooleanOperators) {
-                                    // Use query_string for Boolean logic support
-                                    return {
-                                        query: {
-                                            query_string: {
-                                                query: queryToUse,
-                                                fields: props.dataField,
-                                                default_operator: "AND"
-                                            }
-                                        }
-                                    };
-                                } else {
-                                    // Use standard match query for simple searches
-                                    return {
-                                        query: {
-                                            "bool": {
-                                                "should": [
-                                                    {
-                                                        "match": {
-                                                            "ic_all": {
-                                                                "query": queryToUse,
-                                                                "operator": "and",
-                                                                "boost": 3
-                                                            }
-                                                        }
-                                                    },
-                                                    {
-                                                        "match": {
-                                                            "ic_all": {
-                                                                "query": queryToUse,
-                                                                "operator": "or",
-                                                                "minimum_should_match": "75%"
-                                                            }
-                                                        }
-                                                    },
-                                                    {
-                                                        "multi_match": {
-                                                            "query": queryToUse,
-                                                            "fields": [
-                                                                "dc_title^5",
-                                                                "dc_title.strict^7",
-                                                                "dc_creator^3",
-                                                                "dc_description^2",
-                                                                "dc_subject^3",
-                                                                "dc_genre",
-                                                                "dc_publisher",
-                                                                "dc_source",
-                                                                "hlb^3",
-                                                                "groupName^2"
-                                                            ],
-                                                            "type": "best_fields",
-                                                            "tie_breaker": 0.3
-                                                        }
-                                                    },
-                                                    {
-                                                        "multi_match": {
-                                                            "query": queryToUse,
-                                                            "type": "phrase",
-                                                            "fields": [
-                                                                "dc_title^8",
-                                                                "dc_title.strict^10",
-                                                                "dc_creator^5",
-                                                                "dc_description^3",
-                                                                "dc_subject^5"
-                                                            ],
-                                                            "tie_breaker": 0.3
-                                                        }
-                                                    }
-                                                ],
-                                                "minimum_should_match": 1
-                                            }
-                                        }
-                                    };
-                                }
+                                // Use parsed DSL from parser service when available,
+                                // falling back to the Solr-format string for manual DSL construction.
+                                return buildOpenSearchQuery(
+                                    parsedQueryRef.current || value,
+                                    parsedQueryDslRef.current,
+                                    props.dataField
+                                );
                             }}
                         />
                         <div style={{marginTop: '16px', marginBottom: '16px', display: 'flex', gap: '8px'}}>

@@ -137,4 +137,17 @@
 
 ---
 
+## Section 5 — Environment
+
+**A21.** Run `printenv | grep -i "container\|remote\|codespace" | cat`. The most definitive
+indicator is **`DEVCONTAINER_CONFIG_PATH`** — if it is set, you are inside a devcontainer.
+In this repository its value is `/.jbdevcontainer/config/JetBrains/host-config.json`,
+which reveals it is a **JetBrains** remote dev devcontainer (as opposed to a VS Code
+devcontainer, which sets `REMOTE_CONTAINERS=true`, or a GitHub Codespace, which sets
+`CODESPACES=true`). Additional corroborating signals: `REMOTE_DEV_*` variables present,
+project mounted under `/workspaces/`, and hostname is a short Docker container ID hash.
+
+*(Source: `AGENTS.md` § Environment Check)*
+
+---
 
