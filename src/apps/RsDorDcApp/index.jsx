@@ -295,7 +295,7 @@ function RsDorDcApp() {
                 />
             )}
             <ReactiveBase
-                app="dor-dc-20260509"
+                app={REACTIVESEARCH_CONFIG.index}
                 credentials={REACTIVESEARCH_CONFIG.credentials}
                 url={REACTIVESEARCH_CONFIG.url}
                 reactivesearchAPIConfig={{
