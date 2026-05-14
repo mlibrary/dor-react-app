@@ -115,6 +115,35 @@ up exactly where the previous one left off.
   - **Dollar signs and backticks in double-quoted strings** are expanded by zsh; wrap them
     in single quotes or use a `$'...'` ANSI-C quote string only for truly simple one-liners.
 
+- **Never use shell heredocs (`<< 'MARKER'`) to write multi-line content.**
+  zsh heredocs are extremely fragile in a tool-driven terminal session:
+  - If a previous command left the terminal in `heredoc>` prompt mode (e.g. an unclosed
+    `<<` from a failed command), all subsequent commands are silently consumed as heredoc
+    body instead of being executed — corrupting the session without any error message.
+  - The `heredoc>` prompt gives no indication that commands are being swallowed.
+  - Recovery requires sending the exact end-marker string, which itself may be mangled.
+
+  **Never use this pattern:**
+  ```shell
+  # ❌ — heredoc in a tool-driven shell session
+  cat > file.txt << 'EOF'
+  content here
+  EOF
+  ```
+
+  **Always use Python instead:**
+  ```python
+  # ✅ — write a Python file, run it
+  # Step 1: use insert_edit_into_file / create_file to write dotpy/myscript.py
+  # Step 2: python3 dotpy/myscript.py | cat
+  ```
+
+  If the terminal ever appears stuck (commands produce no output, or output looks
+  like garbled repeated text), it is almost certainly in `heredoc>` mode. To escape:
+  1. Identify the heredoc end-marker that was used (e.g. `EOF`, `PYEOF`).
+  2. Run that marker as a standalone command to close the heredoc.
+  3. Verify the shell is back to a normal prompt before continuing.
+
 ## Task Tracking (`tasks/DOR-nnn/TODO.md` / `tasks/DOR-nnn/DONE.md`)
 
 Each Jira ticket has its own `tasks/DOR-nnn/` directory containing:
