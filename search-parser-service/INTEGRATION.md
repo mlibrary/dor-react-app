@@ -17,10 +17,11 @@ syntax handling in the Ruby microservice.
    - `parsed_query_dsl`: OpenSearch Query DSL object (used directly as `customQuery`)
 5. **`customQuery` callback** calls `buildOpenSearchQuery()`, which uses `parsed_query_dsl`
    when it is a non-empty object, falling back to manual DSL construction from the
-   raw query string otherwise
+   normalized `parsed_query` string otherwise (raw input is only used when the parser
+   service is unavailable and `parsedQueryRef` was never populated)
 6. **ReactiveSearch** sends the resulting DSL to OpenSearch
-7. **Fallback**: if the parser service is unreachable, the raw query is used directly
-   and a dismissible warning alert is shown
+7. **Fallback**: if the parser service is unreachable, `parsedQueryRef.current` falls
+   back to the raw input value and a dismissible warning alert is shown
 
 ## Architecture
 
