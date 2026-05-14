@@ -2,7 +2,7 @@ VITE_OPENSEARCH_URL="https://opensearch.discovery.dor.lib.umich.edu"
 VITE_OPENSEARCH_CREDENTIALS="admin:CHANGEME"
 VITE_REACTIVESEARCH_URL="http://reactivesearch:8000"
 VITE_REACTIVESEARCH_CREDENTIALS="admin:password"
-VITE_SEARCH_PARSER_URL="http://search-parser:4567"
+VITE_SEARCH_PARSER_URL="https://search-parser.discovery.dor.lib.umich.edu"
 
 # OpenSearch index name. Update this when a new date-stamped index is deployed.
 # Default (in constants.js): dor-dc-20260513
