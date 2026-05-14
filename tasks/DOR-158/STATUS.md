@@ -4,7 +4,7 @@
 2026-05-14 — Added Task 4: Add parsed_query to Google Form feedback
 
 ## Current Branch
-`main` (DOR-158/ui-bug-fixes was merged; work continues on main or a new branch TBD)
+`DOR-158/add-parsed-query-to-form`
 
 ## Open Tasks
 ### Task 4: Add parsed_query to Google Form Feedback
@@ -25,6 +25,7 @@ Key files:
 ## Recent Activity
 - 2026-05-14: Ticket reopened; restored from archive/DOR-158 to tasks/DOR-158
 - 2026-05-14: Added Task 4 — Add parsed_query to Google Form feedback
+- 2026-05-14: Created working branch `DOR-158/add-parsed-query-to-form`
 
 ## Key Context
 - Original three tasks (timestamp removal, sticky filter fix, Unicode fix) were all completed and merged
