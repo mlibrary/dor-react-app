@@ -24,16 +24,24 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build image (CI — no push)
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build image and push to GitHub Container Registry
         uses: docker/build-push-action@v6
         with:
           context: ./search-parser-service
           file: ./search-parser-service/Dockerfile
-          push: false
+          # Push on every merge to main and on workflow_dispatch, but not on PRs.
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: 'ghcr.io/mlibrary/dor-react-app/search-parser-service:${{ github.sha }}'
           # Pass the same build args that the Dockerfile accepts.
           # Defaults match the Dockerfile ARG defaults so the build works
           # out-of-the-box; override via repository/environment secrets if needed.
           build-args: |
             MLIBRARY_SEARCH_PARSER_GIT=${{ vars.MLIBRARY_SEARCH_PARSER_GIT || 'https://github.com/mlibrary/mlibrary_search_parser.git' }}
             MLIBRARY_SEARCH_PARSER_REF=${{ vars.MLIBRARY_SEARCH_PARSER_REF || 'DOR-159/opensearch-query-dsl' }}
-
