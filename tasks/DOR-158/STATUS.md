@@ -1,21 +1,13 @@
 # DOR-158 Status
 
 ## Last Updated
-2026-05-14 — Added Task 4: Add parsed_query to Google Form feedback
+2026-05-14 — All tasks complete; developer verified; ready for PR
 
 ## Current Branch
-`main` (DOR-158/ui-bug-fixes was merged; work continues on main or a new branch TBD)
+`DOR-158/add-parsed-query-to-form`
 
 ## Open Tasks
-### Task 4: Add parsed_query to Google Form Feedback
-Key files:
-- `src/apps/RsDorDcApp/index.jsx` — `generateFeedbackFormUrl` (lines ~99–171), `parsedQueryRef` (line 63)
-
-- [ ] Add a new "Parsed Query" field to the Google Form (needs a new `entry.*` ID)
-- [ ] Update `generateFeedbackFormUrl` to append `parsedQueryRef.current` using the new entry ID
-- [ ] Handle parser-unavailable fallback gracefully
-- [ ] Verify prepopulated field appears correctly in the form
-- [ ] Verify with the developer that the task is complete
+✅ All tasks complete
 
 ## Open Plans
 | File              | Purpose | Status |
@@ -25,16 +17,23 @@ Key files:
 ## Recent Activity
 - 2026-05-14: Ticket reopened; restored from archive/DOR-158 to tasks/DOR-158
 - 2026-05-14: Added Task 4 — Add parsed_query to Google Form feedback
+- 2026-05-14: Created working branch `DOR-158/add-parsed-query-to-form`
+- 2026-05-14: Implemented entry.579946332 in generateFeedbackFormUrl
+- 2026-05-14: Fixed all "Solr-format" references → OpenSearch/normalized terminology
+- 2026-05-14: Fixed write_commit_msg.py — hardcoded stale message, now reads from stdin
+- 2026-05-14: Updated index to dor-dc-20260513; made configurable via VITE_OPENSEARCH_INDEX
+- 2026-05-14: Index Version form field now uses REACTIVESEARCH_CONFIG.index automatically
+- 2026-05-14: Fixed entry ID (was item ID 1929209268, correct field entry ID is 579946332)
+- 2026-05-14: Developer verified — form fields correct, boolean queries return results
 
 ## Key Context
-- Original three tasks (timestamp removal, sticky filter fix, Unicode fix) were all completed and merged
-- `parsedQueryRef.current` is already maintained in `RsDorDcApp/index.jsx` (line 63) — it stores the Solr-format parsed string returned by the parser service
-- `generateFeedbackFormUrl` (lines ~99–171) currently prepopulates: UUID identifier, index version, raw query + active filters, top-5 result titles
-- A new Google Form field must be created first to get its `entry.*` ID before the code can be updated
-- Bill Dueber confirmed `ic_all` is the correct catch-all search field
+- `entry.579946332` is the Google Form field entry ID for "Parsed Query" (NOT the item ID 1929209268)
+- `VITE_OPENSEARCH_INDEX` env var controls both the ReactiveBase index and the form Index Version field
+- Default index: `dor-dc-20260513`
 
 ## Next Steps
-1. Developer creates a new "Parsed Query" field in the Google Form and provides the `entry.*` ID
-2. Update `generateFeedbackFormUrl` to append `parsedQueryRef.current` with the new entry ID
-3. Handle graceful fallback when parser is unavailable
-4. Test and verify with developer
+1. Create PR from `DOR-158/add-parsed-query-to-form` → `main`
+2. After merge, archive ticket: `git mv tasks/DOR-158 archive/DOR-158`
+3. Update tasks/README.md to move DOR-158 from Active to Archived
+4. Commit archival on agents branch
+

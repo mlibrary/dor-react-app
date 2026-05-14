@@ -105,8 +105,9 @@ function RsDorDcApp() {
         const identifier = crypto.randomUUID();
         params.append('entry.886322516', identifier);
 
-        // Index Version
-        params.append('entry.1352964690', '1');
+        // Index Version — use the configured index name so this field
+        // tracks the active index automatically without a code change.
+        params.append('entry.1352964690', REACTIVESEARCH_CONFIG.index);
 
 
         // Search query - use override if provided, otherwise use ref
@@ -165,6 +166,13 @@ function RsDorDcApp() {
             }).join('\n');
 
             params.append('entry.1552271952', top5Results);
+        }
+
+        // Parsed query - the parser service's normalized query string.
+        // Falls back to the raw query when the parser is unavailable.
+        const parsedQuery = parsedQueryRef.current || queryValue || '';
+        if (parsedQuery) {
+            params.append('entry.579946332', parsedQuery);
         }
 
         return `${baseUrl}&${params.toString()}`;
@@ -288,7 +296,7 @@ function RsDorDcApp() {
                 />
             )}
             <ReactiveBase
-                app="dor-dc-20260509"
+                app={REACTIVESEARCH_CONFIG.index}
                 credentials={REACTIVESEARCH_CONFIG.credentials}
                 url={REACTIVESEARCH_CONFIG.url}
                 reactivesearchAPIConfig={{
@@ -368,7 +376,7 @@ function RsDorDcApp() {
                         <Card>
                             <CollapsibleMultiList
                                 componentId="group"
-                                dataField="groupName.facet"
+                                dataField="group_name.facet"
                                 title="Group"
                                 aggregationSize={2000}
                                 sortBy="count"
@@ -423,7 +431,7 @@ function RsDorDcApp() {
                                 if (!value) return null;
 
                                 // Use parsed DSL from parser service when available,
-                                // falling back to the Solr-format string for manual DSL construction.
+                                // falling back to the raw query string for manual DSL construction.
                                 return buildOpenSearchQuery(
                                     parsedQueryRef.current || value,
                                     parsedQueryDslRef.current,
@@ -511,12 +519,12 @@ function RsDorDcApp() {
                                                                 <div>{Array.isArray(item.hlb) ? item.hlb.join(', ') : item.hlb}</div>
                                                             </>
                                                         )}
-                                                        {item.groupName && (
-                                                            <>
-                                                                <div style={{fontWeight: 'bold'}}>groupName:</div>
-                                                                <div>{Array.isArray(item.groupName) ? item.groupName.join(', ') : item.groupName}</div>
-                                                            </>
-                                                        )}
+                                                    {item.group_name && (
+                                                        <>
+                                                            <div style={{fontWeight: 'bold'}}>group_name:</div>
+                                                            <div>{Array.isArray(item.group_name) ? item.group_name.join(', ') : item.group_name}</div>
+                                                        </>
+                                                    )}
                                                         {item.dc_contributor && (
                                                             <>
                                                                 <div style={{fontWeight: 'bold'}}>dc_contributor:</div>

@@ -9,13 +9,13 @@
  *  1. If `parsedQueryDsl` is a non-empty object, return it directly — the
  *     parser service owns the DSL and knows best how to represent the query.
  *  2. Otherwise fall back to the manual DSL construction that was previously
- *     inline in RsDorDcApp/index.jsx, using the Solr-format `queryString`.
+ *     inline in RsDorDcApp/index.jsx, using the normalized `queryString`.
  */
 
 /**
  * Build an OpenSearch Query DSL object for the given search input.
  *
- * @param {string} value           - Raw or Solr-format query string from the user
+ * @param {string} value           - Raw or normalized query string from the user
  * @param {object|null} parsedQueryDsl - OpenSearch DSL object from the parser service,
  *                                       or null when unavailable
  * @param {string[]} dataFields    - OpenSearch field names to search across
@@ -85,7 +85,7 @@ export function buildOpenSearchQuery(value, parsedQueryDsl, dataFields) {
                                 'dc_publisher',
                                 'dc_source',
                                 'hlb^3',
-                                'groupName^2',
+                                'group_name^2',
                             ],
                             type: 'best_fields',
                             tie_breaker: 0.3,

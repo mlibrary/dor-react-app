@@ -1,6 +1,7 @@
 export const REACTIVESEARCH_CONFIG = {
     url: import.meta.env.VITE_REACTIVESEARCH_URL || 'http://reactivesearch:8000',
     credentials: import.meta.env.VITE_REACTIVESEARCH_CREDENTIALS || 'admin:password',
+    index: import.meta.env.VITE_OPENSEARCH_INDEX || 'dor-dc-20260513',
 };
 
 export const SEARCH_FIELDS = [

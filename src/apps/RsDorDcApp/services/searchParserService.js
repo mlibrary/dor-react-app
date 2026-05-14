@@ -24,7 +24,7 @@ const SEARCH_PARSER_URL = import.meta.env.VITE_SEARCH_PARSER_URL || 'http://loca
  *
  * Response fields:
  *  - rawQuery        — the original query string echoed back by the service
- *  - parsedQuery     — Solr-format string (backward compatible with existing usage)
+ *  - parsedQuery     — normalized query string (the parser's canonical form of the input)
  *  - parsedQueryDsl  — OpenSearch Query DSL object, or null if unavailable
  */
 export async function parseSearchQuery(rawQuery, { signal } = {}) {
