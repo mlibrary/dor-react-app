@@ -7,17 +7,18 @@ rules, see [`AGENTS.md`](../AGENTS.md).
 
 ## Active Tasks
 
-| Ticket  | Branch | Summary                                                                       |
-|---------|--------|-------------------------------------------------------------------------------|
-| DOR-158 | main   | Search Evaluation UI fixes: remove timestamp, fix sticky filters, fix Unicode |
+| Ticket   | Branch | Summary |
+|----------|--------|---------|
+| *(none)* | —      | —       |
 
 ---
 
 ## Archived Tasks
 
-| Ticket  | Archive path    | Summary                                                                                      |
-|---------|-----------------|----------------------------------------------------------------------------------------------|
-| DOR-159 | archive/DOR-159 | Phase 2: Wire RsDorDcApp to consume parsed_query_dsl from parser service (merged 2026-05-14) |
+| Ticket  | Archive path    | Summary                                                                                                |
+|---------|-----------------|--------------------------------------------------------------------------------------------------------|
+| DOR-158 | archive/DOR-158 | Add parsed_query to feedback form; configurable index; groupName→group_name rename (merged 2026-05-14) |
+| DOR-159 | archive/DOR-159 | Phase 2: Wire RsDorDcApp to consume parsed_query_dsl from parser service (merged 2026-05-14)           |
 
 ---
 
