@@ -172,7 +172,7 @@ function RsDorDcApp() {
         // Falls back to the raw query when the parser is unavailable.
         const parsedQuery = parsedQueryRef.current || queryValue || '';
         if (parsedQuery) {
-            params.append('entry.1929209268', parsedQuery);
+            params.append('entry.579946332', parsedQuery);
         }
 
         return `${baseUrl}&${params.toString()}`;

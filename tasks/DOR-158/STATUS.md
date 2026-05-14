@@ -29,7 +29,7 @@
 - 2026-05-14: Fixed write_commit_msg.py — was hardcoded with stale message, now reads from stdin
 
 ## Key Context
-- `entry.1929209268` is the Google Form field ID for the new "Parsed Query" paragraph field
+- `entry.579946332` is the Google Form **field entry ID** for "Parsed Query" (item ID 1929209268 ≠ field entry ID — the entry ID is nested in data-params, not data-item-id)
 - `parsedQueryRef.current` holds the parser service's normalized query string (set in `handleSearchChange`)
 - Fallback: if parser is unavailable, `parsedQueryRef.current` equals the raw query string, so the field always has a value
 - Code change is in `generateFeedbackFormUrl` in `src/apps/RsDorDcApp/index.jsx` — added 5 lines after the top-5 results block

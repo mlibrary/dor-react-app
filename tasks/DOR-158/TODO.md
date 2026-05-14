@@ -51,7 +51,8 @@ correct catch-all field.
 
 - [x] Add a new "Parsed Query" field to the Google Form (needs a new `entry.*` ID)
 - [x] Update `generateFeedbackFormUrl` in `src/apps/RsDorDcApp/index.jsx` to append
-      `parsedQueryRef.current` to the form URL using the new entry ID
+      `parsedQueryRef.current` to the form URL using entry ID `entry.579946332`
+      (note: item ID 1929209268 ≠ field entry ID 579946332)
 - [x] Handle the case where the parser is unavailable (fall back gracefully — omit the
       field or send the raw query as the parsed query)
 - [ ] Verify the prepopulated field appears correctly in the Google Form for both
