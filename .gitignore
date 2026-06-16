@@ -27,8 +27,7 @@ dist-ssr
 .env
 
 # Agent-generated files
-dotpy/commit_msg.txt
-pr-summary.md
+.agents
 
 # External parser for reference
 mlibrary_search_parser/
